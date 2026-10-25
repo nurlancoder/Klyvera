@@ -244,6 +244,7 @@ version = "0.1.0"
 dependencies = [
  "flate2",
  "klyvera-config",
+ "klyvera-spaces",
  "serde",
  "serde_json",
  "sha2",
