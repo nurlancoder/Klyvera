@@ -10,17 +10,17 @@ on the Arch target.
 
 ## Steps
 
-- [ ] Write a threat model covering profiles, command trust, launch planning,
+- [x] Write a threat model covering profiles, command trust, launch planning,
       daemon IPC, backups, packaging, the live image and the website.
-- [ ] Add a manual test checklist for the Rust core, QML shell, Hyprland session,
+- [x] Add a manual test checklist for the Rust core, QML shell, Hyprland session,
       packaging, installer and website, with explicit pass criteria.
-- [ ] Document troubleshooting for the local development workstation and the
+- [x] Document troubleshooting for the local development workstation and the
       Arch target.
-- [ ] Define the release process: versioning, artifact verification, signing
+- [x] Define the release process: versioning, artifact verification, signing
       gap, checksums and rollback.
-- [ ] Link the operational documents from the README and documentation site.
-- [ ] Update the changelog, status record and site verification counts.
-- [ ] Run the final local audit and record exact results.
+- [x] Link the operational documents from the README and documentation site.
+- [x] Update the changelog, status record and site verification counts.
+- [x] Run the final local audit and record exact results.
 
 ## Exit criteria
 
