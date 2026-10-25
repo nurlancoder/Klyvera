@@ -1,0 +1,164 @@
+name: CI
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  hygiene:
+    name: Repository hygiene
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject obvious secrets
+        run: |
+          if git grep -nEI '(BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|AKIA[0-9A-Z]{16}|ghp_[A-Za-z0-9]{36})' -- .; then
+            echo "Potential secret detected" >&2
+            exit 1
+          fi
+  scripts:
+    name: Shell scripts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - name: Syntax check
+        run: |
+          shopt -s nullglob
+          files=(scripts/*.sh .githooks/*)
+          if ((${#files[@]})); then bash -n "${files[@]}"; fi
+      - name: Shellcheck
+        run: |
+          shopt -s nullglob
+          files=(scripts/*.sh .githooks/*)
+          if ((${#files[@]})); then shellcheck "${files[@]}"; fi
+
+  rust:
+    name: Rust core
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Detect workspace
+        id: detect
+        run: |
+          if [[ -f core/Cargo.toml ]]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: dtolnay/rust-toolchain@stable
+        if: steps.detect.outputs.present == 'true'
+        with:
+          components: rustfmt, clippy
+      - name: Cache cargo
+        if: steps.detect.outputs.present == 'true'
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            core/target
+          key: cargo-${{ runner.os }}-${{ hashFiles('core/Cargo.lock') }}
+          restore-keys: cargo-${{ runner.os }}-
+      - name: Format, lint and test
+        if: steps.detect.outputs.present == 'true'
+        working-directory: core
+        run: |
+          cargo fmt --all --check
+          cargo clippy --all-targets -- -D warnings
+          cargo test --all
+
+  design:
+    name: Design tokens
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify generated files are in sync
+        run: |
+          if [[ -f design/generators/generate.py ]]; then
+            python3 design/generators/generate.py --check
+          else
+            echo "Token generator not present yet"
+          fi
+
+  qml:
+    name: QML lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Detect QML components
+        id: detect
+        run: |
+          if [[ -n "$(find shell -name '*.qml' -print -quit 2>/dev/null)" ]]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Install Qt declarative tools
+        if: steps.detect.outputs.present == 'true'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qt6-declarative-dev qt6-declarative-dev-tools \
+            qml6-module-qtquick qml6-module-qtquick-controls \
+            qml6-module-qtquick-layouts qml6-module-qtquick-templates \
+            qml6-module-qtquick-window qml6-module-qtqml-workerscript
+      - name: QMLLint
+        if: steps.detect.outputs.present == 'true'
+        run: |
+          mapfile -t files < <(find shell preview -name '*.qml' -print)
+          qmllint -I shell/ui -I shell/styles "${files[@]}"
+
+  schema:
+    name: JSON Schema
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate examples
+        run: |
+          if [[ -f tests/validate_schemas.py ]]; then
+            python3 -m pip install --disable-pip-version-check jsonschema
+            python3 tests/validate_schemas.py
+          else
+            echo "Schema validation not present yet"
+          fi
+
+  web:
+    name: Website
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Detect website
+        id: detect
+        run: |
+          if [[ -f web/package.json ]]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/setup-node@v4
+        if: steps.detect.outputs.present == 'true'
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - name: Install and build
+        if: steps.detect.outputs.present == 'true'
+        working-directory: web
+        run: |
+          npm ci
+          npm run build

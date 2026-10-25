@@ -1,0 +1,82 @@
+name: Bug report
+description: Report a defect in Klyvera
+title: "bug: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not use this form for security vulnerabilities. Follow SECURITY.md.
+        Please report honestly what you ran; do not mark target-only behaviour as
+        verified because CI passed.
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      options:
+        - Klyvera Shell (panel, launcher, notifications)
+        - Klyvera Spaces
+        - Klyvera Themes
+        - Klyvera Core (config, backup, IPC, daemon, CLI)
+        - Packaging / ISO
+        - Website / docs
+        - Not sure
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Distribution, version or commit, compositor, Qt/Quickshell versions, display scaling.
+      placeholder: |
+        Klyvera: commit or tag
+        OS: Arch Linux (kernel ...)
+        Compositor: Hyprland ...
+        Qt: ...
+        Quickshell: ...
+        Displays: 2560x1440 @ 1.25, portrait 1080x1920
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open ...
+        2. Press ...
+        3. Observe ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs or screenshots
+      description: Remove usernames, home paths, tokens and other personal data.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Confirmation
+      options:
+        - label: I read SECURITY.md and this is not a vulnerability report.
+          required: true
+        - label: I removed secrets and personal data from the report.
+          required: true

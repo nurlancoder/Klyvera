@@ -1,0 +1,62 @@
+name: Feature request
+description: Propose a capability or design change
+title: "feat: "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Klyvera is local-first: no accounts, servers, telemetry or paid services.
+        Proposals that require any of these will be declined.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What workflow is painful today? Who is affected?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe behaviour, not only appearance. Include keyboard flow.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Klyvera Shell
+        - Klyvera Spaces
+        - Klyvera Themes
+        - Klyvera Core
+        - Packaging / ISO
+        - Website / docs
+        - Developer experience
+    validations:
+      required: true
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints and risks
+      description: Security, accessibility, scaling, offline behaviour, dependencies.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Confirmation
+      options:
+        - label: This proposal works offline and requires no accounts or servers.
+          required: true
+        - label: I have not copied this proposal from another desktop project.
+          required: true
