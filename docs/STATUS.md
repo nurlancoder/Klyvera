@@ -4,7 +4,7 @@ Klyvera is a **prototype**. This file records what has actually been run, what i
 written but cannot be exercised on the Debian-based development workstation, and
 what is blocked. It is updated after every step.
 
-Last updated: 2026-10-25 (Phase 3)
+Last updated: 2026-10-25 (Phase 4)
 
 ## Done
 
@@ -96,6 +96,45 @@ Last updated: 2026-10-25 (Phase 3)
 - `tests/qml/dialog_focus.py` is a permanent offscreen behaviour test for initial
   focus, Tab/Backtab containment, Escape dismissal and the `rejected` signal.
 
+### Shell surfaces and integration (Phase 4)
+
+- `shell/integration/ServiceContract.qml` defines the shell data contract for
+  apps, Spaces, settings, recents, notifications, displays, audio, network,
+  Bluetooth, power, host, monitor and capabilities. `MockService.qml` supplies
+  deterministic preview data.
+- Nine pure QML pages in `shell/pages/`: Launcher, SpacesPage, SpaceEditor,
+  ControlCenter, NotificationCenter, SystemMonitor, LockScreen, SessionMenu and
+  Welcome. They import only Qt Quick, `shell/ui`, `shell/styles` and the pure
+  integration contract.
+- Launcher provides fuzzy app/Space/settings results, recents, sectioned rows,
+  keyboard selection, Escape clearing and layout-class reflow.
+- Spaces UI provides list/detail, a three-step editor, folder and app choices,
+  inline validation, import/export signals and command trust confirmation. The
+  editor rejects shell interpreters, control bytes and command working
+  directories outside the project or containing `..`.
+- Control center covers appearance, display, audio, network, Bluetooth, power,
+  shortcuts and about; each service failure has a visible degraded state rather
+  than fake data.
+- Notification center, system monitor, lock screen, session menu and first-run
+  welcome are implemented, including unread state, do-not-disturb, destructive
+  action confirmation, reduced-motion awareness and accessible names.
+- `shell/integration/quickshell/` contains target-only adapters: per-screen
+  panel and overlay windows, Hyprland workspaces, IPC targets, argv-only system
+  probes, UPower battery state and a Quickshell notification server.
+  `shell.qml` is the Quickshell entry point and the directory is excluded from
+  local and CI lint because its target modules are absent.
+- `packaging/config/hypr/klyvera.conf` and
+  `packaging/config/hypr/conf.d/10-klyvera.conf` document the includeable
+  keybindings for launcher, control center, notifications, session menu and lock.
+- `preview/pages.qml` renders all nine surfaces plus a light Spaces view; the
+  launcher is also rendered at 1180, 1440, 1920 and 2560 px widths.
+  `docs/screenshots/` contains the resulting PNGs.
+- `tests/qml/pages_behavior.py` verifies fuzzy launcher search and Space command
+  validation, including shell rejection and `..` working-directory rejection.
+- `TextField` now uses guarded two-way text sync instead of an alias to avoid
+  binding loops. `Slider` exposes a `moved` signal for user-driven changes.
+  `FocusRing` is public so pages can use it through directory imports.
+
 ### Checks actually run
 
 - `cargo fmt --all --check` across the workspace.
@@ -108,16 +147,23 @@ Last updated: 2026-10-25 (Phase 3)
 - `python3 design/generators/generate.py --check` (in sync, contrast passes).
 - `shellcheck 0.11.0` and `pyside6-qmllint` 6.12 from the temporary user-level
   environment at `/tmp/opencode/klyvera-qt-venv`.
-- `pyside6-qmllint 6.12` over `shell/ui`, `shell/styles`, `preview` and
-  `tests/qml`: exit status 0. The only warning is the known standalone
-  `Theme.qml` singleton warning.
+- `pyside6-qmllint 6.12` over `shell/ui`, `shell/styles`, `shell/integration`
+  (non-Quickshell files), `shell/pages`, `preview` and `tests/qml`: exit status
+  0. The two warnings are the known standalone `Theme.qml` and `MockService.qml`
+  singleton warnings. The Quickshell target directory is deliberately excluded
+  because its modules do not exist here.
 - `python3 tests/qml/dialog_focus.py` offscreen: initial focus on the primary
   action, nine Tab and five Backtab presses contained, Escape closed the dialog
   and emitted `rejected`.
+- `python3 tests/qml/pages_behavior.py` offscreen: fuzzy query returned the Code
+  result, a `bash` command was rejected, a command working directory containing
+  `..` was rejected and a valid argv command passed validation.
 - `python3 preview/render.py` offscreen with the software Qt Quick backend:
-  six screenshots across four layout classes written successfully. Rendered
-  sizes and component geometry were probed at runtime; no key component had zero
-  size.
+  six component screenshots across four layout classes written successfully.
+  Rendered sizes and component geometry were probed at runtime; no key component
+  had zero size.
+- `python3 preview/render_pages.py` offscreen: nine page screenshots, a light
+  Spaces view and launcher renders at 1180, 1440, 1920 and 2560 px widths.
 - `./scripts/check.sh` with the temporary Qt/shellcheck environment:
   **0 failures, 1 skipped** (website not built yet).
 - YAML parsing of the workflow, Dependabot config and issue forms with PyYAML.
@@ -133,11 +179,16 @@ Last updated: 2026-10-25 (Phase 3)
 - Hyprland layout hints are produced by the core but are not applied anywhere;
   compositor integration is **UNVERIFIED-ON-TARGET**.
 - QML has not been rendered in a Quickshell session or a Wayland session. The
-  gallery, screenshots and focus test run under offscreen Qt Quick only, and the
-  screenshots have not had a human visual review on the target. The standalone
-  lint emits one known false-positive warning ("Type Theme not declared as
-  singleton") because qmllint checks the singleton file outside its module
-  context; exit status is success.
+  gallery, page previews, screenshots and behaviour tests run under offscreen Qt
+  Quick only, and none of the screenshots have had a human visual review on the
+  target. The standalone lint emits two known false-positive singleton warnings
+  for `Theme.qml` and `MockService.qml`; exit status is success.
+- The Quickshell adapter in `shell/integration/quickshell/` has not been linted
+  or executed. Its import names, window properties, IPC handlers, UPower calls,
+  notification fields and process collectors must be validated on Arch with
+  Quickshell and Hyprland.
+- The Hyprland fragment has not been included in a live Hyprland configuration.
+  Keybind conflicts, `qs` availability and session-lock wiring are unverified.
 - The generated CSS has not been consumed by a web build yet.
 
 ## Blocked
@@ -155,7 +206,6 @@ Last updated: 2026-10-25 (Phase 3)
 
 ## Missing / not yet built
 
-- Launcher, Spaces UI, control center, integration layer (Phase 4).
 - Packaging, archiso profile, ISO workflow (Phase 5).
 - Website (Phase 6).
 - Hardening, manual test checklist, release notes (Phase 7).
