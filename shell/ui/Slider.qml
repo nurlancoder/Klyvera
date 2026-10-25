@@ -10,6 +10,7 @@ FocusScope {
     property real value: 0
     property real stepSize: 1
     property string valueSuffix: ""
+    signal moved(real value)
 
     readonly property real ratio: to > from
         ? Math.max(0, Math.min(1, (value - from) / (to - from)))
@@ -39,10 +40,12 @@ FocusScope {
         if (width <= 0)
             return
         value = snap(from + Math.max(0, Math.min(1, position / width)) * (to - from))
+        moved(value)
     }
 
     function stepBy(steps) {
         value = snap(value + steps * stepSize)
+        moved(value)
     }
 
     Keys.onPressed: function(event) {

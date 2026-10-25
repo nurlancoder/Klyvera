@@ -11,11 +11,18 @@ Item {
     property string leadingIcon: ""
     property bool showClear: false
     property bool readOnly: false
-    property alias text: input.text
+    property string text: ""
+    onTextChanged: {
+        if (input.text !== text)
+            input.text = text
+    }
     property alias echoMode: input.echoMode
     property alias maximumLength: input.maximumLength
     property alias inputMethodHints: input.inputMethodHints
+    property bool handleNavigationKeys: false
     signal accepted()
+    signal navigationRequested(int key)
+    signal escapePressed()
 
     readonly property bool hasError: errorText.length > 0
     implicitWidth: Theme.scaled(Theme.layout.spaces.sidebarWidth)
@@ -26,7 +33,7 @@ Item {
     }
 
     function clear() {
-        input.text = ""
+        text = ""
         input.forceActiveFocus()
     }
 
@@ -103,6 +110,11 @@ Item {
 
             TextInput {
                 id: input
+                text: root.text
+                onTextChanged: {
+                    if (root.text !== text)
+                        root.text = text
+                }
                 anchors.left: leading.visible ? leading.right : parent.left
                 anchors.leftMargin: leading.visible
                     ? Theme.scaled(Theme.spacing.xs)
@@ -125,9 +137,19 @@ Item {
                 Accessible.description: root.hasError ? root.errorText : root.helperText
                 Accessible.focusable: true
                 onAccepted: root.accepted()
+                Keys.onPressed: function(event) {
+                    if (root.handleNavigationKeys
+                        && (event.key === Qt.Key_Up || event.key === Qt.Key_Down
+                            || event.key === Qt.Key_PageUp || event.key === Qt.Key_PageDown)) {
+                        root.navigationRequested(event.key)
+                        event.accepted = true
+                    }
+                }
                 Keys.onEscapePressed: {
                     if (root.showClear && text.length > 0)
                         root.clear()
+                    else
+                        root.escapePressed()
                 }
             }
 

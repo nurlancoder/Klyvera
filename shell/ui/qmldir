@@ -6,7 +6,7 @@ ConfirmDialog 1.0 ConfirmDialog.qml
 Dialog 1.0 Dialog.qml
 EmptyState 1.0 EmptyState.qml
 ErrorState 1.0 ErrorState.qml
-internal FocusRing 1.0 FocusRing.qml
+FocusRing 1.0 FocusRing.qml
 Icon 1.0 Icon.qml
 IconButton 1.0 IconButton.qml
 ListItem 1.0 ListItem.qml

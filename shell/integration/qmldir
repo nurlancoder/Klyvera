@@ -1,0 +1,3 @@
+module Klyvera.Integration
+singleton MockService 1.0 MockService.qml
+ServiceContract 1.0 ServiceContract.qml
