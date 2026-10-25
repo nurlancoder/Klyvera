@@ -311,3 +311,12 @@ Last updated: 2026-10-25 (Phase 7)
 - ISO build and boot, full offline target installation, package signing and
   keyring distribution.
 - End-to-end verification on real Arch/Hyprland hardware.
+
+## Pass 2 (in progress) — Design, quality and polish
+
+### Done
+- Design tokens v2 with premium palette, improved WCAG AA contrast (all pairs pass)
+- Regenerated Theme.qml, tokens.css, contrast-report.md
+- SVG icon set started (shell/assets/icons), brand logomark/wordmark added
+- Icon generator and icon existence tests added
+- Design audit document started
