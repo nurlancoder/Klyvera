@@ -12,6 +12,14 @@ pre-release: interfaces may change without notice.
 
 - Repository foundation: contribution rules, security policy, code of conduct,
   issue and pull request templates, and CI skeleton.
+- Design tokens, generated Qt and CSS themes, WCAG contrast report and the design
+  system guide.
+- Rust core: versioned configuration, Spaces model/store/trust, `.desktop`
+  resolution, argv-only launch planning, verified backups and restore, versioned
+  Unix-socket IPC, a user daemon and the `klyvera` CLI.
+- JSON Schemas and validated examples for configuration and Spaces, plus a schema
+  validation test.
+- Spaces specification and core engineering guide.
 
 ### Planned
 

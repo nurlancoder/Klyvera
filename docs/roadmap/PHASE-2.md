@@ -8,22 +8,24 @@ user daemon and the CLI. Nothing in this phase executes shell strings.
 - [x] Create the Cargo workspace, shared dependency policy and toolchain file.
 - [x] `klyvera-config`: typed configuration, XDG paths, atomic 0600 writes,
       version field, a real v0→v1 migration and strict validation. 17 tests pass.
-- [ ] `klyvera-spaces`: model, Space versioning, strict path and command
+- [x] `klyvera-spaces`: model, Space versioning, strict path and command
       validation, profile hashing, CRUD store, import/export, trust records,
-      `.desktop` resolution and argv-only launch planning.
-- [ ] `klyvera-backup`: timestamped tar.gz archives with a SHA-256 manifest,
+      `.desktop` resolution and argv-only launch planning. 33 tests pass.
+- [x] `klyvera-backup`: timestamped tar.gz archives with a SHA-256 manifest,
       integrity verification and safe restore with a pre-restore backup.
-- [ ] `klyvera-ipc`: versioned, bounded JSON protocol over a 0600 Unix socket,
-      peer-UID checks and a small client.
-- [ ] `klyvera-daemon`: nonblocking accept loop, typed request dispatch,
+      8 tests pass.
+- [x] `klyvera-ipc`: versioned, bounded JSON protocol over a 0600 Unix socket,
+      peer-UID checks and a small client. 11 tests pass.
+- [x] `klyvera-daemon`: nonblocking accept loop, typed request dispatch,
       structured logs without personal data, graceful SIGTERM/SIGINT and IPC
-      shutdown.
-- [ ] `klyvera-cli`: `spaces list|new|open|export|import` plus `show`, `delete`,
+      shutdown. 2 integration tests pass, including live trust reload.
+- [x] `klyvera-cli`: `spaces list|new|open|export|import` plus `show`, `delete`,
       `trust`, `backup`, `restore`, `doctor`, `--json` and `--dry-run`.
-- [ ] JSON Schemas for configuration and Spaces, with validated examples.
-- [ ] Unit tests per crate, parser edge cases and integration tests for daemon
-      and CLI.
-- [ ] `docs/spaces-spec.md`, `core/README.md`, checks and honest status update.
+      2 end-to-end CLI tests pass.
+- [x] JSON Schemas for configuration and Spaces, with validated examples.
+- [x] Unit tests per crate, parser edge cases and integration tests for daemon
+      and CLI. 74 tests pass in total.
+- [x] `docs/spaces-spec.md`, `core/README.md`, checks and honest status update.
 
 ## Security contract
 
