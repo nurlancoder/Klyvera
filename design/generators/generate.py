@@ -246,103 +246,26 @@ def build_theme_qml(tokens: dict[str, Any]) -> str:
             f"    readonly property color {color_name}: palette.{color_name}"
         )
 
-    lines.extend(["", "    readonly property QtObject spacing: QtObject {"])
-    for name, value in tokens["spacing"].items():
-        lines.append(f"        readonly property real {name}: {value}")
-    lines.append("    }")
-
-    lines.extend(["", "    readonly property QtObject radius: QtObject {"])
-    for name, value in tokens["radius"].items():
-        lines.append(f"        readonly property real {name}: {value}")
-    lines.append("    }")
-
-    lines.extend(["", "    readonly property QtObject borders: QtObject {"])
-    for name, value in tokens["borders"].items():
-        lines.append(f"        readonly property real {name}: {value}")
-    lines.append("    }")
-
-    lines.extend(["", "    readonly property QtObject elevation: QtObject {"])
-    for name, value in tokens["elevation"].items():
-        lines.append(f"        readonly property QtObject {name}: QtObject {{")
-        lines.append(f"            readonly property real y: {value['y']}")
-        lines.append(f"            readonly property real blur: {value['blur']}")
-        lines.append(f"            readonly property real spread: {value['spread']}")
-        lines.append(f"            readonly property real opacity: {value['opacity']}")
-        lines.append("        }")
-    lines.append("    }")
-
-    typography = tokens["typography"]
-    lines.extend(["", "    readonly property QtObject typography: QtObject {"])
-    for role, family in typography["families"].items():
-        lines.append(
-            f'        readonly property string {role}Family: "{family["name"]}"'
+    typed_properties = [
+        ("SpacingTokens", "spacing"),
+        ("RadiusTokens", "radius"),
+        ("BorderTokens", "borders"),
+        ("ElevationTokens", "elevation"),
+        ("TypographyTokens", "typography"),
+        ("MotionTokens", "motion"),
+        ("IconTokens", "icon"),
+        ("LayoutTokens", "layout"),
+        ("AccessibilityTokens", "accessibility"),
+    ]
+    for type_name, property_name in typed_properties:
+        lines.extend(
+            [
+                "",
+                f"    readonly property {type_name} {property_name}: {type_name} {{}}",
+            ]
         )
-        lines.append(
-            f'        readonly property string {role}Stack: "{family["stack"]}"'
-        )
-    for name, value in typography["weights"].items():
-        lines.append(f"        readonly property int weight{kebab(name).title().replace('-', '')}: {value}")
-    for name, value in typography["scale"].items():
-        lines.append(f"        readonly property QtObject {name}: QtObject {{")
-        lines.append(f"            readonly property int size: {value['size']}")
-        lines.append(f"            readonly property int lineHeight: {value['lineHeight']}")
-        lines.append(f"            readonly property int weight: {value['weight']}")
-        lines.append(
-            f"            readonly property real letterSpacing: {value['letterSpacing']}"
-        )
-        lines.append("        }")
-    lines.append("    }")
-
-    motion = tokens["motion"]
-    lines.extend(
-        [
-            "",
-            "    readonly property QtObject motion: QtObject {",
-            f"        readonly property bool reduceMotionDefault: "
-            f"{str(motion['reduceMotionDefault']).lower()}",
-        ]
-    )
-    for name, value in motion["durations"].items():
-        lines.append(f"        readonly property int duration{name.capitalize()}: {value}")
-    for name, values in motion["easings"].items():
-        joined = ", ".join(str(item) for item in values)
-        lines.append(f"        readonly property var easing{name.capitalize()}: [{joined}]")
-    lines.append("    }")
-
-    icon = tokens["icon"]
-    lines.extend(
-        [
-            "",
-            "    readonly property QtObject icon: QtObject {",
-            f'        readonly property string set: "{icon["set"]}"',
-            f'        readonly property string license: "{icon["license"]}"',
-            f"        readonly property real strokeWidth: {icon['strokeWidth']}",
-            "        readonly property QtObject sizes: QtObject {",
-        ]
-    )
-    for name, value in icon["sizes"].items():
-        lines.append(f"            readonly property real {name}: {value}")
-    lines.extend(["        }", "    }"])
 
     layout = tokens["layout"]
-    lines.extend(["", "    readonly property QtObject layout: QtObject {"])
-    lines.append("        readonly property QtObject breakpoints: QtObject {")
-    for name, value in layout["breakpoints"].items():
-        lines.append(f"            readonly property int {name}: {value}")
-    lines.append("        }")
-    for group_name in ("panel", "launcher", "controlCenter", "spaces"):
-        lines.append(f"        readonly property QtObject {group_name}: QtObject {{")
-        for name, value in layout[group_name].items():
-            lines.append(f"            readonly property real {name}: {value}")
-        lines.append("        }")
-    lines.append("    }")
-
-    accessibility = tokens["accessibility"]
-    lines.extend(["", "    readonly property QtObject accessibility: QtObject {"])
-    for name, value in accessibility.items():
-        lines.append(f"        readonly property real {name}: {value}")
-    lines.append("    }")
-
     breakpoints = layout["breakpoints"]
     lines.extend(
         [
@@ -365,11 +288,134 @@ def build_theme_qml(tokens: dict[str, Any]) -> str:
             f'        if (width <= {breakpoints["wideMax"]}) return "wide"',
             '        return "ultrawide"',
             "    }",
-            "}",
             "",
+            "    // Inline token types keep nested token access statically typed for qmllint.",
+            "    component SpacingTokens: QtObject {",
         ]
     )
+    for name, value in tokens["spacing"].items():
+        lines.append(f"        readonly property real {name}: {value}")
+    lines.extend(["    }", "", "    component RadiusTokens: QtObject {"])
+    for name, value in tokens["radius"].items():
+        lines.append(f"        readonly property real {name}: {value}")
+    lines.extend(["    }", "", "    component BorderTokens: QtObject {"])
+    for name, value in tokens["borders"].items():
+        lines.append(f"        readonly property real {name}: {value}")
+    lines.extend(
+        [
+            "    }",
+            "",
+            "    component ElevationLevelTokens: QtObject {",
+            "        property real y: 0",
+            "        property real blur: 0",
+            "        property real spread: 0",
+            "        property real opacity: 0",
+            "    }",
+            "",
+            "    component ElevationTokens: QtObject {",
+        ]
+    )
+    for name, value in tokens["elevation"].items():
+        lines.append(f"        readonly property ElevationLevelTokens {name}: ElevationLevelTokens {{")
+        lines.append(f"            y: {value['y']}")
+        lines.append(f"            blur: {value['blur']}")
+        lines.append(f"            spread: {value['spread']}")
+        lines.append(f"            opacity: {value['opacity']}")
+        lines.append("        }")
+    lines.extend(
+        [
+            "    }",
+            "",
+            "    component TypeStyleTokens: QtObject {",
+            "        property int size: 14",
+            "        property int lineHeight: 22",
+            "        property int weight: 400",
+            "        property real letterSpacing: 0",
+            "    }",
+            "",
+            "    component TypographyTokens: QtObject {",
+        ]
+    )
+    typography = tokens["typography"]
+    for role, family in typography["families"].items():
+        lines.append(f'        readonly property string {role}Family: "{family["name"]}"')
+        lines.append(f'        readonly property string {role}Stack: "{family["stack"]}"')
+    for name, value in typography["weights"].items():
+        weight_name = "weight" + kebab(name).title().replace("-", "")
+        lines.append(f"        readonly property int {weight_name}: {value}")
+    for name, value in typography["scale"].items():
+        lines.append(f"        readonly property TypeStyleTokens {name}: TypeStyleTokens {{")
+        lines.append(f"            size: {value['size']}")
+        lines.append(f"            lineHeight: {value['lineHeight']}")
+        lines.append(f"            weight: {value['weight']}")
+        lines.append(f"            letterSpacing: {value['letterSpacing']}")
+        lines.append("        }")
+    lines.extend(["    }", "", "    component MotionTokens: QtObject {"])
+    motion = tokens["motion"]
+    lines.append(
+        "        readonly property bool reduceMotionDefault: "
+        + str(motion["reduceMotionDefault"]).lower()
+    )
+    for name, value in motion["durations"].items():
+        lines.append(f"        readonly property int duration{name.capitalize()}: {value}")
+    for name, values in motion["easings"].items():
+        joined = ", ".join(str(item) for item in values)
+        lines.append(f"        readonly property var easing{name.capitalize()}: [{joined}]")
+    lines.extend(
+        [
+            "    }",
+            "",
+            "    component IconSizes: QtObject {",
+        ]
+    )
+    icon = tokens["icon"]
+    for name, value in icon["sizes"].items():
+        lines.append(f"        readonly property real {name}: {value}")
+    lines.extend(
+        [
+            "    }",
+            "",
+            "    component IconTokens: QtObject {",
+            f'        readonly property string set: "{icon["set"]}"',
+            f'        readonly property string license: "{icon["license"]}"',
+            f"        readonly property real strokeWidth: {icon['strokeWidth']}",
+            "        readonly property IconSizes sizes: IconSizes {}",
+            "    }",
+            "",
+            "    component Breakpoints: QtObject {",
+        ]
+    )
+    for name, value in breakpoints.items():
+        lines.append(f"        readonly property int {name}: {value}")
+    lines.extend(["    }", ""])
+    group_types = {
+        "panel": "PanelTokens",
+        "launcher": "LauncherTokens",
+        "controlCenter": "ControlCenterTokens",
+        "spaces": "SpacesTokens",
+    }
+    for group_name, type_name in group_types.items():
+        lines.append(f"    component {type_name}: QtObject {{")
+        for name, value in layout[group_name].items():
+            lines.append(f"        readonly property real {name}: {value}")
+        lines.extend(["    }", ""])
+    lines.extend(
+        [
+            "    component LayoutTokens: QtObject {",
+            "        readonly property Breakpoints breakpoints: Breakpoints {}",
+        ]
+    )
+    for group_name, type_name in group_types.items():
+        lines.append(
+            f"        readonly property {type_name} {group_name}: {type_name} {{}}"
+        )
+    lines.extend(["    }", "", "    component AccessibilityTokens: QtObject {"])
+    accessibility = tokens["accessibility"]
+    for name, value in accessibility.items():
+        lines.append(f"        readonly property real {name}: {value}")
+    lines.extend(["    }", "}", ""])
     return "\n".join(lines)
+
 
 
 def build_qmldir() -> str:

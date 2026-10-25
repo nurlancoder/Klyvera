@@ -32,6 +32,13 @@ environment with it.
 - **Honest.** If a feature has not been run on the target, it is labelled
   unverified.
 
+## Preview
+
+![Klyvera component gallery in dark mode](docs/screenshots/components-dark.png)
+
+The component gallery is rendered offscreen from mock data without Hyprland or
+Quickshell. See `docs/design-system.md` and `docs/roadmap/PHASE-3.md`.
+
 ## Technology
 
 Arch Linux base, Hyprland on Wayland, Quickshell and Qt 6 QML for the shell,
@@ -68,6 +75,7 @@ Individual layers:
 cd core && cargo fmt --check && cargo clippy --all-targets -- -D warnings && cargo test
 python3 design/generators/generate.py --check
 cd web && npm ci && npm run build
+python3 preview/render.py
 ```
 
 Some checks (Hyprland, Quickshell, pacman, mkarchiso) cannot run on the

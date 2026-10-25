@@ -53,7 +53,8 @@ the wordmark on the accent colour.
 
 ## Iconography
 
-- Lucide, ISC license, uniform `icon.strokeWidth` (1.75) and a token size.
+- Klyvera Line, an original stroke set with uniform `icon.strokeWidth` (1.75)
+  and token sizes; no third-party icon files are vendored.
 - Icons support labels; they do not replace them, except in a tooltipped icon
   button with an accessible name.
 - Do not mix icon families or fill and stroke styles.

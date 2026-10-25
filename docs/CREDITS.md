@@ -22,10 +22,9 @@ The fonts are planned, not yet bundled.
 
 ## Icons
 
-- **Lucide** icon set, ISC license, used with a uniform stroke width.
-  <https://lucide.dev/>
-
-Icons are planned, not yet vendored.
+The Klyvera Line icon set is original work drawn in `shell/ui/Icon.qml`. Its
+names follow common line-icon vocabulary; no third-party icon files or path data
+are used.
 
 ## Development tools
 

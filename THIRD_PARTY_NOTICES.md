@@ -52,9 +52,10 @@ own.
 
 ## Icons
 
-The planned icon set is Lucide, licensed under the ISC license, used at a uniform
-stroke width. No icon files are vendored yet. Any icon added must be recorded
-here with its source and license.
+`shell/ui/Icon.qml` draws the original Klyvera Line set with a uniform stroke
+width. No third-party icon files, fonts or path data are vendored. The names are
+conventional line-icon names and do not imply affiliation. Any third-party icon
+added later must be recorded here with its source and license.
 
 ## Development-only tools
 

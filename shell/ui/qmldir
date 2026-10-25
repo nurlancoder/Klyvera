@@ -1,0 +1,23 @@
+module Klyvera.Components
+Button 1.0 Button.qml
+Card 1.0 Card.qml
+Clock 1.0 Clock.qml
+ConfirmDialog 1.0 ConfirmDialog.qml
+Dialog 1.0 Dialog.qml
+EmptyState 1.0 EmptyState.qml
+ErrorState 1.0 ErrorState.qml
+internal FocusRing 1.0 FocusRing.qml
+Icon 1.0 Icon.qml
+IconButton 1.0 IconButton.qml
+ListItem 1.0 ListItem.qml
+Panel 1.0 Panel.qml
+SearchField 1.0 SearchField.qml
+Skeleton 1.0 Skeleton.qml
+Slider 1.0 Slider.qml
+SystemIndicators 1.0 SystemIndicators.qml
+Tabs 1.0 Tabs.qml
+TextField 1.0 TextField.qml
+Toast 1.0 Toast.qml
+Toggle 1.0 Toggle.qml
+Tooltip 1.0 Tooltip.qml
+WorkspaceIndicator 1.0 WorkspaceIndicator.qml

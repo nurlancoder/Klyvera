@@ -95,7 +95,7 @@ qml_files=()
 if [[ -d shell ]]; then
   while IFS= read -r file; do
     qml_files+=("$file")
-  done < <(find shell preview -type f -name '*.qml' 2>/dev/null | sort)
+  done < <(find shell preview tests/qml -type f -name '*.qml' 2>/dev/null | sort)
 fi
 if ((${#qml_files[@]} > 0)); then
   qml_linter=""
@@ -115,6 +115,21 @@ if ((${#qml_files[@]} > 0)); then
   fi
 else
   skip "no QML files yet"
+fi
+
+section "QML behaviour"
+if [[ -f tests/qml/dialog_focus.py ]]; then
+  if has python3 && python3 -c 'import PySide6.QtCore' >/dev/null 2>&1; then
+    if python3 tests/qml/dialog_focus.py; then
+      pass "dialog focus trap and keyboard dismissal"
+    else
+      fail "dialog focus behaviour"
+    fi
+  else
+    skip "PySide6 not installed"
+  fi
+else
+  skip "no QML behaviour tests"
 fi
 
 section "JSON Schema"

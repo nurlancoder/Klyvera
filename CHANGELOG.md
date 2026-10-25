@@ -20,6 +20,8 @@ pre-release: interfaces may change without notice.
 - JSON Schemas and validated examples for configuration and Spaces, plus a schema
   validation test.
 - Spaces specification and core engineering guide.
+- Pure QML component library for the shell, a typed generated theme, an offscreen
+  component gallery with dark/light/dialog screenshots, and a dialog focus test.
 
 ### Planned
 

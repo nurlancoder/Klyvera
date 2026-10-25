@@ -4,7 +4,7 @@ Klyvera is a **prototype**. This file records what has actually been run, what i
 written but cannot be exercised on the Debian-based development workstation, and
 what is blocked. It is updated after every step.
 
-Last updated: 2026-10-25 (Phase 2)
+Last updated: 2026-10-25 (Phase 3)
 
 ## Done
 
@@ -73,6 +73,29 @@ Last updated: 2026-10-25 (Phase 2)
 - `klyvera doctor` was exercised through the CLI integration test with an isolated
   XDG environment and returned a successful JSON report with honest warnings.
 
+### Shell component library (Phase 3)
+
+- `shell/styles/Theme.qml` now emits typed inline components for spacing,
+  radius, borders, elevation, typography, motion, icons, layout and
+  accessibility. `qmllint` resolves nested token access such as
+  `Theme.typography.body.size` and `Theme.layout.panel.height`.
+- Twenty components from the design-system inventory are implemented in
+  `shell/ui/`: Panel, WorkspaceIndicator, Clock, SystemIndicators, Button,
+  IconButton, TextField, SearchField, ListItem, Card, Toggle, Slider, Tabs,
+  Dialog, ConfirmDialog, Toast, Tooltip, EmptyState, ErrorState and Skeleton.
+- Internal `Icon` and `FocusRing` helpers provide Canvas icons and token-based
+  focus outlines. `shell/ui/qmldir` exposes the library as
+  `Klyvera.Components`.
+- Interaction work includes roving tabs, slider keyboard stepping, Escape to
+  clear search text, reduce-motion handling, accessible names, focus rings and a
+  modal dialog that traps Tab/Backtab focus and dismisses with Escape.
+- `preview/main.qml` renders a mock-data gallery without Quickshell and reflows
+  to one column below 1280 px. The `preview/render.py` harness writes dark,
+  light and open-dialog screenshots at 1440×1520 plus compact (1180×1400), wide
+  (1920×1500) and ultrawide (2560×1400) renders to `docs/screenshots/`.
+- `tests/qml/dialog_focus.py` is a permanent offscreen behaviour test for initial
+  focus, Tab/Backtab containment, Escape dismissal and the `rejected` signal.
+
 ### Checks actually run
 
 - `cargo fmt --all --check` across the workspace.
@@ -85,9 +108,18 @@ Last updated: 2026-10-25 (Phase 2)
 - `python3 design/generators/generate.py --check` (in sync, contrast passes).
 - `shellcheck 0.11.0` and `pyside6-qmllint` 6.12 from the temporary user-level
   environment at `/tmp/opencode/klyvera-qt-venv`.
-- A QML smoke file imported `shell/styles` and read `Theme.background`,
-  `Theme.spacing.md` and `Theme.layoutClass(2700)` successfully with
-  `pyside6-qml` and `QT_QPA_PLATFORM=offscreen`.
+- `pyside6-qmllint 6.12` over `shell/ui`, `shell/styles`, `preview` and
+  `tests/qml`: exit status 0. The only warning is the known standalone
+  `Theme.qml` singleton warning.
+- `python3 tests/qml/dialog_focus.py` offscreen: initial focus on the primary
+  action, nine Tab and five Backtab presses contained, Escape closed the dialog
+  and emitted `rejected`.
+- `python3 preview/render.py` offscreen with the software Qt Quick backend:
+  six screenshots across four layout classes written successfully. Rendered
+  sizes and component geometry were probed at runtime; no key component had zero
+  size.
+- `./scripts/check.sh` with the temporary Qt/shellcheck environment:
+  **0 failures, 1 skipped** (website not built yet).
 - YAML parsing of the workflow, Dependabot config and issue forms with PyYAML.
 
 ## Unverified on target
@@ -100,10 +132,12 @@ Last updated: 2026-10-25 (Phase 2)
   target integration are unverified.
 - Hyprland layout hints are produced by the core but are not applied anywhere;
   compositor integration is **UNVERIFIED-ON-TARGET**.
-- QML has not been rendered in a Quickshell session; only an offscreen Qt Quick
-  smoke test has run. The standalone lint emits one known false-positive warning
-  ("Type Theme not declared as singleton") because qmllint checks the singleton
-  file outside its module context; exit status is success.
+- QML has not been rendered in a Quickshell session or a Wayland session. The
+  gallery, screenshots and focus test run under offscreen Qt Quick only, and the
+  screenshots have not had a human visual review on the target. The standalone
+  lint emits one known false-positive warning ("Type Theme not declared as
+  singleton") because qmllint checks the singleton file outside its module
+  context; exit status is success.
 - The generated CSS has not been consumed by a web build yet.
 
 ## Blocked
@@ -121,7 +155,6 @@ Last updated: 2026-10-25 (Phase 2)
 
 ## Missing / not yet built
 
-- QML components, preview harness, screenshots (Phase 3).
 - Launcher, Spaces UI, control center, integration layer (Phase 4).
 - Packaging, archiso profile, ISO workflow (Phase 5).
 - Website (Phase 6).

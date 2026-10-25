@@ -117,7 +117,7 @@ jobs:
       - name: QMLLint
         if: steps.detect.outputs.present == 'true'
         run: |
-          mapfile -t files < <(find shell preview -name '*.qml' -print)
+          mapfile -t files < <(find shell preview tests/qml -name '*.qml' -print)
           qmllint -I shell/ui -I shell/styles "${files[@]}"
 
   schema:

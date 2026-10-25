@@ -82,7 +82,7 @@
   --klyvera-ease-decelerate: cubic-bezier(0, 0, 0, 1);
   --klyvera-ease-accelerate: cubic-bezier(0.3, 0, 1, 1);
 
-  --klyvera-icon-set: "lucide";
+  --klyvera-icon-set: "klyvera-line";
   --klyvera-icon-stroke: 1.75;
   --klyvera-icon-size-sm: 16px;
   --klyvera-icon-size-md: 20px;

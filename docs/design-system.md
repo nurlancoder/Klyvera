@@ -20,6 +20,10 @@ python3 design/generators/generate.py --check  # verify in CI
 `--check` fails when a generated file is stale or when a required contrast pair
 drops below its threshold. Never edit generated files by hand.
 
+Nested token groups are emitted as typed inline QML components. This keeps
+`Theme.spacing.md`, `Theme.typography.body.size` and `Theme.layout.panel.height`
+statically resolvable by `qmllint` instead of falling back to `QObject`.
+
 ### QML usage
 
 ```qml
@@ -45,6 +49,22 @@ Rectangle {
 - `shell/styles/qmldir` declares the `Klyvera.Styles` module for packaging.
   During development, components use a relative directory import so the preview
   harness works without installing Qt modules.
+
+### Component preview
+
+`preview/main.qml` renders the component library with mock data and no
+Quickshell dependency. It is wrapped by a `QQuickView`, so it can be captured
+offscreen:
+
+```bash
+python3 preview/render.py
+```
+
+The renderer writes `docs/screenshots/components-dark.png`,
+`components-light.png` and `components-dialog.png`. It requires PySide6 and sets
+`QT_QPA_PLATFORM=offscreen` and the software Qt Quick backend. The renderer is a
+development tool; the screenshots are not a claim that the shell has run in a
+Wayland session.
 
 ### CSS usage
 
@@ -132,9 +152,11 @@ level 3 for the launcher. Cards are not elevated by default; they use a border.
 
 ### Icons
 
-Lucide (ISC), stroke width 1.75, sizes `sm 16`, `md 20`, `lg 24`, `xl 32`.
-Icons are optically aligned to text and never stretched. An icon-only control
-needs an accessible name and a tooltip. Do not mix filled and outlined sets.
+Klyvera Line, original Canvas glyphs, stroke width 1.75, sizes `sm 16`, `md 20`,
+`lg 24`, `xl 32`. The names follow common line-icon vocabulary but no third-party
+icon files or path data are vendored. Icons are optically aligned to text and
+never stretched. An icon-only control needs an accessible name and a tooltip. Do
+not mix filled and outlined sets.
 
 ## Component inventory
 

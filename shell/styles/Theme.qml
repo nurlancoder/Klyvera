@@ -119,206 +119,23 @@ QtObject {
     readonly property color selection: palette.selection
     readonly property color shadow: palette.shadow
 
-    readonly property QtObject spacing: QtObject {
-        readonly property real none: 0
-        readonly property real xxs: 4
-        readonly property real xs: 8
-        readonly property real sm: 12
-        readonly property real md: 16
-        readonly property real lg: 24
-        readonly property real xl: 32
-        readonly property real xxl: 48
-        readonly property real xxxl: 64
-        readonly property real huge: 96
-    }
+    readonly property SpacingTokens spacing: SpacingTokens {}
 
-    readonly property QtObject radius: QtObject {
-        readonly property real none: 0
-        readonly property real xs: 4
-        readonly property real sm: 6
-        readonly property real md: 10
-        readonly property real lg: 14
-        readonly property real xl: 20
-        readonly property real full: 9999
-    }
+    readonly property RadiusTokens radius: RadiusTokens {}
 
-    readonly property QtObject borders: QtObject {
-        readonly property real none: 0
-        readonly property real hairline: 1
-        readonly property real strong: 2
-        readonly property real focus: 2
-    }
+    readonly property BorderTokens borders: BorderTokens {}
 
-    readonly property QtObject elevation: QtObject {
-        readonly property QtObject level0: QtObject {
-            readonly property real y: 0
-            readonly property real blur: 0
-            readonly property real spread: 0
-            readonly property real opacity: 0
-        }
-        readonly property QtObject level1: QtObject {
-            readonly property real y: 1
-            readonly property real blur: 2
-            readonly property real spread: 0
-            readonly property real opacity: 0.35
-        }
-        readonly property QtObject level2: QtObject {
-            readonly property real y: 4
-            readonly property real blur: 16
-            readonly property real spread: -2
-            readonly property real opacity: 0.42
-        }
-        readonly property QtObject level3: QtObject {
-            readonly property real y: 12
-            readonly property real blur: 40
-            readonly property real spread: -8
-            readonly property real opacity: 0.5
-        }
-    }
+    readonly property ElevationTokens elevation: ElevationTokens {}
 
-    readonly property QtObject typography: QtObject {
-        readonly property string headingFamily: "Manrope"
-        readonly property string headingStack: "Manrope, Inter, system-ui, sans-serif"
-        readonly property string uiFamily: "Inter"
-        readonly property string uiStack: "Inter, system-ui, -apple-system, sans-serif"
-        readonly property string monoFamily: "monospace"
-        readonly property string monoStack: "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
-        readonly property int weightRegular: 400
-        readonly property int weightMedium: 500
-        readonly property int weightSemibold: 600
-        readonly property int weightBold: 700
-        readonly property QtObject display: QtObject {
-            readonly property int size: 40
-            readonly property int lineHeight: 48
-            readonly property int weight: 700
-            readonly property real letterSpacing: -0.8
-        }
-        readonly property QtObject heading1: QtObject {
-            readonly property int size: 32
-            readonly property int lineHeight: 40
-            readonly property int weight: 700
-            readonly property real letterSpacing: -0.48
-        }
-        readonly property QtObject heading2: QtObject {
-            readonly property int size: 24
-            readonly property int lineHeight: 32
-            readonly property int weight: 700
-            readonly property real letterSpacing: -0.24
-        }
-        readonly property QtObject heading3: QtObject {
-            readonly property int size: 20
-            readonly property int lineHeight: 28
-            readonly property int weight: 600
-            readonly property real letterSpacing: 0
-        }
-        readonly property QtObject title: QtObject {
-            readonly property int size: 16
-            readonly property int lineHeight: 24
-            readonly property int weight: 600
-            readonly property real letterSpacing: 0
-        }
-        readonly property QtObject body: QtObject {
-            readonly property int size: 14
-            readonly property int lineHeight: 22
-            readonly property int weight: 400
-            readonly property real letterSpacing: 0
-        }
-        readonly property QtObject bodyStrong: QtObject {
-            readonly property int size: 14
-            readonly property int lineHeight: 22
-            readonly property int weight: 600
-            readonly property real letterSpacing: 0
-        }
-        readonly property QtObject caption: QtObject {
-            readonly property int size: 12
-            readonly property int lineHeight: 18
-            readonly property int weight: 500
-            readonly property real letterSpacing: 0
-        }
-        readonly property QtObject label: QtObject {
-            readonly property int size: 12
-            readonly property int lineHeight: 16
-            readonly property int weight: 600
-            readonly property real letterSpacing: 0.12
-        }
-        readonly property QtObject mono: QtObject {
-            readonly property int size: 13
-            readonly property int lineHeight: 20
-            readonly property int weight: 400
-            readonly property real letterSpacing: 0
-        }
-    }
+    readonly property TypographyTokens typography: TypographyTokens {}
 
-    readonly property QtObject motion: QtObject {
-        readonly property bool reduceMotionDefault: false
-        readonly property int durationInstant: 0
-        readonly property int durationFast: 120
-        readonly property int durationNormal: 200
-        readonly property int durationSlow: 320
-        readonly property var easingStandard: [0.2, 0, 0, 1]
-        readonly property var easingDecelerate: [0, 0, 0, 1]
-        readonly property var easingAccelerate: [0.3, 0, 1, 1]
-    }
+    readonly property MotionTokens motion: MotionTokens {}
 
-    readonly property QtObject icon: QtObject {
-        readonly property string set: "lucide"
-        readonly property string license: "ISC"
-        readonly property real strokeWidth: 1.75
-        readonly property QtObject sizes: QtObject {
-            readonly property real sm: 16
-            readonly property real md: 20
-            readonly property real lg: 24
-            readonly property real xl: 32
-        }
-    }
+    readonly property IconTokens icon: IconTokens {}
 
-    readonly property QtObject layout: QtObject {
-        readonly property QtObject breakpoints: QtObject {
-            readonly property int compactMax: 1279
-            readonly property int regularMin: 1280
-            readonly property int regularMax: 1919
-            readonly property int wideMin: 1920
-            readonly property int wideMax: 2559
-            readonly property int ultrawideMin: 2560
-        }
-        readonly property QtObject panel: QtObject {
-            readonly property real height: 40
-            readonly property real heightCompact: 36
-            readonly property real padding: 12
-            readonly property real gap: 8
-            readonly property real iconSize: 18
-            readonly property real iconButtonSize: 32
-        }
-        readonly property QtObject launcher: QtObject {
-            readonly property real widthCompact: 560
-            readonly property real widthRegular: 680
-            readonly property real widthWide: 760
-            readonly property real widthUltrawide: 840
-            readonly property real maxHeightRatio: 0.72
-            readonly property real gutter: 24
-        }
-        readonly property QtObject controlCenter: QtObject {
-            readonly property real widthCompact: 380
-            readonly property real widthRegular: 420
-            readonly property real widthWide: 460
-            readonly property real maxHeightRatio: 0.8
-            readonly property real gutter: 16
-        }
-        readonly property QtObject spaces: QtObject {
-            readonly property real sidebarWidth: 320
-            readonly property real cardMinWidth: 280
-            readonly property real gridGap: 16
-            readonly property real wizardMaxWidth: 720
-        }
-    }
+    readonly property LayoutTokens layout: LayoutTokens {}
 
-    readonly property QtObject accessibility: QtObject {
-        readonly property real minimumTargetSize: 24
-        readonly property real preferredTargetSize: 44
-        readonly property real focusRingWidth: 2
-        readonly property real focusRingOffset: 2
-        readonly property real minimumBodyTextSize: 14
-    }
+    readonly property AccessibilityTokens accessibility: AccessibilityTokens {}
 
     function scaled(value) {
         return Math.round(value * scale * 100) / 100
@@ -337,5 +154,233 @@ QtObject {
         if (width <= 1919) return "regular"
         if (width <= 2559) return "wide"
         return "ultrawide"
+    }
+
+    // Inline token types keep nested token access statically typed for qmllint.
+    component SpacingTokens: QtObject {
+        readonly property real none: 0
+        readonly property real xxs: 4
+        readonly property real xs: 8
+        readonly property real sm: 12
+        readonly property real md: 16
+        readonly property real lg: 24
+        readonly property real xl: 32
+        readonly property real xxl: 48
+        readonly property real xxxl: 64
+        readonly property real huge: 96
+    }
+
+    component RadiusTokens: QtObject {
+        readonly property real none: 0
+        readonly property real xs: 4
+        readonly property real sm: 6
+        readonly property real md: 10
+        readonly property real lg: 14
+        readonly property real xl: 20
+        readonly property real full: 9999
+    }
+
+    component BorderTokens: QtObject {
+        readonly property real none: 0
+        readonly property real hairline: 1
+        readonly property real strong: 2
+        readonly property real focus: 2
+    }
+
+    component ElevationLevelTokens: QtObject {
+        property real y: 0
+        property real blur: 0
+        property real spread: 0
+        property real opacity: 0
+    }
+
+    component ElevationTokens: QtObject {
+        readonly property ElevationLevelTokens level0: ElevationLevelTokens {
+            y: 0
+            blur: 0
+            spread: 0
+            opacity: 0
+        }
+        readonly property ElevationLevelTokens level1: ElevationLevelTokens {
+            y: 1
+            blur: 2
+            spread: 0
+            opacity: 0.35
+        }
+        readonly property ElevationLevelTokens level2: ElevationLevelTokens {
+            y: 4
+            blur: 16
+            spread: -2
+            opacity: 0.42
+        }
+        readonly property ElevationLevelTokens level3: ElevationLevelTokens {
+            y: 12
+            blur: 40
+            spread: -8
+            opacity: 0.5
+        }
+    }
+
+    component TypeStyleTokens: QtObject {
+        property int size: 14
+        property int lineHeight: 22
+        property int weight: 400
+        property real letterSpacing: 0
+    }
+
+    component TypographyTokens: QtObject {
+        readonly property string headingFamily: "Manrope"
+        readonly property string headingStack: "Manrope, Inter, system-ui, sans-serif"
+        readonly property string uiFamily: "Inter"
+        readonly property string uiStack: "Inter, system-ui, -apple-system, sans-serif"
+        readonly property string monoFamily: "monospace"
+        readonly property string monoStack: "ui-monospace, SFMono-Regular, Menlo, Consolas, monospace"
+        readonly property int weightRegular: 400
+        readonly property int weightMedium: 500
+        readonly property int weightSemibold: 600
+        readonly property int weightBold: 700
+        readonly property TypeStyleTokens display: TypeStyleTokens {
+            size: 40
+            lineHeight: 48
+            weight: 700
+            letterSpacing: -0.8
+        }
+        readonly property TypeStyleTokens heading1: TypeStyleTokens {
+            size: 32
+            lineHeight: 40
+            weight: 700
+            letterSpacing: -0.48
+        }
+        readonly property TypeStyleTokens heading2: TypeStyleTokens {
+            size: 24
+            lineHeight: 32
+            weight: 700
+            letterSpacing: -0.24
+        }
+        readonly property TypeStyleTokens heading3: TypeStyleTokens {
+            size: 20
+            lineHeight: 28
+            weight: 600
+            letterSpacing: 0
+        }
+        readonly property TypeStyleTokens title: TypeStyleTokens {
+            size: 16
+            lineHeight: 24
+            weight: 600
+            letterSpacing: 0
+        }
+        readonly property TypeStyleTokens body: TypeStyleTokens {
+            size: 14
+            lineHeight: 22
+            weight: 400
+            letterSpacing: 0
+        }
+        readonly property TypeStyleTokens bodyStrong: TypeStyleTokens {
+            size: 14
+            lineHeight: 22
+            weight: 600
+            letterSpacing: 0
+        }
+        readonly property TypeStyleTokens caption: TypeStyleTokens {
+            size: 12
+            lineHeight: 18
+            weight: 500
+            letterSpacing: 0
+        }
+        readonly property TypeStyleTokens label: TypeStyleTokens {
+            size: 12
+            lineHeight: 16
+            weight: 600
+            letterSpacing: 0.12
+        }
+        readonly property TypeStyleTokens mono: TypeStyleTokens {
+            size: 13
+            lineHeight: 20
+            weight: 400
+            letterSpacing: 0
+        }
+    }
+
+    component MotionTokens: QtObject {
+        readonly property bool reduceMotionDefault: false
+        readonly property int durationInstant: 0
+        readonly property int durationFast: 120
+        readonly property int durationNormal: 200
+        readonly property int durationSlow: 320
+        readonly property var easingStandard: [0.2, 0, 0, 1]
+        readonly property var easingDecelerate: [0, 0, 0, 1]
+        readonly property var easingAccelerate: [0.3, 0, 1, 1]
+    }
+
+    component IconSizes: QtObject {
+        readonly property real sm: 16
+        readonly property real md: 20
+        readonly property real lg: 24
+        readonly property real xl: 32
+    }
+
+    component IconTokens: QtObject {
+        readonly property string set: "klyvera-line"
+        readonly property string license: "original"
+        readonly property real strokeWidth: 1.75
+        readonly property IconSizes sizes: IconSizes {}
+    }
+
+    component Breakpoints: QtObject {
+        readonly property int compactMax: 1279
+        readonly property int regularMin: 1280
+        readonly property int regularMax: 1919
+        readonly property int wideMin: 1920
+        readonly property int wideMax: 2559
+        readonly property int ultrawideMin: 2560
+    }
+
+    component PanelTokens: QtObject {
+        readonly property real height: 40
+        readonly property real heightCompact: 36
+        readonly property real padding: 12
+        readonly property real gap: 8
+        readonly property real iconSize: 18
+        readonly property real iconButtonSize: 32
+    }
+
+    component LauncherTokens: QtObject {
+        readonly property real widthCompact: 560
+        readonly property real widthRegular: 680
+        readonly property real widthWide: 760
+        readonly property real widthUltrawide: 840
+        readonly property real maxHeightRatio: 0.72
+        readonly property real gutter: 24
+    }
+
+    component ControlCenterTokens: QtObject {
+        readonly property real widthCompact: 380
+        readonly property real widthRegular: 420
+        readonly property real widthWide: 460
+        readonly property real maxHeightRatio: 0.8
+        readonly property real gutter: 16
+    }
+
+    component SpacesTokens: QtObject {
+        readonly property real sidebarWidth: 320
+        readonly property real cardMinWidth: 280
+        readonly property real gridGap: 16
+        readonly property real wizardMaxWidth: 720
+    }
+
+    component LayoutTokens: QtObject {
+        readonly property Breakpoints breakpoints: Breakpoints {}
+        readonly property PanelTokens panel: PanelTokens {}
+        readonly property LauncherTokens launcher: LauncherTokens {}
+        readonly property ControlCenterTokens controlCenter: ControlCenterTokens {}
+        readonly property SpacesTokens spaces: SpacesTokens {}
+    }
+
+    component AccessibilityTokens: QtObject {
+        readonly property real minimumTargetSize: 24
+        readonly property real preferredTargetSize: 44
+        readonly property real focusRingWidth: 2
+        readonly property real focusRingOffset: 2
+        readonly property real minimumBodyTextSize: 14
     }
 }
