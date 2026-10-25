@@ -4,7 +4,7 @@ Klyvera is a **prototype**. This file records what has actually been run, what i
 written but cannot be exercised on the Debian-based development workstation, and
 what is blocked. It is updated after every step.
 
-Last updated: 2026-10-25 (Phase 6)
+Last updated: 2026-10-25 (Phase 7)
 
 ## Done
 
@@ -185,6 +185,20 @@ Last updated: 2026-10-25 (Phase 6)
 - `docs/website.md` documents the page structure, local build, base-path build,
   browser checks and deployment prerequisites.
 
+### Hardening and release readiness (Phase 7)
+
+- Threat model covering profiles, trust, IPC, backups, packaging, live image and
+  website with assets, trust boundaries, threats/mitigations and residual risks.
+- `docs/MANUAL_TEST.md` with local checks and explicit Arch-target acceptance
+  criteria.
+- `docs/TROUBLESHOOTING.md` for workstation and Arch target without disabling
+  security controls.
+- `docs/RELEASE.md` defining versioning, gates, checksums, signing gap and
+  rollback.
+- Operational documents linked from README and documentation site.
+- Changelog updated for prototype hardening/release readiness notes.
+- Phase 7 roadmap marked complete with final local audit recorded.
+
 ### Checks actually run
 
 - `cargo fmt --all --check` across the workspace.
@@ -296,4 +310,4 @@ Last updated: 2026-10-25 (Phase 6)
 
 - ISO build and boot, full offline target installation, package signing and
   keyring distribution.
-- Hardening, manual test checklist, release notes (Phase 7).
+- End-to-end verification on real Arch/Hyprland hardware.
