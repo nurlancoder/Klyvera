@@ -204,6 +204,8 @@ QtObject {
         readonly property real minContrast: 4.5
         readonly property real minContrastLarge: 3.0
         readonly property real focusWidth: 2
+        readonly property real minimumTargetSize: 40
+        readonly property real preferredTargetSize: 40
     }
 
     function scaled(value) { return Math.round(value * scale) }
