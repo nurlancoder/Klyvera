@@ -914,7 +914,9 @@ fn read_import(source: &str) -> Result<Vec<u8>, CliError> {
 }
 
 fn paths() -> Result<Paths, CliError> {
-    Paths::from_env().map_err(CliError::Config)
+    let paths = Paths::from_env().map_err(CliError::Config)?;
+    paths.ensure_layout().map_err(CliError::Config)?;
+    Ok(paths)
 }
 
 fn short_hash(hash: &str) -> &str {

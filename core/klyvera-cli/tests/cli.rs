@@ -132,6 +132,25 @@ fn creates_lists_exports_imports_and_backs_up_spaces() {
     assert_eq!(doctor["ok"], true, "{doctor}");
 }
 
+#[cfg(unix)]
+#[test]
+fn doctor_creates_private_runtime_directories() {
+    use std::os::unix::fs::PermissionsExt;
+
+    let env = Env::new();
+    let doctor = env.json(&["--json", "doctor"]);
+    assert_eq!(doctor["ok"], true, "{doctor}");
+
+    for directory in ["config/klyvera", "data/klyvera"] {
+        let mode = std::fs::metadata(env.root.join(directory))
+            .unwrap()
+            .permissions()
+            .mode()
+            & 0o777;
+        assert_eq!(mode, 0o700, "{directory}");
+    }
+}
+
 #[test]
 fn commands_require_trust_and_shells_are_rejected() {
     let env = Env::new();
