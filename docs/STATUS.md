@@ -4,9 +4,11 @@ Klyvera is a **prototype**. This file records what has actually been run, what i
 written but cannot be exercised on the Debian-based development workstation, and
 what is blocked. It is updated after every step.
 
-Last updated: 2026-10-25 (Phase 0)
+Last updated: 2026-10-25 (Phase 1)
 
 ## Done
+
+### Foundation
 
 - Repository skeleton and layout for design, docs, core, shell, preview, schemas,
   packaging, web, scripts, tests and GitHub metadata.
@@ -20,27 +22,53 @@ Last updated: 2026-10-25 (Phase 0)
 - Pre-commit hook, hook installer and `scripts/check.sh` aggregate check.
 - Vision, architecture with layer and data-flow diagrams, decision records 0001
   (stack) and 0002 (license pending), Phase 0 roadmap.
-- Local checks run: `bash -n` on all shell scripts and
-  `./scripts/check.sh --fast` (0 failures, 6 skips).
+
+### Design system
+
+- `design/tokens.json` with dark, light and high-contrast palettes plus spacing,
+  radius, border, elevation, typography, motion, icon, layout and accessibility
+  tokens.
+- `design/generators/generate.py` with deterministic output, `--check` drift
+  detection and a generated WCAG contrast report.
+- Generated `shell/styles/Theme.qml`, `shell/styles/qmldir`,
+  `web/src/styles/tokens.css` and `docs/contrast-report.md`.
+- WCAG AA verified locally for 47 required pairs per theme (text on four
+  surfaces, text on accent fills, focus ring on four surfaces): **0 failures in
+  all three themes**.
+- `docs/design-system.md` documents foundations, states, motion, responsive rules,
+  accessibility and component contracts. `design/brand.md` documents the
+  wordmark, voice and visual direction.
+
+### Checks actually run
+
+- `bash -n` on all shell scripts and `.githooks/pre-commit`.
+- `python3 -m py_compile design/generators/generate.py`.
+- `python3 design/generators/generate.py --check` (in sync, contrast passes).
+- `./scripts/check.sh` with a temporary user-level toolchain on `PATH`
+  (0 failures, 3 skips): shellcheck 0.11.0 and `pyside6-qmllint` 6.12 both pass.
+- A QML smoke file imported `shell/styles` and read `Theme.background`,
+  `Theme.spacing.md` and `Theme.layoutClass(2700)` successfully with
+  `pyside6-qml` and `QT_QPA_PLATFORM=offscreen`.
+- YAML parsing of the workflow, Dependabot config and issue forms with PyYAML.
 
 ## Unverified on target
 
 - The CI workflow has not been executed on GitHub; its YAML and expressions are
   unverified in a runner.
-- The pre-commit hook is installed locally via `core.hooksPath`, but its
-  shellcheck path has not run because shellcheck is absent here.
 - Nothing has been run on Arch Linux or in a Hyprland/Wayland session yet.
-- No QML has been rendered or linted on this workstation.
+- QML has not been rendered in a Quickshell session; only an offscreen Qt Quick
+  smoke test has run. The standalone lint emits one known false-positive warning
+  ("Type Theme not declared as singleton") because qmllint checks the singleton
+  file outside its module context; exit status is success.
+- The generated CSS has not been consumed by a web build yet.
 
 ## Blocked
 
-- **shellcheck** is not installed on the development workstation. Scripts are
-  syntax-checked with `bash -n`; shellcheck runs in CI. Installing it would
-  require a system package, so it is deferred.
-- **qmllint / Qt QML runtime** is not installed (Qt libraries exist, but the QML
-  tooling and QtQuick modules do not). QML work in Phase 3 cannot be linted or
-  rendered locally unless a user-level Qt runtime is provided. CI defines the
-  lint job; screenshots remain blocked until a runtime is available.
+- **System-level shellcheck and qmllint are absent.** A temporary user-level
+  environment at `/tmp/opencode/klyvera-qt-venv` (PySide6-Essentials 6.12 and
+  shellcheck-py 0.11.0) is used for local checks. It is outside the repository
+  and not reproducible from the repo; CI installs its own toolchain. A clean
+  checkout therefore skips shellcheck and QML lint locally.
 - **Hyprland, Quickshell, pacman, mkarchiso** cannot run on Kali. All target-only
   work is unverified by definition.
 - **License** is provisional Apache-2.0 and needs maintainer confirmation
@@ -49,7 +77,6 @@ Last updated: 2026-10-25 (Phase 0)
 
 ## Missing / not yet built
 
-- Design tokens and generators (Phase 1).
 - Rust core workspace (Phase 2).
 - QML components, preview harness, screenshots (Phase 3).
 - Launcher, Spaces UI, control center, integration layer (Phase 4).

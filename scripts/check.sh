@@ -98,8 +98,14 @@ if [[ -d shell ]]; then
   done < <(find shell preview -type f -name '*.qml' 2>/dev/null | sort)
 fi
 if ((${#qml_files[@]} > 0)); then
+  qml_linter=""
   if has qmllint; then
-    if qmllint -I shell/ui -I shell/styles "${qml_files[@]}"; then
+    qml_linter="qmllint"
+  elif has pyside6-qmllint; then
+    qml_linter="pyside6-qmllint"
+  fi
+  if [[ -n "$qml_linter" ]]; then
+    if "$qml_linter" -I shell/ui -I shell/styles "${qml_files[@]}"; then
       pass "qmllint"
     else
       fail "qmllint"
