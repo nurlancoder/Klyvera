@@ -42,7 +42,6 @@ dist/
 *.pkg.tar.xz
 *.pkg.tar.gz
 pkg/
-src/
 packaging/archiso/out/
 packaging/archiso/work/
 *.iso
