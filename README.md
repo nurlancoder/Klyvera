@@ -74,8 +74,18 @@ Individual layers:
 ```bash
 cd core && cargo fmt --check && cargo clippy --all-targets -- -D warnings && cargo test
 python3 design/generators/generate.py --check
-cd web && npm ci && npm run build
+cd web && npm ci && npm run build && npm run check
 python3 preview/render.py
+```
+
+Install the browser once and run the site accessibility checks against a
+preview server:
+
+```bash
+cd web
+npx playwright install chromium
+npm run preview -- --host 127.0.0.1 --port 4173
+BASE_URL=http://127.0.0.1:4173 npm run test:browser
 ```
 
 Some checks (Hyprland, Quickshell, pacman, mkarchiso) cannot run on the
@@ -84,6 +94,15 @@ development workstation and are listed as **UNVERIFIED-ON-TARGET**.
 ## Documentation
 
 Start with `docs/vision.md`, `docs/architecture.md` and `docs/STATUS.md`.
+Product and engineering records live alongside them:
+
+- `docs/website.md` — site structure, local build, checks and Pages deployment.
+- `docs/threat-model.md` — assets, trust boundaries and residual risks.
+- `docs/MANUAL_TEST.md` — local and Arch-target acceptance checks.
+- `docs/TROUBLESHOOTING.md` — diagnosis without disabling security controls.
+- `docs/RELEASE.md` — release gates, artifact manifest and signing gap.
+- `docs/packaging.md` — packages, daemon sandbox and live image.
+
 Contributor rules live in `AGENTS.md` and `CONTRIBUTING.md`.
 
 ## License

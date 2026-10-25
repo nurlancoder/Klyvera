@@ -4,7 +4,7 @@ Klyvera is a **prototype**. This file records what has actually been run, what i
 written but cannot be exercised on the Debian-based development workstation, and
 what is blocked. It is updated after every step.
 
-Last updated: 2026-10-25 (Phase 5)
+Last updated: 2026-10-25 (Phase 6)
 
 ## Done
 
@@ -159,6 +159,32 @@ Last updated: 2026-10-25 (Phase 5)
 - `.github/workflows/packaging.yml` builds the packages in an Arch container and
   uploads artifacts. ISO building remains manual.
 
+### Website (Phase 6)
+
+- Vite 8 + TypeScript 7 multi-page site under `web/` with English landing,
+  Azerbaijani landing and English documentation entries. The site consumes the
+  generated token CSS, uses local assets only and has no external fonts,
+  analytics, trackers or runtime APIs.
+- Responsive layout is checked at 320, 375, 768, 1024, 1280 and 1440 px.
+  Theme cycling, localStorage persistence, mobile menu focus/Escape handling,
+  skip links, reduced-motion handling and visible focus are implemented.
+- Three local product screenshots are rendered from the existing offscreen QML
+  previews. They are labelled as preview renders, not live-session proof.
+- Utility letter-K favicon and decision record `0004-website-favicon.md`; the
+  favicon is not presented as a final brand mark.
+- `tests/web/check_site.py` validates expected pages, language metadata,
+  headings, internal links and fragments, assets, alt text, image dimensions,
+  manifest, insecure URLs and tracker/font markers.
+- `tests/web/browser_test.mjs` uses Playwright and axe-core at six widths, with
+  axe runs in dark, light and high-contrast themes and a desktop run. It covers
+  document overflow, hero-span overflow, responsive navigation, menu focus,
+  Escape dismissal and theme persistence.
+- `.github/workflows/pages.yml` builds with the repository-derived Pages base,
+  uploads `web/dist/` and deploys through the official Pages actions. The workflow
+  is committed but has not run on GitHub.
+- `docs/website.md` documents the page structure, local build, base-path build,
+  browser checks and deployment prerequisites.
+
 ### Checks actually run
 
 - `cargo fmt --all --check` across the workspace.
@@ -207,6 +233,15 @@ Last updated: 2026-10-25 (Phase 5)
   installation was not attempted.
 - `./scripts/check.sh` after the packaging and CLI changes:
   **0 failures, 1 skipped** (website not built yet).
+- `web`: `npm ci`, `npm run build` and `npm run check` succeed; static checks
+  report **3 pages and 285 assertions** for base `/`.
+- `web`: `npm run build -- --base=/Klyvera/` and
+  `npm run check -- --base /Klyvera/` succeed for the project Pages base.
+- Browser tests run locally with system Chromium via Playwright:
+  **198 assertions pass** across three pages and six viewport widths for both
+  `/` and `/Klyvera/`. axe reports no serious or critical WCAG A/AA violations
+  in dark, light and high-contrast themes at 375 px and at 1440 px.
+- No human visual review of the rendered website has been completed.
 
 ## Unverified on target
 
@@ -232,13 +267,16 @@ Last updated: 2026-10-25 (Phase 5)
   Quickshell and Hyprland.
 - The Hyprland fragment has not been included in a live Hyprland configuration.
   Keybind conflicts, `qs` availability and session-lock wiring are unverified.
-- The generated CSS has not been consumed by a web build yet.
 - Dependency-resolved package installation, conflicts with real repositories,
   systemd unit startup, ISO build, ISO boot, autologin, Hyprland startup and
   `archinstall` are **UNVERIFIED-ON-TARGET**. The ISO profile is not built. A
   `--nodeps` package install smoke test ran in an Arch container.
 - The live image carries Klyvera packages, but a fully offline target install is
   not implemented; non-Klyvera dependencies require cached packages or network.
+- The GitHub Pages workflow has not run on GitHub. Pages enablement, artifact
+  upload, deployment and the live `/Klyvera/` URL are **UNVERIFIED**.
+- The browser suite ran against system Chromium on the development workstation.
+  It has not run in the GitHub Actions runner or against the deployed site.
 
 ## Blocked
 
@@ -258,5 +296,4 @@ Last updated: 2026-10-25 (Phase 5)
 
 - ISO build and boot, full offline target installation, package signing and
   keyring distribution.
-- Website (Phase 6).
 - Hardening, manual test checklist, release notes (Phase 7).

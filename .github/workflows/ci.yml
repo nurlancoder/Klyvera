@@ -93,6 +93,17 @@ jobs:
             echo "Token generator not present yet"
           fi
 
+  docs:
+    name: Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check Markdown structure and links
+        run: python3 tests/check_docs.py
+
   qml:
     name: QML lint
     runs-on: ubuntu-latest
@@ -140,6 +151,8 @@ jobs:
   web:
     name: Website
     runs-on: ubuntu-latest
+    env:
+      BASE_PATH: /${{ github.event.repository.name }}/
     steps:
       - uses: actions/checkout@v4
       - name: Detect website
@@ -156,9 +169,31 @@ jobs:
           node-version: "22"
           cache: npm
           cache-dependency-path: web/package-lock.json
-      - name: Install and build
+      - name: Install dependencies
+        if: steps.detect.outputs.present == 'true'
+        working-directory: web
+        run: npm ci
+      - name: Install test browser
+        if: steps.detect.outputs.present == 'true'
+        working-directory: web
+        run: npx playwright install --with-deps chromium
+      - name: Build and validate
         if: steps.detect.outputs.present == 'true'
         working-directory: web
         run: |
-          npm ci
-          npm run build
+          npm run build -- --base="$BASE_PATH"
+          npm run check -- --base "$BASE_PATH"
+      - name: Browser checks
+        if: steps.detect.outputs.present == 'true'
+        working-directory: web
+        run: |
+          ./node_modules/.bin/vite preview --base="$BASE_PATH" --host 127.0.0.1 --port 4173 &
+          server=$!
+          trap 'kill "$server" 2>/dev/null || true' EXIT
+          for _ in {1..30}; do
+            if curl -fsS "http://127.0.0.1:4173${BASE_PATH}" >/dev/null; then
+              break
+            fi
+            sleep 1
+          done
+          BASE_URL="http://127.0.0.1:4173${BASE_PATH%/}" npm run test:browser

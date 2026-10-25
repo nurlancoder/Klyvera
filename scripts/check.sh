@@ -172,6 +172,21 @@ else
   skip "schema validation (fast mode)"
 fi
 
+section "Documentation"
+if [[ -f tests/check_docs.py ]]; then
+  if has python3; then
+    if python3 tests/check_docs.py; then
+      pass "Markdown structure and links"
+    else
+      fail "Markdown structure and links"
+    fi
+  else
+    skip "python3 not installed for documentation checks"
+  fi
+else
+  skip "no documentation checker"
+fi
+
 section "Website"
 if ((FAST == 0)); then
   if [[ -f web/package.json ]]; then
@@ -179,6 +194,15 @@ if ((FAST == 0)); then
       if [[ -d web/node_modules ]]; then
         if (cd web && npm run build --silent); then
           pass "web build"
+          if has python3; then
+            if (cd web && npm run check --silent); then
+              pass "web static checks"
+            else
+              fail "web static checks"
+            fi
+          else
+            skip "python3 not installed for web checks"
+          fi
         else
           fail "web build"
         fi

@@ -1,0 +1,665 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Klyvera — Your workspace. Your flow.</title>
+    <meta
+      name="description"
+      content="Klyvera is an original, local-first Linux desktop for developers. Project-based Spaces, a calm keyboard-first shell, and no accounts or telemetry."
+    />
+    <meta name="author" content="Klyvera contributors" />
+    <meta name="theme-color" content="#0a0b10" />
+    <link rel="canonical" href="https://nurlancoder.github.io/Klyvera/" />
+    <link rel="alternate" hreflang="en" href="https://nurlancoder.github.io/Klyvera/" />
+    <link rel="alternate" hreflang="az" href="https://nurlancoder.github.io/Klyvera/az/" />
+    <link rel="alternate" hreflang="x-default" href="https://nurlancoder.github.io/Klyvera/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Klyvera" />
+    <meta property="og:title" content="Klyvera — Your workspace. Your flow." />
+    <meta
+      property="og:description"
+      content="An original, local-first Linux desktop for developers. One project, one Space, one calm shell."
+    />
+    <meta property="og:url" content="https://nurlancoder.github.io/Klyvera/" />
+    <meta property="og:image" content="https://nurlancoder.github.io/Klyvera/og.png" />
+    <meta property="og:image:width" content="1440" />
+    <meta property="og:image:height" content="900" />
+    <meta property="og:image:alt" content="Klyvera Spaces preview with a project sidebar and workspace cards" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="az_AZ" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/src/styles/site.css" />
+    <script>
+      (() => {
+        try {
+          const theme = localStorage.getItem("klyvera-theme");
+          if (theme === "light" || theme === "high-contrast") {
+            document.documentElement.dataset.theme = theme;
+          }
+        } catch {
+          // Keep the default when storage is unavailable.
+        }
+      })();
+    </script>
+    <script type="module" src="/src/scripts/main.ts"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <svg class="icon-sprite" aria-hidden="true" focusable="false">
+      <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6" /></symbol>
+      <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9" /></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></symbol>
+      <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" /></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" /></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42" /></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5Z" /></symbol>
+      <symbol id="i-contrast" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" /><path d="M12 4v16" /></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3" /></symbol>
+      <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" /></symbol>
+      <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z" /><path d="m3 12 9 5 9-5" /><path d="m3 16 9 5 9-5" /></symbol>
+      <symbol id="i-keyboard" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2" /><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h.01M18 14h.01M9 14h6" /></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 20 6v5c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6Z" /><path d="m9 12 2 2 4-4" /></symbol>
+      <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="m7 9 3 3-3 3M13 15h4" /></symbol>
+      <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18h1a2 2 0 0 0 0-4 2 2 0 0 1 2-2h2a4 4 0 0 0 4-4c0-4.4-4-8-9-8Z" /><path d="M7.5 10h.01M10 7h.01M14 7h.01M16.5 10h.01" /></symbol>
+      <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" /></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 11v5M12 8h.01" /></symbol>
+      <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6" /></symbol>
+    </svg>
+
+    <header class="site-header" data-header>
+      <div class="container header-inner">
+        <a class="brand" href="./" aria-label="Klyvera prototype — home">
+          Klyvera
+          <span class="brand-tag">prototype</span>
+        </a>
+
+        <nav class="site-nav" aria-label="Primary">
+          <a class="nav-link" href="#why">Why</a>
+          <a class="nav-link" href="#spaces">Spaces</a>
+          <a class="nav-link" href="#shell">Shell</a>
+          <a class="nav-link" href="#design">Design</a>
+          <a class="nav-link" href="#status">Status</a>
+          <a class="nav-link" href="docs/">Docs</a>
+        </nav>
+
+        <div class="header-actions">
+          <a
+            class="header-github button button--secondary button--small"
+            href="https://github.com/nurlancoder/Klyvera"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+            <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
+            <span class="sr-only">(opens in a new tab)</span>
+          </a>
+          <a class="lang-link" href="az/" hreflang="az" lang="az" aria-label="AZ — Azərbaycan dilində bax">AZ</a>
+          <button class="icon-button" type="button" data-theme-toggle aria-label="Change colour theme" title="Change colour theme">
+            <svg class="icon theme-icon theme-icon--dark" aria-hidden="true"><use href="#i-moon" /></svg>
+            <svg class="icon theme-icon theme-icon--light" aria-hidden="true"><use href="#i-sun" /></svg>
+            <svg class="icon theme-icon theme-icon--contrast" aria-hidden="true"><use href="#i-contrast" /></svg>
+          </button>
+          <button
+            class="icon-button menu-button"
+            type="button"
+            data-menu-toggle
+            aria-controls="mobile-nav"
+            aria-expanded="false"
+            aria-label="Open menu"
+            title="Open menu"
+          >
+            <svg class="icon menu-icon menu-icon--open" aria-hidden="true"><use href="#i-menu" /></svg>
+            <svg class="icon menu-icon menu-icon--close" aria-hidden="true"><use href="#i-close" /></svg>
+          </button>
+        </div>
+      </div>
+
+      <nav class="mobile-nav" id="mobile-nav" data-mobile-nav aria-label="Mobile" hidden>
+        <ul>
+          <li><a href="#why">Why Klyvera <svg class="icon icon--sm" aria-hidden="true"><use href="#i-chevron-right" /></svg></a></li>
+          <li><a href="#spaces">Spaces <svg class="icon icon--sm" aria-hidden="true"><use href="#i-chevron-right" /></svg></a></li>
+          <li><a href="#shell">Shell <svg class="icon icon--sm" aria-hidden="true"><use href="#i-chevron-right" /></svg></a></li>
+          <li><a href="#design">Design <svg class="icon icon--sm" aria-hidden="true"><use href="#i-chevron-right" /></svg></a></li>
+          <li><a href="#status">Status <svg class="icon icon--sm" aria-hidden="true"><use href="#i-chevron-right" /></svg></a></li>
+          <li><a href="docs/">Documentation <svg class="icon icon--sm" aria-hidden="true"><use href="#i-chevron-right" /></svg></a></li>
+          <li><a href="https://github.com/nurlancoder/Klyvera" target="_blank" rel="noopener noreferrer">GitHub <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-up-right" /></svg></a></li>
+          <li><a class="mobile-cta" href="az/" hreflang="az" lang="az">Azərbaycan dilində <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right" /></svg></a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <span class="sr-only" data-theme-status aria-live="polite"></span>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="container">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <p class="eyebrow">
+                <span class="eyebrow-dot" aria-hidden="true"></span>
+                Local-first Linux desktop · prototype
+              </p>
+              <h1 class="hero-title" id="hero-title">
+                <span>Your workspace.</span>
+                <span class="accent">Your flow.</span>
+              </h1>
+              <p class="hero-lede">
+                Klyvera is an original Linux desktop for developers. Each project
+                gets a Space: its own paths, apps and layout. Switching projects
+                switches the environment with it.
+              </p>
+              <div class="hero-actions">
+                <a class="button button--primary" href="#spaces">
+                  Explore Spaces
+                  <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right" /></svg>
+                </a>
+                <a class="button button--secondary" href="docs/">
+                  Read documentation
+                  <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right" /></svg>
+                </a>
+              </div>
+              <p class="hero-note">
+                <span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-check" /></svg>No accounts</span>
+                <span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-check" /></svg>No telemetry</span>
+                <span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-check" /></svg>Works offline</span>
+              </p>
+            </div>
+
+            <div class="product-shot">
+              <figure class="product-frame">
+                <div class="frame-chrome">
+                  <span>Klyvera Spaces</span>
+                  <span class="frame-status">preview render</span>
+                </div>
+                <div class="frame-image">
+                  <picture>
+                    <source
+                      type="image/webp"
+                      srcset="/screenshots/spaces-720.webp 720w, /screenshots/spaces-1440.webp 1440w"
+                      sizes="(max-width: 900px) calc(100vw - 40px), 46vw"
+                    />
+                    <img
+                      src="/screenshots/spaces.png"
+                      width="1440"
+                      height="900"
+                      alt="Klyvera Spaces preview with a Space list, project details and workspace actions."
+                      fetchpriority="high"
+                      decoding="async"
+                    />
+                  </picture>
+                </div>
+                <figcaption class="frame-caption">
+                  <span>Offscreen render from mock data.</span>
+                  <span>1440 × 900</span>
+                </figcaption>
+              </figure>
+              <div class="hero-badge">
+                <span class="badge-icon"><svg class="icon" aria-hidden="true"><use href="#i-shield" /></svg></span>
+                <span><strong>Local-first by design</strong>No account or cloud dependency.</span>
+              </div>
+            </div>
+          </div>
+
+          <dl class="hero-proof" aria-label="Project facts">
+            <div class="proof-item">
+              <dt class="proof-label">Rust tests passing locally</dt>
+              <dd class="proof-value">75</dd>
+            </div>
+            <div class="proof-item">
+              <dt class="proof-label">Pure QML shell surfaces</dt>
+              <dd class="proof-value">9</dd>
+            </div>
+            <div class="proof-item">
+              <dt class="proof-label">First-class themes</dt>
+              <dd class="proof-value">3</dd>
+            </div>
+            <div class="proof-item">
+              <dt class="proof-label">Telemetry or accounts</dt>
+              <dd class="proof-value">0</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="section" id="why" aria-labelledby="why-title">
+        <div class="container">
+          <div class="section-head">
+            <p class="kicker">01 / The friction</p>
+            <div>
+              <h2 class="section-title" id="why-title">Switching projects should switch everything.</h2>
+              <p class="section-lede">
+                Developers do not only switch tasks. They rebuild context: editor
+                roots, terminals, app windows and window layouts. Klyvera makes
+                that context a first-class object.
+              </p>
+            </div>
+          </div>
+
+          <div class="problem-grid">
+            <article class="problem">
+              <span class="problem-index">01</span>
+              <h3>Context is rebuilt by hand.</h3>
+              <p>
+                Every project starts with the same folder, terminal and window
+                ritual. The desktop remembers none of it.
+              </p>
+            </article>
+            <article class="problem">
+              <span class="problem-index">02</span>
+              <h3>Settings drift.</h3>
+              <p>
+                App choices and layout hints live in memory or scattered notes,
+                not with the project they belong to.
+              </p>
+            </article>
+            <article class="problem">
+              <span class="problem-index">03</span>
+              <h3>Trust is implicit.</h3>
+              <p>
+                A workspace profile downloaded from the internet should not be
+                allowed to run commands without a clear confirmation.
+              </p>
+            </article>
+          </div>
+
+          <div class="section-foot">
+            <a class="text-link" href="docs/#spaces">
+              Read the Spaces specification
+              <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right" /></svg>
+            </a>
+            <p class="fine-print">Concept and prototype work, not a shipped release.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--sunken" id="spaces" aria-labelledby="spaces-title">
+        <div class="container">
+          <div class="split">
+            <div class="split-media reveal">
+              <figure class="media-frame">
+                <div class="media-label">Space editor</div>
+                <picture>
+                  <source
+                    type="image/webp"
+                    srcset="/screenshots/space-editor-720.webp 720w, /screenshots/space-editor-1440.webp 1440w"
+                    sizes="(max-width: 900px) calc(100vw - 40px), 50vw"
+                  />
+                  <img
+                    src="/screenshots/space-editor.png"
+                    width="1440"
+                    height="900"
+                    alt="Klyvera Space editor preview with project path, application choices and command confirmation."
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
+              </figure>
+              <figcaption class="media-caption">Preview render. Imported command rows require explicit trust.</figcaption>
+            </div>
+
+            <div class="split-copy">
+              <p class="kicker">02 / Spaces</p>
+              <h2 class="section-title" id="spaces-title">A project becomes a place.</h2>
+              <p>
+                A Space stores the project path, the apps you need and optional
+                layout hints. Opening it is one action, not ten.
+              </p>
+              <ul class="check-list">
+                <li>
+                  <svg class="icon" aria-hidden="true"><use href="#i-check" /></svg>
+                  <span><strong>Project paths stay explicit.</strong> Roots are validated; traversal is rejected.</span>
+                </li>
+                <li>
+                  <svg class="icon" aria-hidden="true"><use href="#i-check" /></svg>
+                  <span><strong>Apps launch as argv arrays.</strong> No shell strings, interpolation or silent execution.</span>
+                </li>
+                <li>
+                  <svg class="icon" aria-hidden="true"><use href="#i-check" /></svg>
+                  <span><strong>Layout hints travel with the Space.</strong> Workspace placement is data, not a script.</span>
+                </li>
+                <li>
+                  <svg class="icon" aria-hidden="true"><use href="#i-check" /></svg>
+                  <span><strong>Imported profiles stay untrusted.</strong> A profile hash must be confirmed before commands run.</span>
+                </li>
+              </ul>
+              <div class="split-actions">
+                <a class="arrow-link" href="docs/#spaces">
+                  Spaces specification
+                  <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right" /></svg>
+                </a>
+                <a
+                  class="arrow-link"
+                  href="https://github.com/nurlancoder/Klyvera/blob/main/schemas/space.schema.json"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Profile schema
+                  <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
+                  <span class="sr-only">(opens in a new tab)</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="shell" aria-labelledby="shell-title">
+        <div class="container">
+          <div class="split split--reverse">
+            <div class="split-media reveal">
+              <figure class="media-frame">
+                <div class="media-label">Control center</div>
+                <picture>
+                  <source
+                    type="image/webp"
+                    srcset="/screenshots/control-center-720.webp 720w, /screenshots/control-center-1440.webp 1440w"
+                    sizes="(max-width: 900px) calc(100vw - 40px), 50vw"
+                  />
+                  <img
+                    src="/screenshots/control-center.png"
+                    width="1440"
+                    height="900"
+                    alt="Klyvera control center preview with appearance, display, audio, network and power controls."
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
+              </figure>
+              <figcaption class="media-caption">Preview render with mocked service states. Quickshell runtime is unverified.</figcaption>
+            </div>
+
+            <div class="split-copy">
+              <p class="kicker">03 / Shell</p>
+              <h2 class="section-title" id="shell-title">A shell that stays out of the way.</h2>
+              <p>
+                Launcher, notifications and control center share one visual
+                language and one keyboard model. Failures stay visible instead of
+                being replaced by invented data.
+              </p>
+              <ul class="check-list">
+                <li>
+                  <svg class="icon" aria-hidden="true"><use href="#i-check" /></svg>
+                  <span><strong>Keyboard first.</strong> Search, select, confirm and dismiss without a pointer.</span>
+                </li>
+                <li>
+                  <svg class="icon" aria-hidden="true"><use href="#i-check" /></svg>
+                  <span><strong>Honest states.</strong> Unavailable services show a degraded state, not a fake reading.</span>
+                </li>
+                <li>
+                  <svg class="icon" aria-hidden="true"><use href="#i-check" /></svg>
+                  <span><strong>Local by default.</strong> Core surfaces need no account, server or network.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="capability-grid reveal">
+            <article class="capability">
+              <span class="capability-icon"><svg class="icon" aria-hidden="true"><use href="#i-terminal" /></svg></span>
+              <h3>Launcher</h3>
+              <p>Fuzzy app, Space and settings search with recent items and full keyboard selection.</p>
+            </article>
+            <article class="capability">
+              <span class="capability-icon"><svg class="icon" aria-hidden="true"><use href="#i-layers" /></svg></span>
+              <h3>Spaces</h3>
+              <p>List and detail views, a three-step editor, inline validation and explicit trust confirmation.</p>
+            </article>
+            <article class="capability">
+              <span class="capability-icon"><svg class="icon" aria-hidden="true"><use href="#i-keyboard" /></svg></span>
+              <h3>Control center</h3>
+              <p>Appearance, display, audio, network, Bluetooth, power, shortcuts and about in one surface.</p>
+            </article>
+            <article class="capability">
+              <span class="capability-icon"><svg class="icon" aria-hidden="true"><use href="#i-shield" /></svg></span>
+              <h3>Measured honesty</h3>
+              <p>Service failures degrade visibly. The status page separates local checks from target work.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--sunken" id="design" aria-labelledby="design-title">
+        <div class="container">
+          <div class="design-grid">
+            <div class="design-copy">
+              <p class="kicker">04 / Design</p>
+              <h2 class="section-title" id="design-title">A system, not a skin.</h2>
+              <p>
+                Every colour, space, radius and motion step comes from one token
+                source. Themes are generated from that source, not hand-painted
+                separately.
+              </p>
+              <ul class="spec-list">
+                <li><span>Themes</span><p>Dark, light and high contrast, with matched semantic tokens.</p></li>
+                <li><span>Contrast</span><p>47 required WCAG AA pairs per theme; 0 failures in the local report.</p></li>
+                <li><span>Type</span><p>Heading and UI stacks prefer Manrope and Inter. No web fonts are downloaded.</p></li>
+                <li><span>Icons</span><p>Klyvera Line, an original 1.75 px stroke set. No third-party icon files.</p></li>
+                <li><span>Motion</span><p>Short, functional transitions. Reduced-motion removes them.</p></li>
+              </ul>
+            </div>
+
+            <div class="token-board reveal" aria-label="Sample design tokens">
+              <div class="token-board-head">
+                <span>theme tokens</span>
+                <span>generated</span>
+              </div>
+              <div class="swatches">
+                <div class="swatch">
+                  <span class="swatch-chip" style="background: var(--accent)"></span>
+                  <span class="swatch-name">accent.purple</span>
+                  <span class="swatch-value">--klyvera-color-accent-purple</span>
+                </div>
+                <div class="swatch">
+                  <span class="swatch-chip" style="background: var(--accent-mint)"></span>
+                  <span class="swatch-name">accent.mint</span>
+                  <span class="swatch-value">--klyvera-color-accent-mint</span>
+                </div>
+                <div class="swatch">
+                  <span class="swatch-chip" style="background: var(--surface); border-color: var(--border-strong)"></span>
+                  <span class="swatch-name">surface</span>
+                  <span class="swatch-value">--klyvera-color-surface</span>
+                </div>
+              </div>
+              <div class="type-specimen">
+                <strong>Aa</strong>
+                <span>Manrope Semibold for display. Falls back to the native UI stack.</span>
+              </div>
+              <div class="token-rows">
+                <div class="token-row"><span>radius.lg</span><span>14px</span></div>
+                <div class="token-row"><span>space.md</span><span>16px</span></div>
+                <div class="token-row"><span>duration.normal</span><span>200ms</span></div>
+                <div class="token-row"><span>focus.width</span><span>2px</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="status" aria-labelledby="status-title">
+        <div class="container">
+          <div class="section-head">
+            <p class="kicker">05 / Status</p>
+            <div>
+              <h2 class="section-title" id="status-title">What is real, and what is next.</h2>
+              <p class="section-lede">
+                Klyvera is a prototype. This summary is deliberately narrower than
+                the vision: it separates work that has run here from work that
+                still requires an Arch target.
+              </p>
+            </div>
+          </div>
+
+          <div class="status-panel reveal">
+            <article class="status-column">
+              <span class="status-label status-label--ok">Verified locally</span>
+              <h3>Checks that passed</h3>
+              <ul>
+                <li><span><strong>75</strong> Rust tests pass in the workspace.</span></li>
+                <li><span><strong>9/9</strong> schema checks pass, including invalid documents.</span></li>
+                <li><span><strong>47/47</strong> required WCAG AA pairs pass in each theme.</span></li>
+                <li><span><strong>3</strong> Arch packages built and smoke-installed in a container.</span></li>
+              </ul>
+            </article>
+            <article class="status-column">
+              <span class="status-label status-label--wait">Unverified on target</span>
+              <h3>Still needs Arch</h3>
+              <ul>
+                <li><span>Live Hyprland and Quickshell session behaviour.</span></li>
+                <li><span>ISO build, boot, autologin and installer.</span></li>
+                <li><span>Dependency-resolved package installation.</span></li>
+                <li><span>CI workflow execution on GitHub.</span></li>
+              </ul>
+            </article>
+            <article class="status-column">
+              <span class="status-label status-label--proto">Prototype limits</span>
+              <h3>No launch claims</h3>
+              <ul>
+                <li><span>No release, signed packages or supported installer.</span></li>
+                <li><span>Screenshots are offscreen renders, not a live session.</span></li>
+                <li><span>The license awaits maintainer confirmation.</span></li>
+                <li><span>No telemetry is implemented, by design.</span></li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="section-foot">
+            <a
+              class="text-link"
+              href="https://github.com/nurlancoder/Klyvera/blob/main/docs/STATUS.md"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Read the full status record
+              <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
+              <span class="sr-only">(opens in a new tab)</span>
+            </a>
+            <p class="fine-print">Last reviewed 25 October 2026.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--tight" aria-labelledby="stack-title">
+        <div class="container">
+          <div class="section-head">
+            <p class="kicker">06 / Stack</p>
+            <div>
+              <h2 class="section-title" id="stack-title">Small, legible, local.</h2>
+              <p class="section-lede">
+                Chosen for control and longevity, not novelty. The project is
+                independent; upstream projects are credited in the repository.
+              </p>
+            </div>
+          </div>
+          <div class="tech-strip">
+            <div class="tech-item"><strong>Arch Linux</strong><span>target base</span></div>
+            <div class="tech-item"><strong>Hyprland</strong><span>Wayland compositor</span></div>
+            <div class="tech-item"><strong>Quickshell</strong><span>shell runtime</span></div>
+            <div class="tech-item"><strong>Qt 6 QML</strong><span>interface</span></div>
+            <div class="tech-item"><strong>Rust</strong><span>core services</span></div>
+            <div class="tech-item"><strong>Vite + TypeScript</strong><span>this site</span></div>
+          </div>
+          <div class="section-foot">
+            <p class="fine-print">
+              Klyvera is not affiliated with, endorsed by or sponsored by Arch
+              Linux, Hyprland, Quickshell or the Qt Company.
+            </p>
+            <a class="arrow-link" href="https://github.com/nurlancoder/Klyvera/blob/main/docs/CREDITS.md" target="_blank" rel="noopener noreferrer">
+              Credits
+              <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
+              <span class="sr-only">(opens in a new tab)</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="cta-title">
+        <div class="container">
+          <div class="cta-panel reveal">
+            <div>
+              <p class="kicker">Open source</p>
+              <h2 id="cta-title">Build the workspace you keep.</h2>
+              <p>
+                Klyvera is developed in the open. Clone the source, run the checks,
+                and read the status before you build.
+              </p>
+              <div class="cta-actions">
+                <a
+                  class="button button--primary"
+                  href="https://github.com/nurlancoder/Klyvera"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View source
+                  <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
+                  <span class="sr-only">(opens in a new tab)</span>
+                </a>
+                <a class="button button--secondary" href="docs/">Read the docs</a>
+              </div>
+            </div>
+            <div>
+              <div class="command-block">
+                <pre tabindex="0" aria-label="Install command"><code id="install-command">git clone https://github.com/nurlancoder/Klyvera.git
+cd Klyvera
+./scripts/check.sh</code></pre>
+                <button class="copy-button" type="button" data-copy-target="install-command" aria-label="Copy source setup command" title="Copy">
+                  <svg class="icon icon--sm" aria-hidden="true"><use href="#i-copy" /></svg>
+                </button>
+              </div>
+              <p class="command-note">
+                <svg class="icon icon--sm" aria-hidden="true"><use href="#i-info" /></svg>
+                Prototype source, not a release installer.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a class="brand" href="./" aria-label="Klyvera home">Klyvera</a>
+            <p>Your workspace. Your flow. An original, local-first Linux desktop for developers.</p>
+            <span class="footer-status">prototype · target checks pending</span>
+          </div>
+          <div class="footer-column">
+            <h2>Product</h2>
+            <ul>
+              <li><a href="#spaces">Spaces</a></li>
+              <li><a href="#shell">Shell</a></li>
+              <li><a href="#design">Design system</a></li>
+              <li><a href="#status">Status</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h2>Project</h2>
+            <ul>
+              <li><a href="https://github.com/nurlancoder/Klyvera" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+              <li><a href="https://github.com/nurlancoder/Klyvera/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Contributing</a></li>
+              <li><a href="https://github.com/nurlancoder/Klyvera/blob/main/SECURITY.md" target="_blank" rel="noopener noreferrer">Security</a></li>
+              <li><a href="https://github.com/nurlancoder/Klyvera/blob/main/docs/CREDITS.md" target="_blank" rel="noopener noreferrer">Credits</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h2>Read</h2>
+            <ul>
+              <li><a href="docs/">Documentation</a></li>
+              <li><a href="docs/#status">Status record</a></li>
+              <li><a href="docs/#build">Build from source</a></li>
+              <li><a href="az/" hreflang="az" lang="az">Azərbaycanca</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© 2026 Klyvera contributors. Apache-2.0 intended, pending confirmation. Screenshots are offscreen renders.</p>
+          <p>Independent project. No accounts. No telemetry.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

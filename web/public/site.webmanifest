@@ -1,0 +1,17 @@
+{
+  "name": "Klyvera",
+  "short_name": "Klyvera",
+  "description": "An original, local-first Linux desktop for developers.",
+  "start_url": "./",
+  "display": "browser",
+  "background_color": "#0a0b10",
+  "theme_color": "#0a0b10",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

@@ -1,0 +1,664 @@
+<!doctype html>
+<html lang="az" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Klyvera — İş məkanınız. Axınınız.</title>
+    <meta
+      name="description"
+      content="Klyvera developerlər və texniki istifadəçilər üçün orijinal, lokal-first Linux masaüstüdür. Layihə əsaslı Spaces, sakit klaviatura-yönümlü shell, hesab və telemetriya yoxdur."
+    />
+    <meta name="author" content="Klyvera contributors" />
+    <meta name="theme-color" content="#0a0b10" />
+    <link rel="canonical" href="https://nurlancoder.github.io/Klyvera/az/" />
+    <link rel="alternate" hreflang="en" href="https://nurlancoder.github.io/Klyvera/" />
+    <link rel="alternate" hreflang="az" href="https://nurlancoder.github.io/Klyvera/az/" />
+    <link rel="alternate" hreflang="x-default" href="https://nurlancoder.github.io/Klyvera/" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Klyvera" />
+    <meta property="og:title" content="Klyvera — İş məkanınız. Axınınız." />
+    <meta
+      property="og:description"
+      content="Developerlər üçün orijinal, lokal-first Linux masaüstü. Bir layihə, bir Space, bir sakit shell."
+    />
+    <meta property="og:url" content="https://nurlancoder.github.io/Klyvera/az/" />
+    <meta property="og:image" content="https://nurlancoder.github.io/Klyvera/og.png" />
+    <meta property="og:image:width" content="1440" />
+    <meta property="og:image:height" content="900" />
+    <meta property="og:image:alt" content="Layihə yan paneli və iş məkanı kartları ilə Klyvera Spaces önizləməsi" />
+    <meta property="og:locale" content="az_AZ" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="/src/styles/site.css" />
+    <script>
+      (() => {
+        try {
+          const theme = localStorage.getItem("klyvera-theme");
+          if (theme === "light" || theme === "high-contrast") {
+            document.documentElement.dataset.theme = theme;
+          }
+        } catch {
+          // Keep the default when storage is unavailable.
+        }
+      })();
+    </script>
+    <script type="module" src="/src/scripts/main.ts"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Məzmuna keç</a>
+
+    <svg class="icon-sprite" aria-hidden="true" focusable="false">
+      <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6" /></symbol>
+      <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17 17 7M8 7h9v9" /></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></symbol>
+      <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" /></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" /></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42" /></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5Z" /></symbol>
+      <symbol id="i-contrast" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" /><path d="M12 4v16" /></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2" /><path d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3" /></symbol>
+      <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" /></symbol>
+      <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z" /><path d="m3 12 9 5 9-5" /><path d="m3 16 9 5 9-5" /></symbol>
+      <symbol id="i-keyboard" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2" /><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h.01M18 14h.01M9 14h6" /></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 20 6v5c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6Z" /><path d="m9 12 2 2 4-4" /></symbol>
+      <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="m7 9 3 3-3 3M13 15h4" /></symbol>
+      <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18h1a2 2 0 0 0 0-4 2 2 0 0 1 2-2h2a4 4 0 0 0 4-4c0-4.4-4-8-9-8Z" /><path d="M7.5 10h.01M10 7h.01M14 7h.01M16.5 10h.01" /></symbol>
+      <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" /><path d="M8 21h8M12 17v4" /></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 11v5M12 8h.01" /></symbol>
+      <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6" /></symbol>
+    </svg>
+
+    <header class="site-header" data-header>
+      <div class="container header-inner">
+        <a class="brand" href="../" aria-label="Klyvera prototip — ana səhifə">
+          Klyvera
+          <span class="brand-tag">prototip</span>
+        </a>
+
+        <nav class="site-nav" aria-label="Əsas">
+          <a class="nav-link" href="#why">Niyə</a>
+          <a class="nav-link" href="#spaces">Spaces</a>
+          <a class="nav-link" href="#shell">Shell</a>
+          <a class="nav-link" href="#design">Dizayn</a>
+          <a class="nav-link" href="#status">Status</a>
+          <a class="nav-link" href="../docs/">Sənədlər</a>
+        </nav>
+
+        <div class="header-actions">
+          <a
+            class="header-github button button--secondary button--small"
+            href="https://github.com/nurlancoder/Klyvera"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+            <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
+            <span class="sr-only">(yeni tabda açılır)</span>
+          </a>
+          <a class="lang-link" href="../" hreflang="en" lang="en" aria-label="EN — View in English">EN</a>
+          <button class="icon-button" type="button" data-theme-toggle aria-label="Rəng temasını dəyiş" title="Rəng temasını dəyiş">
+            <svg class="icon theme-icon theme-icon--dark" aria-hidden="true"><use href="#i-moon" /></svg>
+            <svg class="icon theme-icon theme-icon--light" aria-hidden="true"><use href="#i-sun" /></svg>
+            <svg class="icon theme-icon theme-icon--contrast" aria-hidden="true"><use href="#i-contrast" /></svg>
+          </button>
+          <button
+            class="icon-button menu-button"
+            type="button"
+            data-menu-toggle
+            aria-controls="mobile-nav"
+            aria-expanded="false"
+            aria-label="Menyunu aç"
+            title="Menyunu aç"
+          >
+            <svg class="icon menu-icon menu-icon--open" aria-hidden="true"><use href="#i-menu" /></svg>
+            <svg class="icon menu-icon menu-icon--close" aria-hidden="true"><use href="#i-close" /></svg>
+          </button>
+        </div>
+      </div>
+
+      <nav class="mobile-nav" id="mobile-nav" data-mobile-nav aria-label="Mobil" hidden>
+        <ul>
+          <li><a href="#why">Niyə Klyvera <svg class="icon icon--sm" aria-hidden="true"><use href="#i-chevron-right" /></svg></a></li>
+          <li><a href="#spaces">Spaces <svg class="icon icon--sm" aria-hidden="true"><use href="#i-chevron-right" /></svg></a></li>
+          <li><a href="#shell">Shell <svg class="icon icon--sm" aria-hidden="true"><use href="#i-chevron-right" /></svg></a></li>
+          <li><a href="#design">Dizayn <svg class="icon icon--sm" aria-hidden="true"><use href="#i-chevron-right" /></svg></a></li>
+          <li><a href="#status">Status <svg class="icon icon--sm" aria-hidden="true"><use href="#i-chevron-right" /></svg></a></li>
+          <li><a href="../docs/">Sənədlər <svg class="icon icon--sm" aria-hidden="true"><use href="#i-chevron-right" /></svg></a></li>
+          <li><a href="https://github.com/nurlancoder/Klyvera" target="_blank" rel="noopener noreferrer">GitHub <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-up-right" /></svg></a></li>
+          <li><a class="mobile-cta" href="../" hreflang="en" lang="en">View in English <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right" /></svg></a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <span class="sr-only" data-theme-status aria-live="polite"></span>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="container">
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <p class="eyebrow">
+                <span class="eyebrow-dot" aria-hidden="true"></span>
+                Lokal-first Linux masaüstü · prototip
+              </p>
+              <h1 class="hero-title" id="hero-title">
+                <span>İş məkanınız.</span>
+                <span class="accent">Axınınız.</span>
+              </h1>
+              <p class="hero-lede">
+                Klyvera developerlər üçün orijinal Linux masaüstüdür. Hər layihə
+                öz Space-ini alır: öz yolları, tətbiqləri və düzəlişi. Layihə
+                dəyişəndə mühit də onunla dəyişir.
+              </p>
+              <div class="hero-actions">
+                <a class="button button--primary" href="#spaces">
+                  Spaces-i kəşf et
+                  <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right" /></svg>
+                </a>
+                <a class="button button--secondary" href="../docs/">
+                  Sənədləri oxu
+                  <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right" /></svg>
+                </a>
+              </div>
+              <p class="hero-note">
+                <span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-check" /></svg>Hesab yoxdur</span>
+                <span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-check" /></svg>Telemetriya yoxdur</span>
+                <span><svg class="icon icon--sm" aria-hidden="true"><use href="#i-check" /></svg>Oflayn işləyir</span>
+              </p>
+            </div>
+
+            <div class="product-shot">
+              <figure class="product-frame">
+                <div class="frame-chrome">
+                  <span>Klyvera Spaces</span>
+                  <span class="frame-status">önizləmə</span>
+                </div>
+                <div class="frame-image">
+                  <picture>
+                    <source
+                      type="image/webp"
+                      srcset="/screenshots/spaces-720.webp 720w, /screenshots/spaces-1440.webp 1440w"
+                      sizes="(max-width: 900px) calc(100vw - 40px), 46vw"
+                    />
+                    <img
+                      src="/screenshots/spaces.png"
+                      width="1440"
+                      height="900"
+                      alt="Space siyahısı, layihə detalları və iş məkanı əməliyyatları ilə Klyvera Spaces önizləməsi."
+                      fetchpriority="high"
+                      decoding="async"
+                    />
+                  </picture>
+                </div>
+                <figcaption class="frame-caption">
+                  <span>Mock məlumatdan offscreen render.</span>
+                  <span>1440 × 900</span>
+                </figcaption>
+              </figure>
+              <div class="hero-badge">
+                <span class="badge-icon"><svg class="icon" aria-hidden="true"><use href="#i-shield" /></svg></span>
+                <span><strong>Dizaynca lokal-first</strong>Hesab və bulud asılılığı yoxdur.</span>
+              </div>
+            </div>
+          </div>
+
+          <dl class="hero-proof" aria-label="Layihə faktları">
+            <div class="proof-item">
+              <dt class="proof-label">Lokal keçən Rust testləri</dt>
+              <dd class="proof-value">75</dd>
+            </div>
+            <div class="proof-item">
+              <dt class="proof-label">Təmiz QML shell səthləri</dt>
+              <dd class="proof-value">9</dd>
+            </div>
+            <div class="proof-item">
+              <dt class="proof-label">Birinci dərəcəli tema</dt>
+              <dd class="proof-value">3</dd>
+            </div>
+            <div class="proof-item">
+              <dt class="proof-label">Telemetriya və ya hesab</dt>
+              <dd class="proof-value">0</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <section class="section" id="why" aria-labelledby="why-title">
+        <div class="container">
+          <div class="section-head">
+            <p class="kicker">01 / Sürtünmə</p>
+            <div>
+              <h2 class="section-title" id="why-title">Layihə dəyişəndə hər şey dəyişməlidir.</h2>
+              <p class="section-lede">
+                Developerlər yalnız tapşırıq dəyişmir. Konteksti yenidən qururlar:
+                editor kökləri, terminallar, tətbiq pəncərələri və düzəlişlər.
+                Klyvera bu konteksti birinci dərəcəli obyekt edir.
+              </p>
+            </div>
+          </div>
+
+          <div class="problem-grid">
+            <article class="problem">
+              <span class="problem-index">01</span>
+              <h3>Kontekst əl ilə yenidən qurulur.</h3>
+              <p>
+                Hər layihə eyni qovluq, terminal və pəncərə ritualı ilə başlayır.
+                Masaüstü bunu xatırlamır.
+              </p>
+            </article>
+            <article class="problem">
+              <span class="problem-index">02</span>
+              <h3>Ayarlar dağılır.</h3>
+              <p>
+                Tətbiq seçimləri və düzəliş işarələri yaddaşda və ya səpələnmiş
+                qeydlərdə qalır, layihənin yanında deyil.
+              </p>
+            </article>
+            <article class="problem">
+              <span class="problem-index">03</span>
+              <h3>Etibar gizli qəbul edilir.</h3>
+              <p>
+                İnternetdən yüklənmiş iş məkanı profili aydın təsdiq olmadan əmr
+                işlətməməlidir.
+              </p>
+            </article>
+          </div>
+
+          <div class="section-foot">
+            <a class="text-link" href="../docs/#spaces">
+              Spaces spesifikasiyasını oxu
+              <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right" /></svg>
+            </a>
+            <p class="fine-print">Konsept və prototip işi, buraxılmış reliz deyil.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--sunken" id="spaces" aria-labelledby="spaces-title">
+        <div class="container">
+          <div class="split">
+            <div class="split-media reveal">
+              <figure class="media-frame">
+                <div class="media-label">Space editor</div>
+                <picture>
+                  <source
+                    type="image/webp"
+                    srcset="/screenshots/space-editor-720.webp 720w, /screenshots/space-editor-1440.webp 1440w"
+                    sizes="(max-width: 900px) calc(100vw - 40px), 50vw"
+                  />
+                  <img
+                    src="/screenshots/space-editor.png"
+                    width="1440"
+                    height="900"
+                    alt="Layihə yolu, tətbiq seçimləri və əmr təsdiqi ilə Klyvera Space editor önizləməsi."
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
+              </figure>
+              <figcaption class="media-caption">Önizləmə. İdxal olunan əmr sətirləri açıq təsdiq tələb edir.</figcaption>
+            </div>
+
+            <div class="split-copy">
+              <p class="kicker">02 / Spaces</p>
+              <h2 class="section-title" id="spaces-title">Layihə bir məkana çevrilir.</h2>
+              <p>
+                Space layihə yolunu, lazım olan tətbiqləri və istəyə bağlı
+                düzəliş işarələrini saxlayır. Onu açmaq on əməliyyat deyil, bir
+                əməliyyatdır.
+              </p>
+              <ul class="check-list">
+                <li>
+                  <svg class="icon" aria-hidden="true"><use href="#i-check" /></svg>
+                  <span><strong>Layihə yolları açıq qalır.</strong> Köklər yoxlanılır; traversal rədd edilir.</span>
+                </li>
+                <li>
+                  <svg class="icon" aria-hidden="true"><use href="#i-check" /></svg>
+                  <span><strong>Tətbiqlər argv massivi kimi açılır.</strong> Shell sətri, interpolasiya və ya səssiz icra yoxdur.</span>
+                </li>
+                <li>
+                  <svg class="icon" aria-hidden="true"><use href="#i-check" /></svg>
+                  <span><strong>Düzəliş işarələri Space ilə gedir.</strong> Workspace yerləşdirmə skript deyil, məlumatdır.</span>
+                </li>
+                <li>
+                  <svg class="icon" aria-hidden="true"><use href="#i-check" /></svg>
+                  <span><strong>İdxal olunan profillər etibarsız qalır.</strong> Əmrlər işləməzdən əvvəl profil hash-i təsdiqlənməlidir.</span>
+                </li>
+              </ul>
+              <div class="split-actions">
+                <a class="arrow-link" href="../docs/#spaces">
+                  Spaces spesifikasiyası
+                  <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-right" /></svg>
+                </a>
+                <a
+                  class="arrow-link"
+                  href="https://github.com/nurlancoder/Klyvera/blob/main/schemas/space.schema.json"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Profil sxemi
+                  <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
+                  <span class="sr-only">(yeni tabda açılır)</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="shell" aria-labelledby="shell-title">
+        <div class="container">
+          <div class="split split--reverse">
+            <div class="split-media reveal">
+              <figure class="media-frame">
+                <div class="media-label">İdarə mərkəzi</div>
+                <picture>
+                  <source
+                    type="image/webp"
+                    srcset="/screenshots/control-center-720.webp 720w, /screenshots/control-center-1440.webp 1440w"
+                    sizes="(max-width: 900px) calc(100vw - 40px), 50vw"
+                  />
+                  <img
+                    src="/screenshots/control-center.png"
+                    width="1440"
+                    height="900"
+                    alt="Görünüş, ekran, səs, şəbəkə və enerji nəzarəti ilə Klyvera idarə mərkəzi önizləməsi."
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
+              </figure>
+              <figcaption class="media-caption">Mock xidmət vəziyyətləri ilə önizləmə. Quickshell runtime yoxlanılmayıb.</figcaption>
+            </div>
+
+            <div class="split-copy">
+              <p class="kicker">03 / Shell</p>
+              <h2 class="section-title" id="shell-title">Yoldan çəkilən shell.</h2>
+              <p>
+                Launcher, bildirişlər və idarə mərkəzi eyni vizual dili və eyni
+                klaviatura modelini paylaşır. Xətalar uydurma məlumatla əvəz
+                olunmur, görünən qalır.
+              </p>
+              <ul class="check-list">
+                <li>
+                  <svg class="icon" aria-hidden="true"><use href="#i-check" /></svg>
+                  <span><strong>Əvvəlcə klaviatura.</strong> Axtar, seç, təsdiqlə və bağla — göstərici olmadan.</span>
+                </li>
+                <li>
+                  <svg class="icon" aria-hidden="true"><use href="#i-check" /></svg>
+                  <span><strong>Dürüst vəziyyətlər.</strong> Əlçatmaz xidmətlər uydurma göstərici deyil, deqradasiya vəziyyəti göstərir.</span>
+                </li>
+                <li>
+                  <svg class="icon" aria-hidden="true"><use href="#i-check" /></svg>
+                  <span><strong>Default olaraq lokal.</strong> Əsas səthlərə hesab, server və ya şəbəkə lazım deyil.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="capability-grid reveal">
+            <article class="capability">
+              <span class="capability-icon"><svg class="icon" aria-hidden="true"><use href="#i-terminal" /></svg></span>
+              <h3>Launcher</h3>
+              <p>Qeyri-dəqiq tətbiq, Space və ayar axtarışı, son elementlər və tam klaviatura seçimi.</p>
+            </article>
+            <article class="capability">
+              <span class="capability-icon"><svg class="icon" aria-hidden="true"><use href="#i-layers" /></svg></span>
+              <h3>Spaces</h3>
+              <p>Siyahı və detallar, üç addımlı editor, inline yoxlama və açıq etibar təsdiqi.</p>
+            </article>
+            <article class="capability">
+              <span class="capability-icon"><svg class="icon" aria-hidden="true"><use href="#i-keyboard" /></svg></span>
+              <h3>İdarə mərkəzi</h3>
+              <p>Görünüş, ekran, səs, şəbəkə, Bluetooth, enerji, qısayollar və haqqında bir səthdə.</p>
+            </article>
+            <article class="capability">
+              <span class="capability-icon"><svg class="icon" aria-hidden="true"><use href="#i-shield" /></svg></span>
+              <h3>Ölçülmüş dürüstlük</h3>
+              <p>Xidmət xətaları görünür deqradasiya edir. Status səhifəsi lokal yoxlamaları hədəf işindən ayırır.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--sunken" id="design" aria-labelledby="design-title">
+        <div class="container">
+          <div class="design-grid">
+            <div class="design-copy">
+              <p class="kicker">04 / Dizayn</p>
+              <h2 class="section-title" id="design-title">Skin deyil, sistem.</h2>
+              <p>
+                Hər rəng, məkan, radius və hərəkət addımı bir token mənbəyindən
+                gəlir. Temalar əl ilə ayrıca boyanmır, həmin mənbədən yaradılır.
+              </p>
+              <ul class="spec-list">
+                <li><span>Temalar</span><p>Tünd, işıqlı və yüksək kontrast uyğun semantik tokenlərlə birinci dərəcəlidir.</p></li>
+                <li><span>Kontrast</span><p>Hər temada 47 tələb olunan WCAG AA cütü; lokal hesabatda 0 uğursuzluq.</p></li>
+                <li><span>Tipoqrafiya</span><p>Başlıq və UI stack-ləri Manrope və Inter-ə üstünlük verir. Veb şrift yüklənmir.</p></li>
+                <li><span>İkonlar</span><p>Klyvera Line, orijinal 1.75 px stroke dəsti. Üçüncü tərəf ikon faylı yoxdur.</p></li>
+                <li><span>Hərəkət</span><p>Qısa, funksional keçidlər. Reduced-motion onları söndürür.</p></li>
+              </ul>
+            </div>
+
+            <div class="token-board reveal" aria-label="Nümunə dizayn tokenləri">
+              <div class="token-board-head">
+                <span>tema tokenləri</span>
+                <span>yaradılıb</span>
+              </div>
+              <div class="swatches">
+                <div class="swatch">
+                  <span class="swatch-chip" style="background: var(--accent)"></span>
+                  <span class="swatch-name">accent.purple</span>
+                  <span class="swatch-value">--klyvera-color-accent-purple</span>
+                </div>
+                <div class="swatch">
+                  <span class="swatch-chip" style="background: var(--accent-mint)"></span>
+                  <span class="swatch-name">accent.mint</span>
+                  <span class="swatch-value">--klyvera-color-accent-mint</span>
+                </div>
+                <div class="swatch">
+                  <span class="swatch-chip" style="background: var(--surface); border-color: var(--border-strong)"></span>
+                  <span class="swatch-name">surface</span>
+                  <span class="swatch-value">--klyvera-color-surface</span>
+                </div>
+              </div>
+              <div class="type-specimen">
+                <strong>Aa</strong>
+                <span>Manrope Semibold başlıqlar üçün. Sistem UI stack-inə keçir.</span>
+              </div>
+              <div class="token-rows">
+                <div class="token-row"><span>radius.lg</span><span>14px</span></div>
+                <div class="token-row"><span>space.md</span><span>16px</span></div>
+                <div class="token-row"><span>duration.normal</span><span>200ms</span></div>
+                <div class="token-row"><span>focus.width</span><span>2px</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="status" aria-labelledby="status-title">
+        <div class="container">
+          <div class="section-head">
+            <p class="kicker">05 / Status</p>
+            <div>
+              <h2 class="section-title" id="status-title">Nə realdır, nə sıradadır.</h2>
+              <p class="section-lede">
+                Klyvera prototipdir. Bu xülasə vizyondan qəsdən dardır: burada
+                işləyən işi hələ Arch hədəfi tələb edən işdən ayırır.
+              </p>
+            </div>
+          </div>
+
+          <div class="status-panel reveal">
+            <article class="status-column">
+              <span class="status-label status-label--ok">Lokal yoxlanılıb</span>
+              <h3>Keçən yoxlamalar</h3>
+              <ul>
+                <li><span>Workspace-də <strong>75</strong> Rust testi keçir.</span></li>
+                <li><span><strong>9/9</strong> sxem yoxlaması keçir, o cümlədən etibarsız sənədlər.</span></li>
+                <li><span>Hər temada <strong>47/47</strong> tələb olunan WCAG AA cütü keçir.</span></li>
+                <li><span><strong>3</strong> Arch paketi konteynerdə qurulub və smoke-install edilib.</span></li>
+              </ul>
+            </article>
+            <article class="status-column">
+              <span class="status-label status-label--wait">Hədəfdə yoxlanılmayıb</span>
+              <h3>Hələ Arch lazımdır</h3>
+              <ul>
+                <li><span>Canlı Hyprland və Quickshell sessiyası.</span></li>
+                <li><span>ISO quruluşu, boot, autologin və installer.</span></li>
+                <li><span>Asılılıqlarla paket quraşdırılması.</span></li>
+                <li><span>GitHub-da CI workflow icrası.</span></li>
+              </ul>
+            </article>
+            <article class="status-column">
+              <span class="status-label status-label--proto">Prototip məhdudiyyətləri</span>
+              <h3>Launch iddiası yoxdur</h3>
+              <ul>
+                <li><span>Reliz, imzalanmış paketlər və dəstəklənən installer yoxdur.</span></li>
+                <li><span>Ekran görüntüləri canlı sessiya deyil, offscreen render-dir.</span></li>
+                <li><span>Lisenziya maintainer təsdiqini gözləyir.</span></li>
+                <li><span>Dizaynca heç bir telemetriya yoxdur.</span></li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="section-foot">
+            <a
+              class="text-link"
+              href="https://github.com/nurlancoder/Klyvera/blob/main/docs/STATUS.md"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Tam status qeydini oxu
+              <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
+              <span class="sr-only">(yeni tabda açılır)</span>
+            </a>
+            <p class="fine-print">Son baxış: 25 oktyabr 2026.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--tight" aria-labelledby="stack-title">
+        <div class="container">
+          <div class="section-head">
+            <p class="kicker">06 / Stack</p>
+            <div>
+              <h2 class="section-title" id="stack-title">Kiçik, oxunaqlı, lokal.</h2>
+              <p class="section-lede">
+                Nəzarət və uzunömürlülük üçün seçilib, yenilik üçün deyil. Layihə
+                müstəqildir; upstream layihələr repoda qeyd olunub.
+              </p>
+            </div>
+          </div>
+          <div class="tech-strip">
+            <div class="tech-item"><strong>Arch Linux</strong><span>hədəf baza</span></div>
+            <div class="tech-item"><strong>Hyprland</strong><span>Wayland kompozitoru</span></div>
+            <div class="tech-item"><strong>Quickshell</strong><span>shell runtime</span></div>
+            <div class="tech-item"><strong>Qt 6 QML</strong><span>interfeys</span></div>
+            <div class="tech-item"><strong>Rust</strong><span>əsas xidmətlər</span></div>
+            <div class="tech-item"><strong>Vite + TypeScript</strong><span>bu sayt</span></div>
+          </div>
+          <div class="section-foot">
+            <p class="fine-print">
+              Klyvera Arch Linux, Hyprland, Quickshell və ya Qt Company ilə
+              əlaqəli deyil, onlar tərəfindən dəstəklənmir və sponsorluq olunmur.
+            </p>
+            <a class="arrow-link" href="https://github.com/nurlancoder/Klyvera/blob/main/docs/CREDITS.md" target="_blank" rel="noopener noreferrer">
+              Kreditlər
+              <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
+              <span class="sr-only">(yeni tabda açılır)</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="cta-title">
+        <div class="container">
+          <div class="cta-panel reveal">
+            <div>
+              <p class="kicker">Açıq mənbə</p>
+              <h2 id="cta-title">Saxlayacağınız iş məkanını qurun.</h2>
+              <p>
+                Klyvera açıq şəkildə inkişaf edir. Mənbəni klonlayın, yoxlamaları
+                işlədin və qurmazdan əvvəl statusu oxuyun.
+              </p>
+              <div class="cta-actions">
+                <a
+                  class="button button--primary"
+                  href="https://github.com/nurlancoder/Klyvera"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Mənbəyə bax
+                  <svg class="icon icon--sm" aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
+                  <span class="sr-only">(yeni tabda açılır)</span>
+                </a>
+                <a class="button button--secondary" href="../docs/">Sənədləri oxu</a>
+              </div>
+            </div>
+            <div>
+              <div class="command-block">
+                <pre tabindex="0" aria-label="Install command"><code id="install-command">git clone https://github.com/nurlancoder/Klyvera.git
+cd Klyvera
+./scripts/check.sh</code></pre>
+                <button class="copy-button" type="button" data-copy-target="install-command" aria-label="Mənbə quraşdırma əmrini kopyala" title="Kopyala">
+                  <svg class="icon icon--sm" aria-hidden="true"><use href="#i-copy" /></svg>
+                </button>
+              </div>
+              <p class="command-note">
+                <svg class="icon icon--sm" aria-hidden="true"><use href="#i-info" /></svg>
+                Reliz installer deyil, prototip mənbəyi.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <a class="brand" href="../" aria-label="Klyvera ana səhifə">Klyvera</a>
+            <p>İş məkanınız. Axınınız. Developerlər üçün orijinal, lokal-first Linux masaüstü.</p>
+            <span class="footer-status">prototip · hədəf yoxlamaları gözlənilir</span>
+          </div>
+          <div class="footer-column">
+            <h2>Məhsul</h2>
+            <ul>
+              <li><a href="#spaces">Spaces</a></li>
+              <li><a href="#shell">Shell</a></li>
+              <li><a href="#design">Dizayn sistemi</a></li>
+              <li><a href="#status">Status</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h2>Layihə</h2>
+            <ul>
+              <li><a href="https://github.com/nurlancoder/Klyvera" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+              <li><a href="https://github.com/nurlancoder/Klyvera/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer">Töhfə</a></li>
+              <li><a href="https://github.com/nurlancoder/Klyvera/blob/main/SECURITY.md" target="_blank" rel="noopener noreferrer">Təhlükəsizlik</a></li>
+              <li><a href="https://github.com/nurlancoder/Klyvera/blob/main/docs/CREDITS.md" target="_blank" rel="noopener noreferrer">Kreditlər</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h2>Oxu</h2>
+            <ul>
+              <li><a href="../docs/">Sənədlər</a></li>
+              <li><a href="../docs/#status">Status qeydi</a></li>
+              <li><a href="../docs/#build">Mənbədən qurmaq</a></li>
+              <li><a href="../" hreflang="en" lang="en">English</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© 2026 Klyvera töhfəçiləri. Apache-2.0 nəzərdə tutulur, təsdiq gözləyir. Ekran görüntüləri offscreen render-dir.</p>
+          <p>Müstəqil layihə. Hesab yoxdur. Telemetriya yoxdur.</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
