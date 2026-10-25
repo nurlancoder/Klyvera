@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Klyvera configuration",
+  "description": "Persisted user configuration, version 1.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version"],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "appearance": {
+      "$ref": "#/$defs/appearance"
+    },
+    "launcher": {
+      "$ref": "#/$defs/launcher"
+    },
+    "notifications": {
+      "$ref": "#/$defs/notifications"
+    }
+  },
+  "$defs": {
+    "appearance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "theme": {
+          "enum": ["dark", "light", "high-contrast"]
+        },
+        "accent": {
+          "enum": ["purple", "blue", "mint"]
+        },
+        "scale": {
+          "type": "number",
+          "minimum": 0.75,
+          "maximum": 3.0
+        },
+        "reduceMotion": {
+          "type": "boolean"
+        }
+      }
+    },
+    "launcher": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "recentLimit": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 50
+        }
+      }
+    },
+    "notifications": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "doNotDisturb": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

@@ -148,6 +148,13 @@ mod tests {
     }
 
     #[test]
+    fn schema_example_is_a_valid_config() {
+        let example = include_str!("../../../schemas/examples/config.default.json");
+        let config: Config = serde_json::from_str(example).unwrap();
+        config.validate().unwrap();
+    }
+
+    #[test]
     fn theme_and_accent_use_stable_json_names() {
         let mut config = Config::default();
         config.appearance.theme = Theme::HighContrast;

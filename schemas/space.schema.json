@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Klyvera Space",
+  "description": "A versioned, local workspace profile. Commands are argv arrays, never shell strings.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "id", "name", "projectPaths"],
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9](?:[a-z0-9-]{0,62}[a-z0-9])?$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^\\S(?:.*\\S)?$"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 280,
+      "pattern": "^[^\\u0000-\\u001f\\u007f]*$"
+    },
+    "icon": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]{0,63}$"
+    },
+    "accent": {
+      "enum": ["purple", "blue", "mint", "neutral"]
+    },
+    "projectPaths": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 16,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/absolutePath"
+      }
+    },
+    "apps": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "$ref": "#/$defs/appRef"
+      }
+    },
+    "layout": {
+      "$ref": "#/$defs/layout"
+    },
+    "commands": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "$ref": "#/$defs/command"
+      }
+    },
+    "createdAt": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "updatedAt": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "$defs": {
+    "absolutePath": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "pattern": "^/[^\\u0000]*$",
+      "not": {
+        "pattern": "(^|/)\\.\\.?(/|$)"
+      }
+    },
+    "appRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["desktopId"],
+      "properties": {
+        "desktopId": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 256,
+          "pattern": "^[^/\\\\][^\\\\]*\\.desktop$",
+          "not": {
+            "pattern": "(^|/)\\.\\.?(/|$)"
+          }
+        }
+      }
+    },
+    "layout": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "monitor": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9_.:-]{1,64}$"
+        },
+        "workspace": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 99
+        },
+        "masterCount": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        },
+        "gapsIn": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "gapsOut": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        }
+      }
+    },
+    "command": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "argv"],
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "argv": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 32,
+          "items": {
+            "type": "string",
+            "maxLength": 4096,
+            "pattern": "^[^\\u0000]*$"
+          }
+        },
+        "cwd": {
+          "$ref": "#/$defs/absolutePath"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "appearance": {
+    "theme": "dark",
+    "accent": "purple",
+    "scale": 1.0,
+    "reduceMotion": false
+  },
+  "launcher": {
+    "recentLimit": 8
+  },
+  "notifications": {
+    "doNotDisturb": false
+  }
+}

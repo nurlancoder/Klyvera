@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "id": "klyvera-core",
+  "name": "Klyvera Core",
+  "description": "Rust services, schemas and tests",
+  "icon": "code",
+  "accent": "purple",
+  "projectPaths": [
+    "/srv/projects/klyvera"
+  ],
+  "apps": [
+    {
+      "desktopId": "code.desktop"
+    }
+  ],
+  "layout": {
+    "monitor": "DP-1",
+    "workspace": 2,
+    "masterCount": 2,
+    "gapsIn": 4,
+    "gapsOut": 8
+  },
+  "commands": [
+    {
+      "label": "Tests",
+      "argv": ["cargo", "test"],
+      "cwd": "/srv/projects/klyvera/core"
+    }
+  ],
+  "createdAt": 1760000000,
+  "updatedAt": 1760000000
+}

@@ -585,6 +585,14 @@ mod tests {
     }
 
     #[test]
+    fn schema_example_is_a_valid_space() {
+        let example = include_str!("../../../schemas/examples/space.example.json");
+        let space: Space = serde_json::from_str(example).unwrap();
+        space.validate().unwrap();
+        assert_eq!(space.profile_hash().unwrap().len(), 64);
+    }
+
+    #[test]
     fn slugify_handles_unicode_and_empty_names() {
         assert_eq!(slugify("Hello, World!"), "hello-world");
         assert_eq!(slugify("  ---  "), "space");
