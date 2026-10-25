@@ -1,0 +1,11 @@
+
+
+Klyvera OS live environment
+
+  Super + Space      launcher
+  Super + C          control center
+  Super + N          notifications
+  Super + I          installer (archinstall)
+  Super + Return     terminal
+
+The live user has passwordless sudo. This policy exists only in the live image.

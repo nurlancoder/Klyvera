@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+readonly source_dir="/usr/share/klyvera/shell/integration/quickshell"
+readonly config_home="${XDG_CONFIG_HOME:-$HOME/.config}"
+readonly target="${config_home}/quickshell/klyvera"
+
+if [[ ! -f "$source_dir/shell.qml" ]]; then
+  printf 'klyvera-shell-setup: shell files are missing at %s\n' "$source_dir" >&2
+  exit 1
+fi
+
+if [[ -L "$target" && "$(readlink "$target")" == "$source_dir" ]]; then
+  printf 'Klyvera Quickshell config is already linked at %s\n' "$target"
+  exit 0
+fi
+
+if [[ -e "$target" || -L "$target" ]]; then
+  printf 'klyvera-shell-setup: %s already exists; refusing to overwrite it\n' "$target" >&2
+  exit 1
+fi
+
+mkdir -p "$(dirname "$target")"
+ln -s "$source_dir" "$target"
+
+cat <<'EOF'
+Klyvera Quickshell config linked.
+
+Next steps:
+  1. Add this line to ~/.config/hypr/hyprland.conf:
+       source = /etc/xdg/klyvera/hypr/klyvera.conf
+  2. Start the daemon:
+       systemctl --user enable --now klyvera-daemon
+  3. Start the shell from your Hyprland exec-once line, or run:
+       qs -c klyvera
+EOF

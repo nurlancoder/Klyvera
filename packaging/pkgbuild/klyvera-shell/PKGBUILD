@@ -1,0 +1,41 @@
+# Maintainer: Klyvera <maintainer@klyvera.invalid>
+pkgname=klyvera-shell
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Klyvera Quickshell surfaces, Hyprland defaults and setup command"
+arch=('any')
+url="https://github.com/nurlancoder/Klyvera"
+license=('Apache-2.0')
+depends=('quickshell' 'qt6-declarative')
+optdepends=(
+  'hyprland: compositor integration'
+  'pipewire: audio status'
+  'wireplumber: audio session management'
+  'networkmanager: network status'
+  'bluez: Bluetooth status'
+  'upower: battery status'
+)
+source=("klyvera-$pkgver.tar.gz")
+sha256sums=('SKIP')
+
+package() {
+  cd "$srcdir/klyvera-$pkgver"
+  install -d "$pkgdir/usr/share/klyvera"
+  cp -a shell "$pkgdir/usr/share/klyvera/shell"
+  rm -rf "$pkgdir/usr/share/klyvera/shell/integration/quickshell/README.md"
+
+  install -Dm755 packaging/scripts/klyvera-shell-setup \
+    "$pkgdir/usr/bin/klyvera-shell-setup"
+  install -Dm644 packaging/desktop/klyvera-shell.desktop \
+    "$pkgdir/usr/share/applications/klyvera-shell.desktop"
+  install -Dm644 packaging/config/hypr/klyvera.conf \
+    "$pkgdir/etc/xdg/klyvera/hypr/klyvera.conf"
+  install -Dm644 packaging/config/hypr/conf.d/10-klyvera.conf \
+    "$pkgdir/etc/xdg/klyvera/hypr/conf.d/10-klyvera.conf"
+
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+  install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
+  install -Dm644 THIRD_PARTY_NOTICES.md \
+    "$pkgdir/usr/share/doc/$pkgname/THIRD_PARTY_NOTICES.md"
+  install -Dm644 CREDITS.md "$pkgdir/usr/share/doc/$pkgname/CREDITS.md"
+}

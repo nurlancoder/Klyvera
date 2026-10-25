@@ -25,8 +25,8 @@ qs -c klyvera
 ```
 
 Add the Hyprland fragment from `packaging/config/hypr/conf.d/10-klyvera.conf`
-to the running Hyprland configuration, or include
-`packaging/config/hypr/klyvera.conf`.
+to the running Hyprland configuration, or include the installed
+`/etc/xdg/klyvera/hypr/klyvera.conf`.
 
 ## IPC
 

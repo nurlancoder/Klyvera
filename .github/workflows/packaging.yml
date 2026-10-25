@@ -1,0 +1,52 @@
+name: Packaging
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "packaging/**"
+      - "core/**"
+      - "shell/**"
+      - ".github/workflows/packaging.yml"
+  pull_request:
+    paths:
+      - "packaging/**"
+      - "core/**"
+      - "shell/**"
+      - ".github/workflows/packaging.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  pkgbuild:
+    name: Build Arch packages
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+      options: --user root
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build tools
+        run: |
+          pacman -Syu --noconfirm --needed base-devel git rust
+
+      - name: Build packages as an unprivileged user
+        run: |
+          useradd -m builder
+          chown -R builder "$GITHUB_WORKSPACE"
+          su builder -c "cd '$GITHUB_WORKSPACE' && ./packaging/pkgbuild/build-packages.sh"
+
+      - name: Inspect package outputs
+        run: |
+          ls -lh packaging/pkgbuild/out
+          for package in packaging/pkgbuild/out/*.pkg.tar.zst; do
+            bsdtar -tf "$package" >/dev/null
+          done
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: klyvera-packages
+          path: packaging/pkgbuild/out/*.pkg.tar.zst
+          if-no-files-found: error

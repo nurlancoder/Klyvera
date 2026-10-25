@@ -1,0 +1,11 @@
+NAME="Klyvera OS"
+PRETTY_NAME="Klyvera OS 0.1.0 (prototype)"
+ID=klyvera
+ID_LIKE=arch
+BUILD_ID=rolling
+ANSI_COLOR="38;2;178;140;255"
+HOME_URL="https://github.com/nurlancoder/Klyvera"
+DOCUMENTATION_URL="https://github.com/nurlancoder/Klyvera/blob/main/docs/MANUAL_TEST.md"
+SUPPORT_URL="https://github.com/nurlancoder/Klyvera/issues"
+BUG_REPORT_URL="https://github.com/nurlancoder/Klyvera/issues"
+LOGO=klyvera

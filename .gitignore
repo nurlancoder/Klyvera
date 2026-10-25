@@ -88,3 +88,10 @@ tmp/
 # --- Local tooling state ---
 .pre-commit-cache/
 .hooks-state/
+
+# --- Packaging build inputs and local repositories ---
+packaging/pkgbuild/out/
+packaging/pkgbuild/sources/
+packaging/pkgbuild/*/klyvera-*.tar.gz
+packaging/archiso/localrepo/
+packaging/archiso/profile/airootfs/usr/share/klyvera/repo/

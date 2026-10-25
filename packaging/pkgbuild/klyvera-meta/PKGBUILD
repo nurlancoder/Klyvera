@@ -1,0 +1,41 @@
+# Maintainer: Klyvera <maintainer@klyvera.invalid>
+pkgname=klyvera-meta
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="Klyvera desktop meta package"
+arch=('any')
+url="https://github.com/nurlancoder/Klyvera"
+license=('Apache-2.0')
+depends=(
+  "klyvera-core=$pkgver"
+  "klyvera-shell=$pkgver"
+  'hyprland'
+  'quickshell'
+  'qt6-svg'
+  'qt6-wayland'
+  'pipewire'
+  'pipewire-pulse'
+  'wireplumber'
+  'networkmanager'
+  'bluez'
+  'bluez-utils'
+  'upower'
+  'xdg-desktop-portal-hyprland'
+  'polkit'
+  'dbus'
+  'foot'
+  'noto-fonts'
+  'ttf-jetbrains-mono'
+)
+source=()
+sha256sums=()
+
+package() {
+  install -d "$pkgdir/usr/share/doc/$pkgname"
+  printf '%s\n' \
+    'Klyvera desktop meta package.' \
+    '' \
+    'Run klyvera-shell-setup as your user after installation, then add the' \
+    'Hyprland include shown by the command and enable klyvera-daemon.service.' \
+    > "$pkgdir/usr/share/doc/$pkgname/README"
+}

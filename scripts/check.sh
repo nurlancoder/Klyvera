@@ -41,7 +41,7 @@ fi
 
 section "Shell scripts"
 shopt -s nullglob
-scripts=(scripts/*.sh .githooks/*)
+scripts=(scripts/*.sh .githooks/* packaging/scripts/* packaging/pkgbuild/*.sh packaging/archiso/*.sh packaging/archiso/profile/airootfs/usr/local/bin/klyvera-live-init)
 if ((${#scripts[@]} > 0)); then
   if bash -n "${scripts[@]}"; then
     pass "bash syntax"
@@ -59,6 +59,19 @@ if ((${#scripts[@]} > 0)); then
   fi
 else
   skip "no shell scripts"
+fi
+
+section "Packaging"
+pkgbuilds=(packaging/pkgbuild/*/PKGBUILD)
+profile_scripts=(packaging/archiso/profile/profiledef.sh packaging/archiso/profile/airootfs/usr/local/bin/klyvera-live-init)
+if ((${#pkgbuilds[@]} > 0)); then
+  if bash -n "${pkgbuilds[@]}" "${profile_scripts[@]}"; then
+    pass "PKGBUILD and profile syntax"
+  else
+    fail "PKGBUILD and profile syntax"
+  fi
+else
+  skip "no PKGBUILDs yet"
 fi
 
 section "Rust core"

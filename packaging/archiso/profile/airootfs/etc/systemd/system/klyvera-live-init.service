@@ -1,0 +1,12 @@
+[Unit]
+Description=Create the Klyvera live user
+ConditionPathExists=!/var/lib/klyvera/live-user-ready
+Before=getty@tty1.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/klyvera-live-init
+
+[Install]
+WantedBy=multi-user.target

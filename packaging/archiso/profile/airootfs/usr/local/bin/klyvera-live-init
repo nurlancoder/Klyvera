@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! id -u klyvera >/dev/null 2>&1; then
+  useradd -m -G wheel -s /bin/bash klyvera
+fi
+passwd -d klyvera
+
+quickshell_dir="/home/klyvera/.config/quickshell"
+install -d "$quickshell_dir"
+ln -sfn /usr/share/klyvera/shell/integration/quickshell \
+  "$quickshell_dir/klyvera"
+
+chown -R klyvera:klyvera /home/klyvera
+chmod 0750 /home/klyvera
+
+install -d /var/lib/klyvera
+touch /var/lib/klyvera/live-user-ready

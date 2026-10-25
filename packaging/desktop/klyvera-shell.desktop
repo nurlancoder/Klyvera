@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Klyvera Shell
+Comment=Start the Klyvera panel, launcher and overlays
+Exec=qs -c klyvera
+Icon=applications-system
+Terminal=false
+Categories=System;
+Keywords=shell;panel;launcher;workspace;
+StartupNotify=true
