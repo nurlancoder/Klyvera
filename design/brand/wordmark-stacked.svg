@@ -1,0 +1,12 @@
+<svg width="320" height="220" viewBox="0 0 320 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="g" x1="120" y1="40" x2="200" y2="120" gradientUnits="userSpaceOnUse">
+<stop stop-color="#9B8BFF"/>
+<stop offset="0.6" stop-color="#5B8BFF"/>
+<stop offset="1" stop-color="#22D3EE"/>
+</linearGradient>
+</defs>
+<rect x="120" y="40" width="80" height="80" rx="22" fill="url(#g)"/>
+<path d="M150 80L166 96L190 72" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="160" y="170" font-family="Manrope, Inter, system-ui, -apple-system, sans-serif" font-size="42" font-weight="800" letter-spacing="-0.03em" text-anchor="middle" fill="currentColor">Klyvera</text>
+</svg>
