@@ -1,0 +1,91 @@
+# --- Rust ---
+core/target/
+target/
+**/*.rs.bk
+*.pdb
+*.profraw
+*.profdata
+coverage/
+lcov.info
+
+# --- Node / web ---
+node_modules/
+web/node_modules/
+web/dist/
+web/.vite/
+*.tsbuildinfo
+.pnpm-store/
+.npm/
+npm-debug.log*
+yarn-error.log*
+
+# --- Python (token generator / preview venv) ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# --- QML / Qt ---
+*.qmlc
+*.jsc
+.qmllint-cache/
+qmlcache/
+
+# --- Build and packaging output ---
+build/
+out/
+dist/
+*.pkg.tar.zst
+*.pkg.tar.xz
+*.pkg.tar.gz
+pkg/
+src/
+packaging/archiso/out/
+packaging/archiso/work/
+*.iso
+*.iso.sha256
+*.iso.sig
+
+# --- Klyvera runtime data (never commit user data) ---
+*.klyvera-backup.tar.gz
+*.klyvera-backup.zip
+profiles/local/
+.spaces-local/
+klyvera-local.json
+
+# --- Secrets and local environment ---
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+secrets/
+credentials*
+!.env.example
+
+# --- Editor / OS ---
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Logs and temporary files ---
+*.log
+*.tmp
+*.bak
+tmp/
+.cache/
+
+# --- Local tooling state ---
+.pre-commit-cache/
+.hooks-state/
