@@ -8,6 +8,7 @@ url="https://github.com/nurlancoder/Klyvera"
 license=('Apache-2.0')
 depends=('gcc-libs' 'glibc' 'systemd')
 makedepends=('cargo' 'rust')
+options=('!debug')
 source=("klyvera-$pkgver.tar.gz")
 # The prototype builds from a checkout archive. Replace SKIP with updpkgsums
 # output before publishing signed release packages.
