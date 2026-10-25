@@ -1,4 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Klyvera">
-  <rect width="32" height="32" rx="8" fill="#0a0b10"/>
-  <path d="M10 7v18M22 7l-9.5 9L22 25" fill="none" stroke="#fafafa" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="g" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+<stop stop-color="#7C5CFF"/>
+<stop offset="1" stop-color="#22D3EE"/>
+</linearGradient>
+</defs>
+<rect width="64" height="64" rx="16" fill="url(#g)"/>
+<path d="M20 32L28 40L44 24" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

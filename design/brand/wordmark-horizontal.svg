@@ -1,0 +1,11 @@
+<svg width="640" height="160" viewBox="0 0 640 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="g" x1="40" y1="40" x2="120" y2="120" gradientUnits="userSpaceOnUse">
+<stop stop-color="#7C5CFF"/>
+<stop offset="1" stop-color="#22D3EE"/>
+</linearGradient>
+</defs>
+<rect x="40" y="40" width="80" height="80" rx="20" fill="url(#g)"/>
+<path d="M70 80L85 95L110 70" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="150" y="95" font-family="Manrope, Inter, system-ui, sans-serif" font-size="56" font-weight="700" letter-spacing="-0.02em" fill="currentColor">Klyvera</text>
+</svg>
