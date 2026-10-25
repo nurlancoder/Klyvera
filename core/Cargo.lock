@@ -295,6 +295,7 @@ dependencies = [
 name = "klyvera-ipc"
 version = "0.1.0"
 dependencies = [
+ "klyvera-config",
  "libc",
  "serde",
  "serde_json",

@@ -10,6 +10,7 @@ description = "Versioned local JSON protocol and Unix socket helpers for Klyvera
 serde.workspace = true
 serde_json.workspace = true
 thiserror.workspace = true
+klyvera-config.workspace = true
 libc.workspace = true
 
 [dev-dependencies]
