@@ -29,7 +29,6 @@ pub struct DaemonConfig {
 
 struct State {
     paths: Paths,
-    trust: TrustStore,
     started: Instant,
     verbose: bool,
 }
@@ -49,7 +48,7 @@ pub fn run(config: DaemonConfig) -> Result<(), DaemonError> {
     crate::signal::reset();
     crate::signal::install().map_err(DaemonError::Signal)?;
     config.paths.ensure_layout()?;
-    let trust = TrustStore::open(config.paths.trust_file())?;
+    TrustStore::open(config.paths.trust_file())?;
     let listener = bind_listener(&config.socket)?;
     let _guard = SocketGuard(config.socket.clone());
 
@@ -59,7 +58,6 @@ pub fn run(config: DaemonConfig) -> Result<(), DaemonError> {
 
     let mut state = State {
         paths: config.paths,
-        trust,
         started: Instant::now(),
         verbose: config.verbose,
     };
@@ -181,7 +179,7 @@ fn dispatch(state: &mut State, request: &Request) -> Result<(Value, bool), Handl
         Command::SpaceShow => {
             let space = state.space_store()?.get(request.space_id())?;
             let hash = space.profile_hash()?;
-            let trusted = state.trust.is_trusted(&space)?;
+            let trusted = TrustStore::open(state.paths.trust_file())?.is_trusted(&space)?;
             let value = serde_json::to_value(&space)
                 .map_err(|error| HandlerError::Internal(error.to_string()))?;
             Ok((
@@ -193,7 +191,7 @@ fn dispatch(state: &mut State, request: &Request) -> Result<(Value, bool), Handl
             let space = state.space_store()?.get(request.space_id())?;
             let index = DesktopIndex::load_default();
             let plan = build_plan(&space, &index)?;
-            let trusted = state.trust.is_trusted(&space)?;
+            let trusted = TrustStore::open(state.paths.trust_file())?.is_trusted(&space)?;
             if !plan.commands.is_empty() && !trusted {
                 return Err(SpaceError::Untrusted {
                     profile_hash: plan.profile_hash.clone(),
@@ -428,6 +426,7 @@ mod tests {
         space.commands = vec![TerminalCommand::new("true", vec!["/bin/true".to_owned()])];
         let space = store.create_new(space).unwrap();
 
+        let trust_path = paths.trust_file();
         let socket = paths.socket_path().unwrap();
         let config = DaemonConfig {
             paths,
@@ -442,6 +441,13 @@ mod tests {
             .unwrap();
         assert!(!open.ok);
         assert_eq!(open.error.as_ref().unwrap().code, codes::UNTRUSTED);
+
+        let mut trust = TrustStore::open(&trust_path).unwrap();
+        trust.trust(&space).unwrap();
+        let open = client
+            .call(&Request::for_space(Command::SpaceOpen, &space.id))
+            .unwrap();
+        assert!(open.ok, "{open:?}");
 
         let _ = client.call(&Request::new(Command::Stop)).unwrap();
         drop(client);
