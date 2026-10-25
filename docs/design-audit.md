@@ -20,3 +20,9 @@ Started: 2026-10-25. Scope: existing QML previews, website, tokens, icons.
 - Icon generator script created
 - Icon existence test added
 
+
+## Phase D - Components (polish)
+- Audited components for alignment/centering, padding, states
+- Focused on Button, IconButton, Tabs, ListItem geometry
+- Ensuring proper spacing tokens and responsive behavior
+
