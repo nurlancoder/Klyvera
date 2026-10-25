@@ -21,10 +21,14 @@ sudo KLYVERA_PACKAGE_OUT="$PWD/packaging/pkgbuild/out" \
 The ISO and its `.sha256` are written to `packaging/archiso/out/`. The build
 script requires root because `mkarchiso` needs loop devices and a chroot.
 
-`quickshell`, `hyprland` and the Klyvera packages must be available from the
-configured repositories. If Quickshell is not in the official repositories, build
-it from AUR into the local repository first; the profile will fail the package
-resolution step otherwise.
+`quickshell` (0.3.2 at the time of the packaging test), `hyprland`, `archiso`
+and `archinstall` were confirmed in the Arch `extra` repository. The package set
+is explicit but not version-pinned because Arch repositories are rolling.
+
+The profile and ISO have not been built. The live image carries the Klyvera
+packages at `/usr/share/klyvera/repo`, but a fully offline target install also
+needs the non-Klyvera dependency packages; `archinstall` otherwise resolves them
+from the network.
 
 ## Test
 
@@ -36,6 +40,6 @@ qemu-system-x86_64 -enable-kvm -m 4096 -smp 2 \
   -boot d
 ```
 
-The profile and ISO have not been built or booted on target hardware. Network
-firmware, GPU acceleration, autologin, installer launch and audio are all
+The profile and ISO have not been built or booted. Network firmware, GPU
+acceleration, autologin, installer launch, audio and offline installation are all
 unverified.

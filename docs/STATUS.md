@@ -4,7 +4,7 @@ Klyvera is a **prototype**. This file records what has actually been run, what i
 written but cannot be exercised on the Debian-based development workstation, and
 what is blocked. It is updated after every step.
 
-Last updated: 2026-10-25 (Phase 4)
+Last updated: 2026-10-25 (Phase 5)
 
 ## Done
 
@@ -63,7 +63,9 @@ Last updated: 2026-10-25 (Phase 4)
 - `klyvera-cli`: `spaces list|new|show|open|delete|export|import|trust|untrust`,
   `backup`, `backups`, `verify`, `restore`, `status` and `doctor`, with global
   `--json` and `--dry-run`. Restore requires `--yes` and commands require trust.
-  2 end-to-end CLI tests pass.
+  3 end-to-end CLI tests pass. Every command now ensures the XDG layout exists
+  with `0700` before touching state; a fresh `doctor` run is covered by a
+  regression test.
 - `schemas/config.schema.json` and `schemas/space.schema.json` with validated
   examples. `tests/validate_schemas.py` checks both examples and rejects seven
   representative invalid documents: **9/9 checks pass**.
@@ -135,12 +137,34 @@ Last updated: 2026-10-25 (Phase 4)
   binding loops. `Slider` exposes a `moved` signal for user-driven changes.
   `FocusRing` is public so pages can use it through directory imports.
 
+### Packaging and live image (Phase 5)
+
+- Three PKGBUILDs: `klyvera-core` (CLI, daemon, systemd user unit, docs),
+  `klyvera-shell` (QML tree, Quickshell adapter, Hyprland fragment, desktop entry
+  and `klyvera-shell-setup`) and `klyvera-meta` (desktop dependency set). They
+  share a deterministic-prefix source archive produced from `HEAD`.
+- `packaging/pkgbuild/build-packages.sh` refuses a dirty tree, checks package
+  versions against `core/Cargo.toml`, builds with `makepkg --nodeps --nocheck`,
+  writes a local repo with `repo-add` and removes debug split output.
+- `klyvera-core` uses a sandboxed user unit with a private temporary directory,
+  read-only system and home, write access only to Klyvera state paths, Unix-only
+  sockets and a `0077` umask. `klyvera-shell-setup` creates exactly one symlink
+  and refuses to overwrite existing paths.
+- `packaging/archiso/` contains a profile with an explicit package list, live
+  user bootstrap, tty1 autologin, Hyprland defaults, NetworkManager/Bluetooth,
+  Klyvera branding, the Klyvera packages in `/usr/share/klyvera/repo`, and a
+  local build repository. Build and SHA-256 scripts are documented.
+- Decision 0003 selects interactive `archinstall`; post-install steps are in
+  `packaging/installer/README.md`.
+- `.github/workflows/packaging.yml` builds the packages in an Arch container and
+  uploads artifacts. ISO building remains manual.
+
 ### Checks actually run
 
 - `cargo fmt --all --check` across the workspace.
 - `cargo clippy --all-targets -- -D warnings` across the workspace.
-- `cargo test --all` across the workspace: **74 tests pass** (config 18, spaces
-  33, backup 8, IPC 11, daemon 2, CLI 2).
+- `cargo test --all` across the workspace: **75 tests pass** (config 18, spaces
+  33, backup 8, IPC 11, daemon 2, CLI 3).
 - `python3 tests/validate_schemas.py` with `jsonschema`: 9/9 checks pass.
 - `bash -n` on all shell scripts and `.githooks/pre-commit`.
 - `python3 -m py_compile design/generators/generate.py`.
@@ -167,15 +191,34 @@ Last updated: 2026-10-25 (Phase 4)
 - `./scripts/check.sh` with the temporary Qt/shellcheck environment:
   **0 failures, 1 skipped** (website not built yet).
 - YAML parsing of the workflow, Dependabot config and issue forms with PyYAML.
+- `makepkg` in `archlinux:latest` built all three packages; `repo-add` produced
+  `klyvera-local.db`; `namcap` ran on each package. Only dependency-visibility
+  and empty-meta warnings were reported, all expected with `--nodeps`.
+- Package contents were inspected with `bsdtar`: core includes both binaries,
+  the user unit, license and docs; shell includes the QML tree, Hyprland
+  fragment, desktop entry, setup command and licenses; meta contains only its
+  documentation.
+- `pacman -Si` in the Arch container confirmed `quickshell 0.3.2`,
+  `hyprland 0.56.2`, `archiso 91` and `archinstall 4.5` are available from the
+  configured repositories.
+- A package-install smoke test in the Arch container installed all three
+  packages with `pacman -U --nodeps`; `klyvera --version`, `doctor`, the setup
+  symlink and `systemd-analyze verify` succeeded. Dependency-resolved
+  installation was not attempted.
+- `./scripts/check.sh` after the packaging and CLI changes:
+  **0 failures, 1 skipped** (website not built yet).
 
 ## Unverified on target
 
 - The CI workflow has not been executed on GitHub; its YAML and expressions are
   unverified in a runner.
-- Nothing has been run on Arch Linux or in a Hyprland/Wayland session yet.
-- The Rust core, daemon and CLI have only run on the Kali Linux x86_64
-  development workstation. Cross-distribution packaging, systemd user units and
-  target integration are unverified.
+- No Arch target machine or Hyprland/Wayland session has been used. Arch was
+  exercised only in a container for package builds and smoke installs;
+  `mkarchiso` was not run.
+- The Rust core, daemon and CLI are developed and tested primarily on the Kali
+  Linux x86_64 workstation. Release binaries ran in the Arch container for
+  version, doctor and setup smoke tests; dependency-resolved installation,
+  systemd unit startup and target integration are unverified.
 - Hyprland layout hints are produced by the core but are not applied anywhere;
   compositor integration is **UNVERIFIED-ON-TARGET**.
 - QML has not been rendered in a Quickshell session or a Wayland session. The
@@ -190,6 +233,12 @@ Last updated: 2026-10-25 (Phase 4)
 - The Hyprland fragment has not been included in a live Hyprland configuration.
   Keybind conflicts, `qs` availability and session-lock wiring are unverified.
 - The generated CSS has not been consumed by a web build yet.
+- Dependency-resolved package installation, conflicts with real repositories,
+  systemd unit startup, ISO build, ISO boot, autologin, Hyprland startup and
+  `archinstall` are **UNVERIFIED-ON-TARGET**. The ISO profile is not built. A
+  `--nodeps` package install smoke test ran in an Arch container.
+- The live image carries Klyvera packages, but a fully offline target install is
+  not implemented; non-Klyvera dependencies require cached packages or network.
 
 ## Blocked
 
@@ -198,14 +247,16 @@ Last updated: 2026-10-25 (Phase 4)
   shellcheck-py 0.11.0) is used for local checks. It is outside the repository
   and not reproducible from the repo; CI installs its own toolchain. A clean
   checkout therefore skips shellcheck and QML lint locally.
-- **Hyprland, Quickshell, pacman, mkarchiso** cannot run on Kali. All target-only
-  work is unverified by definition.
+- **Hyprland and Quickshell** cannot run on Kali, and `mkarchiso` has not been
+  run. Package builds use an Arch container, but the live session, ISO and
+  installer remain unverified by definition.
 - **License** is provisional Apache-2.0 and needs maintainer confirmation
   (`docs/decisions/0002-license.md`). This is a maintainer decision, not a
   blocker for development.
 
 ## Missing / not yet built
 
-- Packaging, archiso profile, ISO workflow (Phase 5).
+- ISO build and boot, full offline target installation, package signing and
+  keyring distribution.
 - Website (Phase 6).
 - Hardening, manual test checklist, release notes (Phase 7).

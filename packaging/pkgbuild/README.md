@@ -14,11 +14,11 @@ sudo pacman -S --needed base-devel git rust
 The script refuses a dirty Git tree, creates
 `packaging/pkgbuild/sources/klyvera-0.1.0.tar.gz`, builds all three packages in
 `--nodeps --nocheck` mode and creates a local repository in
-`packaging/pkgbuild/out/`.
+`packaging/pkgbuild/out/`. It was exercised in an official Arch container.
 
 `--nodeps` is intentional for the build host: `klyvera-shell` depends on
-Quickshell, which may come from the AUR or a local repository. Installation on a
-real system still resolves dependencies through pacman.
+Quickshell, which is in Arch `extra`. Installation on a real system still
+resolves dependencies through pacman.
 
 `klyvera-shell` installs the Quickshell tree under `/usr/share/klyvera/shell`
 and does **not** write into any user's home directory. Run
