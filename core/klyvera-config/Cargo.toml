@@ -1,0 +1,15 @@
+[package]
+name = "klyvera-config"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Typed, validated Klyvera configuration with XDG paths and atomic writes"
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true

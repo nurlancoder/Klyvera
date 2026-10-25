@@ -1,0 +1,19 @@
+[package]
+name = "klyvera-daemon"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Klyvera user-session daemon"
+
+[dependencies]
+klyvera-config.workspace = true
+klyvera-spaces.workspace = true
+klyvera-ipc.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+libc.workspace = true
+clap.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true

@@ -1,0 +1,17 @@
+[package]
+name = "klyvera-spaces"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+description = "Klyvera Spaces model, validation, storage, import/export and launch planning"
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+sha2.workspace = true
+klyvera-config.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true

@@ -1,0 +1,31 @@
+[workspace]
+resolver = "2"
+members = [
+    "klyvera-config",
+    "klyvera-spaces",
+    "klyvera-backup",
+    "klyvera-ipc",
+    "klyvera-daemon",
+    "klyvera-cli",
+]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.75"
+license = "Apache-2.0"
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+clap = { version = "4", features = ["derive"] }
+sha2 = "0.10"
+tar = "0.4"
+flate2 = "1"
+libc = "0.2"
+tempfile = "3"
+klyvera-config = { path = "klyvera-config" }
+klyvera-spaces = { path = "klyvera-spaces" }
+klyvera-backup = { path = "klyvera-backup" }
+klyvera-ipc = { path = "klyvera-ipc" }
