@@ -6,7 +6,7 @@ pkgdesc="Klyvera Quickshell surfaces, Hyprland defaults and setup command"
 arch=('any')
 url="https://github.com/nurlancoder/Klyvera"
 license=('Apache-2.0')
-depends=('quickshell' 'qt6-declarative')
+depends=('bash' 'quickshell' 'qt6-declarative')
 optdepends=(
   'hyprland: compositor integration'
   'pipewire: audio status'
