@@ -331,3 +331,27 @@ High-contrast theme (lines 65-89):
 - `git diff --check` passed. The aggregate Bash runner and Arch package build
   were unavailable on this Windows host; validate package installation and
   SVG rendering on Arch before release.
+
+## V3 repair Phase 4: Button content geometry
+
+### Changes
+- The existing component screenshots showed button labels sitting at the
+  content area's top edge. A new offscreen geometry test measured the
+  text-only content center at y=7 px in a 48 px target.
+- Wrapped the Button content row in an `Item` content container so the control
+  can size its content bounds and the row can center itself within them. The
+  component API and interaction states are unchanged.
+- Added an offscreen check for the horizontal and vertical center of an
+  icon-and-label button at the configured 48 px target height.
+- Recorded the layout finding and target limitation in the design audit and
+  roadmap. Existing screenshots were not regenerated on Windows.
+
+### Verification
+- `python tests/qml/geometry_test.py` passed; the regression was observed
+  before the fix and the content group is centered after it.
+- All four `tests/qml/*.py` behavior tests passed.
+- Focused QML lint exited successfully with the existing static nested-Theme
+  property warnings. No QML lint errors were emitted.
+- `python tests/check_docs.py` passed for 41 Markdown files;
+  `python design/generators/generate.py --check` and `git diff --check` passed.
+- Arch/Quickshell/Wayland rendering remains **UNVERIFIED-ON-TARGET**.
