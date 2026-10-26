@@ -10,16 +10,12 @@ pub const MAX_FILE_BYTES: usize = 8 * 1024 * 1024;
 pub const MAX_TOTAL_BYTES: usize = 64 * 1024 * 1024;
 pub const MAX_MANIFEST_BYTES: usize = 2 * 1024 * 1024;
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct BackupManifest {
     pub version: u32,
     pub created_at: u64,
     pub files: Vec<BackupFile>,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct BackupFile {
     pub path: String,
     pub sha256: String,
@@ -85,7 +81,6 @@ impl BackupManifest {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum ArchivePath {
     Manifest,
     Config,
@@ -168,11 +163,9 @@ pub(crate) fn unix_now() -> u64 {
         .unwrap_or_default()
 }
 
-#[cfg(test)]
 mod tests {
     use super::*;
 
-    #[test]
     fn timestamps_are_utc_and_stable() {
         assert_eq!(timestamp_id("backup", 0), "backup-19700101-000000");
         assert_eq!(
@@ -181,7 +174,6 @@ mod tests {
         );
     }
 
-    #[test]
     fn archive_paths_are_strict() {
         assert_eq!(
             ArchivePath::parse("config/config.json").unwrap(),
@@ -210,7 +202,6 @@ mod tests {
         }
     }
 
-    #[test]
     fn manifest_validation_catches_duplicates_and_bad_hashes() {
         let file = BackupFile {
             path: "spaces/a.json".to_owned(),

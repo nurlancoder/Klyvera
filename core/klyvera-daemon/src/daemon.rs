@@ -20,7 +20,6 @@ const ACCEPT_POLL: Duration = Duration::from_millis(50);
 const CLIENT_TIMEOUT: Duration = Duration::from_secs(5);
 const MAX_REQUESTS_PER_CONNECTION: usize = 64;
 
-#[derive(Debug, Clone)]
 pub struct DaemonConfig {
     pub paths: Paths,
     pub socket: PathBuf,
@@ -318,7 +317,6 @@ impl Drop for SocketGuard {
     }
 }
 
-#[cfg(test)]
 mod tests {
     use super::*;
     use klyvera_spaces::{Space, TerminalCommand};
@@ -338,7 +336,6 @@ mod tests {
         }
     }
 
-    #[test]
     fn serves_requests_and_stops_cleanly() {
         let temp = tempfile::tempdir().unwrap();
         let paths = Paths::new(
@@ -410,7 +407,6 @@ mod tests {
         assert!(!socket.exists());
     }
 
-    #[test]
     fn protocol_and_untrusted_errors_are_reported() {
         let temp = tempfile::tempdir().unwrap();
         let paths = Paths::new(

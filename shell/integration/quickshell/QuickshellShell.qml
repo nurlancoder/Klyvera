@@ -1,6 +1,3 @@
-// Target-only Quickshell adapter. This file cannot be linted or run on Kali
-// because the Quickshell and Hyprland modules are absent. The UI consumes the
-// same property/signal contract through pure pages and MockService.
 import QtQuick
 import QtQuick.Layouts
 import Quickshell

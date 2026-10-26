@@ -5,19 +5,13 @@ use clap::Parser;
 use klyvera_config::Paths;
 use klyvera_daemon::{run, DaemonConfig};
 
-#[derive(Debug, Parser)]
-#[command(
     name = "klyvera-daemon",
     version,
     about = "Klyvera user-session daemon"
 )]
 struct Arguments {
-    /// Override the Unix socket path.
-    #[arg(long, value_name = "PATH")]
     socket: Option<PathBuf>,
 
-    /// Log every request outcome.
-    #[arg(long)]
     verbose: bool,
 }
 

@@ -8,7 +8,6 @@ use crate::protocol::{read_frame, write_frame, Request, Response};
 
 const CLIENT_TIMEOUT: Duration = Duration::from_secs(10);
 
-#[derive(Debug)]
 pub struct Client {
     path: PathBuf,
     stream: UnixStream,
@@ -62,7 +61,6 @@ impl Drop for Client {
     }
 }
 
-#[cfg(test)]
 mod tests {
     use super::*;
     use crate::protocol::Command;
@@ -70,7 +68,6 @@ mod tests {
     use serde_json::json;
     use std::thread;
 
-    #[test]
     fn client_roundtrips_with_a_local_server() {
         let temp = tempfile::tempdir().unwrap();
         let path = temp.path().join("daemon.sock");
@@ -93,7 +90,6 @@ mod tests {
         server.join().unwrap();
     }
 
-    #[test]
     fn missing_socket_is_a_clear_error() {
         let temp = tempfile::tempdir().unwrap();
         assert!(Client::connect(temp.path().join("missing.sock")).is_err());

@@ -1,8 +1,3 @@
-//! Integrity-checked, local-only backups for Klyvera configuration and Spaces.
-//!
-//! Archives are tar.gz with a SHA-256 manifest. Restore verifies structure,
-//! paths, sizes and hashes, validates the staged JSON, then creates a
-//! pre-restore backup before replacing live files.
 
 mod archive;
 mod error;

@@ -10,8 +10,6 @@ use crate::ConfigError;
 
 const TEMP_ATTEMPTS: u8 = 8;
 
-/// Write bytes to a private file by renaming a temporary file in the same
-/// directory. The parent directory is created (or tightened) to mode 0700.
 pub fn write_bytes_atomic(path: &Path, bytes: &[u8]) -> Result<(), ConfigError> {
     let parent = path.parent().ok_or_else(|| {
         ConfigError::Validation(format!("path has no parent directory: {}", path.display()))
@@ -32,7 +30,6 @@ pub fn write_bytes_atomic(path: &Path, bytes: &[u8]) -> Result<(), ConfigError> 
         ));
         let mut options = OpenOptions::new();
         options.write(true).create_new(true);
-        #[cfg(unix)]
         {
             use std::os::unix::fs::OpenOptionsExt;
             options.mode(0o600);
@@ -76,14 +73,12 @@ fn write_flush_rename(
     Ok(())
 }
 
-#[cfg(unix)]
 fn set_private_file_permissions(path: &Path) -> Result<(), ConfigError> {
     use std::os::unix::fs::PermissionsExt;
     fs::set_permissions(path, fs::Permissions::from_mode(0o600))
         .map_err(|error| ConfigError::io(path, error))
 }
 
-#[cfg(not(unix))]
 fn set_private_file_permissions(_path: &Path) -> Result<(), ConfigError> {
     Ok(())
 }
@@ -111,12 +106,10 @@ pub fn write_json_atomic<T: Serialize>(path: &Path, value: &T) -> Result<(), Con
     write_bytes_atomic(path, &bytes)
 }
 
-#[cfg(test)]
 mod tests {
     use super::*;
     use std::os::unix::fs::PermissionsExt;
 
-    #[test]
     fn writes_private_files_and_overwrites_atomically() {
         let temp = tempfile::tempdir().unwrap();
         let path = temp.path().join("nested/config.json");
@@ -140,7 +133,6 @@ mod tests {
         assert!(leftovers.is_empty());
     }
 
-    #[test]
     fn rejects_relative_parentless_path() {
         assert!(matches!(
             write_bytes_atomic(Path::new("/"), b"x"),

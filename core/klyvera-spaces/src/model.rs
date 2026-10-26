@@ -33,28 +33,18 @@ const SHELLS: [&str; 14] = [
     "cmd",
 ];
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct Space {
     pub version: u32,
     pub id: String,
     pub name: String,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub icon: Option<String>,
-    #[serde(default)]
     pub accent: SpaceAccent,
     pub project_paths: Vec<PathBuf>,
-    #[serde(default)]
     pub apps: Vec<AppRef>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub layout: Option<LayoutHints>,
-    #[serde(default)]
     pub commands: Vec<TerminalCommand>,
-    #[serde(default)]
     pub created_at: u64,
-    #[serde(default)]
     pub updated_at: u64,
 }
 
@@ -161,9 +151,6 @@ impl Space {
         Ok(())
     }
 
-    /// Check that every project path is an existing directory and that
-    /// canonical duplicates are rejected. Structural validation is separate so
-    /// a Space whose folder moved can still be loaded and edited.
     pub fn validate_existing_paths(&self) -> Result<(), SpaceError> {
         let mut canonical = std::collections::BTreeSet::new();
         for path in &self.project_paths {
@@ -185,8 +172,6 @@ impl Space {
         self.updated_at = unix_now();
     }
 
-    /// SHA-256 of the canonical JSON representation. Confirmation is recorded
-    /// per hash, so any content change invalidates an earlier confirmation.
     pub fn profile_hash(&self) -> Result<String, SpaceError> {
         let bytes = serde_json::to_vec(self).map_err(|error| SpaceError::json("profile", error))?;
         let digest = Sha256::digest(bytes);
@@ -197,7 +182,6 @@ impl Space {
         Ok(output)
     }
 
-    /// Normalise optional timestamps for hand-written or imported profiles.
     pub fn normalize_timestamps(&mut self) {
         let now = unix_now();
         if self.created_at == 0 {
@@ -224,10 +208,7 @@ impl Space {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
-#[serde(rename_all = "lowercase")]
 pub enum SpaceAccent {
-    #[default]
     Purple,
     Blue,
     Mint,
@@ -257,8 +238,6 @@ impl SpaceAccent {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct AppRef {
     pub desktop_id: String,
 }
@@ -271,18 +250,11 @@ impl AppRef {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields, default)]
 pub struct LayoutHints {
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub monitor: Option<String>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub workspace: Option<u8>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub master_count: Option<u8>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub gaps_in: Option<u8>,
-    #[serde(skip_serializing_if = "Option::is_none")]
     pub gaps_out: Option<u8>,
 }
 
@@ -327,12 +299,9 @@ impl LayoutHints {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct TerminalCommand {
     pub label: String,
     pub argv: Vec<String>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub cwd: Option<PathBuf>,
 }
 
@@ -550,7 +519,6 @@ fn validate_structural_path(path: &Path, label: &str) -> Result<(), SpaceError> 
             path.display()
         )));
     }
-    #[cfg(unix)]
     {
         use std::os::unix::ffi::OsStrExt;
         if path.as_os_str().as_bytes().contains(&0) {
@@ -567,7 +535,6 @@ pub(crate) fn unix_now() -> u64 {
         .unwrap_or_default()
 }
 
-#[cfg(test)]
 mod tests {
     use super::*;
 
@@ -575,7 +542,6 @@ mod tests {
         PathBuf::from("/tmp/klyvera-test-project")
     }
 
-    #[test]
     fn new_space_normalises_name_and_ids() {
         let space = Space::new("  My Demo Project  ", vec![absolute_temp_path()]).unwrap();
         assert_eq!(space.name, "My Demo Project");
@@ -584,7 +550,6 @@ mod tests {
         assert_eq!(space.profile_hash().unwrap().len(), 64);
     }
 
-    #[test]
     fn schema_example_is_a_valid_space() {
         let example = include_str!("../../../schemas/examples/space.example.json");
         let space: Space = serde_json::from_str(example).unwrap();
@@ -592,7 +557,6 @@ mod tests {
         assert_eq!(space.profile_hash().unwrap().len(), 64);
     }
 
-    #[test]
     fn slugify_handles_unicode_and_empty_names() {
         assert_eq!(slugify("Hello, World!"), "hello-world");
         assert_eq!(slugify("  ---  "), "space");
@@ -600,7 +564,6 @@ mod tests {
         assert_eq!(slugify(&"a".repeat(80)).len(), 64);
     }
 
-    #[test]
     fn validation_rejects_unsafe_and_malformed_fields() {
         let mut space = Space::new("Demo", vec![absolute_temp_path()]).unwrap();
         assert!(space.validate().is_ok());
@@ -631,7 +594,6 @@ mod tests {
         assert!(space.validate().is_ok());
     }
 
-    #[test]
     fn layout_ranges_are_enforced() {
         let mut space = Space::new("Demo", vec![absolute_temp_path()]).unwrap();
         space.layout = Some(LayoutHints {
@@ -656,7 +618,6 @@ mod tests {
         assert!(space.validate().is_ok());
     }
 
-    #[test]
     fn profile_hash_changes_with_content() {
         let mut space = Space::new("Demo", vec![absolute_temp_path()]).unwrap();
         let first = space.profile_hash().unwrap();
@@ -671,7 +632,6 @@ mod tests {
             .all(|character| character.is_ascii_hexdigit()));
     }
 
-    #[test]
     fn timestamps_normalise() {
         let mut space = Space::new("Demo", vec![absolute_temp_path()]).unwrap();
         space.created_at = 0;
@@ -686,7 +646,6 @@ mod tests {
         assert_eq!(space.updated_at, 10);
     }
 
-    #[test]
     fn desktop_ids_are_relative_and_terminated() {
         assert!(validate_desktop_id("org.example.App.desktop").is_ok());
         assert!(validate_desktop_id("nested/app.desktop").is_ok());
@@ -702,7 +661,6 @@ mod tests {
         }
     }
 
-    #[test]
     fn command_validation_rejects_shells_and_control_bytes() {
         for shell in ["/bin/bash", "zsh", "/usr/bin/fish", "C:\\cmd"] {
             let command = TerminalCommand::new("bad", vec![shell.to_owned()]);
@@ -717,7 +675,6 @@ mod tests {
         assert!(command.validate().is_err());
     }
 
-    #[test]
     fn accents_roundtrip() {
         for accent in [
             SpaceAccent::Purple,

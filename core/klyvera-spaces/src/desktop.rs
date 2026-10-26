@@ -7,7 +7,6 @@ use crate::model::validate_desktop_id;
 const MAX_DESKTOP_BYTES: u64 = 128 * 1024;
 const MAX_DEPTH: usize = 4;
 
-#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct DesktopEntry {
     pub id: String,
     pub name: String,
@@ -18,14 +17,11 @@ pub struct DesktopEntry {
     pub comment: Option<String>,
 }
 
-#[derive(Debug, Clone, Default)]
 pub struct DesktopIndex {
     entries: BTreeMap<String, DesktopEntry>,
 }
 
 impl DesktopIndex {
-    /// Load installed desktop entries in XDG precedence order. Malformed,
-    /// hidden, non-application and oversized entries are skipped, never fatal.
     pub fn load_default() -> Self {
         Self::load(&desktop_search_roots())
     }
@@ -172,9 +168,6 @@ pub fn desktop_search_roots() -> Vec<PathBuf> {
     roots
 }
 
-/// Parse the `[Desktop Entry]` group of a desktop file.
-///
-/// Returns `Ok(None)` for hidden entries and non-application types.
 pub fn parse_desktop(contents: &str, id: &str) -> Result<Option<DesktopEntry>, SpaceError> {
     let mut in_group = false;
     let mut seen_group = false;
@@ -243,8 +236,6 @@ pub fn parse_desktop(contents: &str, id: &str) -> Result<Option<DesktopEntry>, S
     }))
 }
 
-/// Parse a desktop `Exec` value into an argv array. Field codes are removed;
-/// `%%` becomes a literal `%`. Unknown field codes are rejected.
 pub fn parse_exec(input: &str) -> Result<Vec<String>, SpaceError> {
     let mut tokens = Vec::new();
     let mut current = String::new();
@@ -371,11 +362,9 @@ fn unescape_value(value: &str) -> String {
     output
 }
 
-#[cfg(test)]
 mod tests {
     use super::*;
 
-    #[test]
     fn parses_a_basic_entry() {
         let contents = "[Desktop Entry]\nType=Application\nName=Code\nExec=code %U\nIcon=code\nNoDisplay=false\n";
         let entry = parse_desktop(contents, "code.desktop")
@@ -387,7 +376,6 @@ mod tests {
         assert!(!entry.no_display);
     }
 
-    #[test]
     fn skips_hidden_and_non_application_entries() {
         for contents in [
             "[Desktop Entry]\nType=Application\nHidden=true\nName=X\nExec=x\n",
@@ -398,7 +386,6 @@ mod tests {
         }
     }
 
-    #[test]
     fn parses_quotes_escapes_and_field_codes() {
         assert_eq!(
             parse_exec(r#"app --name "Hello World" --literal %% --path=/tmp/a\ b %f"#).unwrap(),
@@ -413,20 +400,17 @@ mod tests {
         );
     }
 
-    #[test]
     fn rejects_bad_exec_syntax() {
         for bad in [r#"app "unterminated"#, "app trailing\\", "app %z", "app %"] {
             assert!(parse_exec(bad).is_err(), "{bad}");
         }
     }
 
-    #[test]
     fn drops_standalone_field_codes_but_keeps_empty_arguments() {
         assert_eq!(parse_exec("app %U %f").unwrap(), vec!["app"]);
         assert_eq!(parse_exec(r#"app "" --x"#).unwrap(), vec!["app", "", "--x"]);
     }
 
-    #[test]
     fn loads_roots_recursively_with_first_root_precedence() {
         let first = tempfile::tempdir().unwrap();
         let second = tempfile::tempdir().unwrap();
@@ -466,7 +450,6 @@ mod tests {
         assert!(index.resolve("../org.example.App.desktop").is_err());
     }
 
-    #[test]
     fn lists_visible_entries_sorted_by_name() {
         let index = DesktopIndex::from_entries([
             DesktopEntry {

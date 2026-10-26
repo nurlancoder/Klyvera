@@ -10,11 +10,8 @@ use klyvera_config::{ensure_private_dir, write_json_atomic};
 const TRUST_VERSION: u32 = 1;
 const MAX_TRUST_BYTES: u64 = 1024 * 1024;
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct TrustDocument {
     version: u32,
-    #[serde(default)]
     entries: BTreeMap<String, TrustEntry>,
 }
 
@@ -27,18 +24,11 @@ impl Default for TrustDocument {
     }
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
 struct TrustEntry {
     space_id: String,
     confirmed_at: u64,
 }
 
-/// Confirmation records keyed by the SHA-256 of a Space profile.
-///
-/// The profile content is never trusted implicitly: importing or editing a
-/// Space changes its hash and therefore requires a fresh confirmation.
-#[derive(Debug, Clone)]
 pub struct TrustStore {
     path: PathBuf,
     document: TrustDocument,
@@ -82,8 +72,6 @@ impl TrustStore {
         Ok(self.document.entries.contains_key(&hash))
     }
 
-    /// Record confirmation for the current profile content. Older hashes for
-    /// the same Space are discarded so trust does not grow without bound.
     pub fn trust(&mut self, space: &Space) -> Result<String, SpaceError> {
         let hash = space.profile_hash()?;
         self.document
@@ -149,7 +137,6 @@ fn validate_document(document: &TrustDocument) -> Result<(), SpaceError> {
     Ok(())
 }
 
-#[cfg(test)]
 mod tests {
     use super::*;
     use crate::model::TerminalCommand;
@@ -161,7 +148,6 @@ mod tests {
         space
     }
 
-    #[test]
     fn trust_is_tied_to_profile_content() {
         let temp = tempfile::tempdir().unwrap();
         let path = temp.path().join("data/trust.json");
@@ -182,7 +168,6 @@ mod tests {
         assert!(!reopened.is_trusted(&space).unwrap());
     }
 
-    #[test]
     fn trusting_again_replaces_older_hash_and_revoke_removes_all() {
         let temp = tempfile::tempdir().unwrap();
         let path = temp.path().join("trust.json");
@@ -197,7 +182,6 @@ mod tests {
         assert!(!store.is_trusted(&space).unwrap());
     }
 
-    #[test]
     fn malformed_trust_file_fails_closed() {
         let temp = tempfile::tempdir().unwrap();
         let path = temp.path().join("trust.json");

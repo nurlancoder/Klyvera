@@ -19,7 +19,6 @@ use klyvera_spaces::SpaceStore;
 
 const ARCHIVE_SUFFIX: &str = ".tar.gz";
 
-#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct BackupSummary {
     pub id: String,
     pub path: PathBuf,
@@ -29,7 +28,6 @@ pub struct BackupSummary {
     pub sha256: String,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct BackupInfo {
     pub id: String,
     pub path: PathBuf,
@@ -37,13 +35,11 @@ pub struct BackupInfo {
     pub modified_at: u64,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct VerifyReport {
     pub manifest: BackupManifest,
     pub verified_files: usize,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct RestoreReport {
     pub pre_restore_backup: BackupSummary,
     pub restored_config: bool,
@@ -57,8 +53,6 @@ struct SourceFile {
     sha256: String,
 }
 
-/// Create an integrity-checked backup of `config_file` and the Space files in
-/// `spaces_dir`. Missing sources are allowed; unexpected file types are not.
 pub fn create_backup(
     backups_dir: &Path,
     config_file: &Path,
@@ -212,7 +206,6 @@ fn write_archive(
 ) -> Result<(), BackupError> {
     let mut options = OpenOptions::new();
     options.write(true).create_new(true);
-    #[cfg(unix)]
     {
         use std::os::unix::fs::OpenOptionsExt;
         options.mode(0o600);
@@ -263,7 +256,6 @@ fn append_file(
         })
 }
 
-/// Verify archive structure, path safety, sizes, the manifest and every hash.
 pub fn verify_backup(archive_path: &Path) -> Result<VerifyReport, BackupError> {
     scan_archive(archive_path, None)
 }
@@ -418,7 +410,6 @@ fn write_staged(staging: &Path, kind: &ArchivePath, bytes: &[u8]) -> Result<(), 
     }
     let mut options = OpenOptions::new();
     options.write(true).create_new(true);
-    #[cfg(unix)]
     {
         use std::os::unix::fs::OpenOptionsExt;
         options.mode(0o600);
@@ -433,8 +424,6 @@ fn write_staged(staging: &Path, kind: &ArchivePath, bytes: &[u8]) -> Result<(), 
     Ok(())
 }
 
-/// Restore a verified backup. A pre-restore backup is always created before
-/// any live file is replaced, and the current Spaces are moved to trash.
 pub fn restore_backup(
     archive_path: &Path,
     backups_dir: &Path,
@@ -659,7 +648,6 @@ impl Drop for StagingGuard {
     }
 }
 
-#[cfg(test)]
 mod tests {
     use super::*;
     use klyvera_spaces::Space;
@@ -701,7 +689,6 @@ mod tests {
         }
     }
 
-    #[test]
     fn backup_verify_and_restore_roundtrip() {
         let fixture = Fixture::new();
         let first = fixture.add_space("First");
@@ -754,7 +741,6 @@ mod tests {
         assert_eq!(listing.len(), 2);
     }
 
-    #[test]
     fn tampered_archives_fail_verification() {
         let fixture = Fixture::new();
         fixture.add_space("Tamper");
@@ -767,7 +753,6 @@ mod tests {
         assert!(verify_backup(&tampered).is_err());
     }
 
-    #[test]
     fn restore_rejects_invalid_config_and_leaves_live_files_alone() {
         let fixture = Fixture::new();
         let created = create_backup(&fixture.backups, &fixture.config, &fixture.spaces).unwrap();
@@ -801,7 +786,6 @@ mod tests {
         assert_eq!(fs::read(&fixture.config).unwrap(), before);
     }
 
-    #[test]
     fn unsafe_archive_paths_are_rejected() {
         let temp = tempfile::tempdir().unwrap();
         let archive = temp.path().join("evil.tar.gz");
@@ -809,7 +793,6 @@ mod tests {
         assert!(verify_backup(&archive).is_err());
     }
 
-    #[test]
     fn invalid_sources_and_relative_directories_are_rejected() {
         let fixture = Fixture::new();
         assert!(create_backup(Path::new("relative"), &fixture.config, &fixture.spaces).is_err());

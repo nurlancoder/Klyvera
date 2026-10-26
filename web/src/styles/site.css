@@ -240,7 +240,6 @@ body {
   .button { transition: none; }
 }
 
-/* Shared layout for the landing pages and the documentation hub. */
 :root {
   color-scheme: dark;
   --page-max: 1200px;
