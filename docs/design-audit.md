@@ -47,6 +47,17 @@ Started: 2026-10-25. Scope: existing QML previews, website, tokens, icons.
   status remains pending with the project's provisional license decision; no
   third-party artwork was introduced.
 
+### V3 repair Phase 4 — Button content geometry
+
+- The checked-in component previews showed Button labels pinned to the top-left
+  of their targets. The offscreen geometry test reproduced the issue: a
+  text-only label center was at y=7 px in a 48 px button.
+- `Button.qml` now gives the control a content container whose child row is
+  centered within the control-provided content bounds. A regression test
+  verifies both axes with an icon-and-label button.
+- Automated offscreen verification passed. The screenshots were not regenerated
+  on this Windows host; target visual review remains pending.
+
 ## Phase B - Tokens v2
 - Updated tokens to premium palette with better contrast
 - Regenerated Theme.qml, tokens.css, contrast-report.md
@@ -66,4 +77,7 @@ Started: 2026-10-25. Scope: existing QML previews, website, tokens, icons.
 
 
 ## Status
-Continuing component/page polish for premium look. All checks passing.
+
+The V3 repair passes through Phase 4 have focused local regression checks.
+Arch/Quickshell/Wayland visual review and the maintainer's project-license
+decision remain pending.

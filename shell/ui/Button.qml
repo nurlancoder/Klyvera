@@ -46,32 +46,39 @@ Controls.AbstractButton {
     Accessible.name: accessibleName.length > 0 ? accessibleName : label
     Accessible.description: loading ? qsTr("Loading") : ""
 
-    contentItem: Row {
-        id: contentRow
-        anchors.centerIn: parent
-        spacing: Theme.scaled(Theme.spacing.xs)
+    contentItem: Item {
+        implicitWidth: contentRow.implicitWidth
+        implicitHeight: contentRow.implicitHeight
 
-        Controls.BusyIndicator {
-            visible: root.loading
-            running: root.loading
-            implicitWidth: Theme.scaled(Theme.icon.sizes.sm)
-            implicitHeight: Theme.scaled(Theme.icon.sizes.sm)
-        }
-        Icon {
-            visible: root.iconName.length > 0
-            name: root.iconName
-            color: root.contentColor
-            size: Theme.scaled(Theme.icon.sizes.sm)
-        }
-        Text {
-            visible: root.label.length > 0
-            text: root.label
-            color: root.contentColor
-            font.family: Theme.typography.uiFamily
-            font.pixelSize: Theme.scaledInt(Theme.typography.label.size)
-            font.weight: root.variant === "primary" || root.variant === "danger"
-                ? Theme.typography.weightSemibold : Theme.typography.label.weight
-            verticalAlignment: Text.AlignVCenter
+        Row {
+            id: contentRow
+            objectName: "buttonContentRow"
+            anchors.centerIn: parent
+            spacing: Theme.scaled(Theme.spacing.xs)
+
+            Controls.BusyIndicator {
+                visible: root.loading
+                running: root.loading
+                implicitWidth: Theme.scaled(Theme.icon.sizes.sm)
+                implicitHeight: Theme.scaled(Theme.icon.sizes.sm)
+            }
+            Icon {
+                visible: root.iconName.length > 0
+                name: root.iconName
+                color: root.contentColor
+                size: Theme.scaled(Theme.icon.sizes.sm)
+            }
+            Text {
+                objectName: "buttonLabel"
+                visible: root.label.length > 0
+                text: root.label
+                color: root.contentColor
+                font.family: Theme.typography.uiFamily
+                font.pixelSize: Theme.scaledInt(Theme.typography.label.size)
+                font.weight: root.variant === "primary" || root.variant === "danger"
+                    ? Theme.typography.weightSemibold : Theme.typography.label.weight
+                verticalAlignment: Text.AlignVCenter
+            }
         }
     }
 

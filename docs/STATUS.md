@@ -4,7 +4,7 @@ Klyvera is a **prototype**. This file records what has actually been run, what i
 written but cannot be exercised on the Debian-based development workstation, and
 what is blocked. It is updated after every step.
 
-Last updated: 2026-10-26 (Phase 7; V3 repair Phase 3)
+Last updated: 2026-10-26 (Phase 7; V3 repair Phase 4)
 
 ## Done
 
@@ -315,6 +315,20 @@ Last updated: 2026-10-26 (Phase 7; V3 repair Phase 3)
   static nested-Theme/catalog warnings.
 - Real Arch/Quickshell rendering remains unverified; project license
   confirmation remains a maintainer decision.
+
+### V3 repair Phase 4 — Button content geometry (Windows workstation)
+
+- Corrected the `Button` content geometry by placing its icon/label row in a
+  sized content container; the button's public API and interaction behavior are
+  unchanged.
+- Added an offscreen regression test that verifies icon-and-label content is
+  centered horizontally and vertically at the configured 48 px target height.
+  The test reproduced the previous vertical offset before the layout fix.
+- All four offscreen QML behavior tests, focused QML lint, the documentation
+  check and generated-token check passed. QML lint reports existing static
+  nested-Theme property warnings; it exits successfully.
+- This geometry check does not replace a visual review in Arch, Quickshell or
+  Wayland; target rendering remains **UNVERIFIED-ON-TARGET**.
 
 ## Unverified on target
 

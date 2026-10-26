@@ -51,3 +51,15 @@ data and isolated from Quickshell/Hyprland by an integration layer.
   cargo checks, shellcheck and token drift.
 - Everything that needs Arch, Hyprland or Quickshell is labelled
   **UNVERIFIED-ON-TARGET**.
+
+## V3 repair pass — Component geometry
+
+This checklist tracks the follow-up visual repair and does not reopen the
+completed shell integration phase above.
+
+- [x] Add an offscreen regression check for button content alignment at the
+      configured target size.
+- [x] Correct the button content layout without changing its public API or
+      interaction behavior.
+- [x] Re-run QML behavior tests, focused lint and the
+      documentation checks; record local and target limitations.
