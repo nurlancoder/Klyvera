@@ -31,6 +31,22 @@ Started: 2026-10-25. Scope: existing QML previews, website, tokens, icons.
 - No target-environment visual conclusions are drawn from these offscreen
   captures. Arch, Quickshell and Wayland appearance remains unverified.
 
+### V3 repair Phase 3 — Icon assets
+
+- The SVG inventory contained 50 original assets, but `Icon.qml` only drew a
+  smaller hand-written set and the existing generator emitted empty SVG paths.
+  The generated catalog now indexes every manifest asset and the generator
+  converts supported SVG geometry into non-empty QML `ShapePath` components.
+  `Icon.qml` loads those components while retaining Canvas for dynamic battery
+  state and fallback glyphs.
+- Generated Shape components use the existing `QtQuick.Shapes` runtime and
+  expose a bound color property. Runtime coverage confirms all static icons
+  render with their requested tint and their QML component tint updates when
+  the parent color changes.
+- Asset provenance is recorded as original project artwork. Per-asset license
+  status remains pending with the project's provisional license decision; no
+  third-party artwork was introduced.
+
 ## Phase B - Tokens v2
 - Updated tokens to premium palette with better contrast
 - Regenerated Theme.qml, tokens.css, contrast-report.md

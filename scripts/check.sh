@@ -79,6 +79,22 @@ else
   skip "no token generator yet"
 fi
 
+section "Icon assets"
+if has "$PYTHON"; then
+  if "$PYTHON" design/generators/icons.py --check; then
+    pass "icon manifest and generated catalog"
+  else
+    fail "icon manifest and generated catalog"
+  fi
+  if "$PYTHON" tests/test_icons_exist.py; then
+    pass "icon manifest tests"
+  else
+    fail "icon manifest tests"
+  fi
+else
+  skip "python3 not installed for icon checks"
+fi
+
 section "Shell scripts"
 shopt -s nullglob
 scripts=(scripts/*.sh .githooks/* packaging/scripts/* packaging/pkgbuild/*.sh packaging/archiso/*.sh packaging/archiso/profile/airootfs/usr/local/bin/klyvera-live-init)

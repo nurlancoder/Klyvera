@@ -8,6 +8,7 @@ EmptyState 1.0 EmptyState.qml
 ErrorState 1.0 ErrorState.qml
 FocusRing 1.0 FocusRing.qml
 Icon 1.0 Icon.qml
+singleton IconCatalog 1.0 IconCatalog.qml
 IconButton 1.0 IconButton.qml
 ListItem 1.0 ListItem.qml
 Panel 1.0 Panel.qml

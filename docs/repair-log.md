@@ -300,3 +300,34 @@ High-contrast theme (lines 65-89):
   static warnings for nested Theme members; no errors were reported.
 - `git diff --check` passed. The aggregate Bash runner was unavailable because
   Bash is not on this Windows host's `PATH`; relevant checks were run directly.
+
+## V3 repair Phase 3: Icon catalog and generator
+
+### Changes
+- Added a versioned manifest covering all 50 SVG files with per-asset
+  provenance and a pending project-license status. No third-party assets were
+  introduced and the provisional Apache-2.0 decision was not finalized.
+- Replaced the incomplete generator that emitted empty `PathSvg` values and
+  wrote files as an import side effect. The generator now validates manifest
+  coverage, safe filenames, SVG viewBoxes, supported local geometry and paint
+  attributes, then emits a deterministic `IconCatalog.qml` and per-icon
+  `QtQuick.Shapes` components with real path geometry.
+- `Icon.qml` loads generated Shape components for static icons while keeping
+  the Canvas path for dynamic battery state and fallback names. This uses the
+  existing Qt Quick Shapes module and adds no runtime package dependency.
+- Updated credits, third-party notices and design-system documentation.
+- Added manifest/catalog integration tests and an offscreen QML regression
+  covering SVG lookup, loading, rendering and dynamic tint changes.
+
+### Verification
+- `python design/generators/icons.py --check` passed for all 50 assets.
+- `python tests/test_icons_exist.py`: 5 tests passed.
+- All four `tests/qml/*.py` behavior tests passed, including the new rendered
+  test covering every SVG icon, tint binding changes and the battery fallback.
+- `python tests/check_docs.py` passed for 41 Markdown files; Theme contract
+  passed for 96 references; token generator check passed.
+- Focused QML lint exited successfully with static nested-Theme and generated
+  singleton warnings. ShellCheck passed for `scripts/check.sh`.
+- `git diff --check` passed. The aggregate Bash runner and Arch package build
+  were unavailable on this Windows host; validate package installation and
+  SVG rendering on Arch before release.

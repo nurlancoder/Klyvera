@@ -4,7 +4,7 @@ Klyvera is a **prototype**. This file records what has actually been run, what i
 written but cannot be exercised on the Debian-based development workstation, and
 what is blocked. It is updated after every step.
 
-Last updated: 2026-10-26 (Phase 7; V3 repair Phase 1)
+Last updated: 2026-10-26 (Phase 7; V3 repair Phase 3)
 
 ## Done
 
@@ -295,6 +295,26 @@ Last updated: 2026-10-26 (Phase 7; V3 repair Phase 1)
   exits successfully with static nested-Theme warnings.
 - Target appearance remains unverified; exact local results are recorded in
   `docs/repair-log.md`.
+
+### V3 repair Phase 3 — Icon catalog (Windows workstation)
+
+- Added `design/icons/manifest.json` for all 50 SVG assets, recording each
+  source as original project artwork and each license as pending maintainer
+  confirmation under the provisional project license.
+- Replaced the stub icon generator, which emitted empty paths as a module
+  import side effect, with validation-first manifest/SVG checks and a
+  deterministic QML catalog and generated Shape components for all static
+  icons.
+- Wired generated Shape components into `Icon.qml` with live QML tinting;
+  retained Canvas rendering for dynamic battery state and names without an
+  SVG asset. No additional runtime package dependency is needed.
+- Documented asset provenance and the pending license status.
+- Icon generator drift check, five manifest tests, all four offscreen QML
+  behavior tests, documentation check, Theme contract, ShellCheck for the
+  updated check runner, and focused QML lint passed. QML lint reported only
+  static nested-Theme/catalog warnings.
+- Real Arch/Quickshell rendering remains unverified; project license
+  confirmation remains a maintainer decision.
 
 ## Unverified on target
 

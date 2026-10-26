@@ -52,10 +52,14 @@ own.
 
 ## Icons
 
-`shell/ui/Icon.qml` draws the original Klyvera Line set with a uniform stroke
-width. No third-party icon files, fonts or path data are vendored. The names are
-conventional line-icon names and do not imply affiliation. Any third-party icon
-added later must be recorded here with its source and license.
+The original Klyvera Line SVG assets are listed in
+`design/icons/manifest.json`; `shell/ui/Icon.qml` uses their generated catalog
+and retains Canvas rendering for dynamic and fallback glyphs. No third-party
+icon files, fonts or path data are vendored. The names are conventional line-icon
+names and do not imply affiliation. The manifest marks the project license as
+pending maintainer confirmation; it does not make a final license decision.
+Any third-party icon added later must be recorded here with its source and
+license.
 
 ## Development-only tools
 

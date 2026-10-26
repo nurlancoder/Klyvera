@@ -8,12 +8,35 @@ Item {
     property color color: Theme.textPrimary
     property real level: 1.0
     property real size: Theme.scaled(Theme.icon.sizes.md)
+    readonly property bool usesAsset: IconCatalog.hasIcon(name) && name !== "battery"
+    readonly property bool assetLoaded: !usesAsset || assetLoader.status === Loader.Ready
 
     implicitWidth: size
     implicitHeight: size
     Accessible.ignored: true
 
+    Loader {
+        id: assetLoader
+        objectName: "assetLoader"
+        anchors.fill: parent
+        active: root.usesAsset
+        source: root.usesAsset ? IconCatalog.component(root.name) : ""
+
+        onStatusChanged: {
+            if (status === Loader.Error)
+                console.warn("Unable to load generated icon component:", root.name, source)
+        }
+    }
+
+    Binding {
+        target: assetLoader.item
+        property: "color"
+        value: root.color
+        when: assetLoader.status === Loader.Ready
+    }
+
     onColorChanged: canvas.requestPaint()
+    onNameChanged: canvas.requestPaint()
     onLevelChanged: canvas.requestPaint()
     onWidthChanged: canvas.requestPaint()
     onHeightChanged: canvas.requestPaint()
@@ -22,6 +45,7 @@ Item {
     Canvas {
         id: canvas
         anchors.fill: parent
+        visible: !root.usesAsset
 
         onPaint: {
             const ctx = getContext("2d")
