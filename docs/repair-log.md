@@ -2,16 +2,52 @@
 
 This document records all defects found, fixes applied, and verification steps during the V3 repair pass.
 
-## Phase 0: Triage - Initial State Analysis
+## Phase 0 Triage Summary (2026-10-26)
+
+### Current State
+- Branch: v3-repair, working tree clean
+- 3 commits exist: icon set, Theme API restoration, initial commit
+- No stable-phase7 tag (cannot restore reference)
+
+### Check Results
+- **0 failures, 8 skipped** (all tools missing: python3, cargo, qmllint, shellcheck, npm)
+- No --strict mode implemented
+- No bootstrap-dev.sh script
+- No repo-local .venv
+
+### Theme API Status
+- **COMPLETE** - static analysis found no missing properties
+- All `Theme.*` references in QML are defined in Theme.qml
+- Color values mostly match V3 spec but:
+  - borderSubtle/borderStrong/selection have malformed alpha notation (#0FFFFFFF instead of #0F with alpha object)
+  - Need to fix alpha format in tokens.json or generator
+
+### Icon System
+- 57 SVG icons in shell/assets/icons/
+- No manifest.json (design/icons/)
+- Licensing not documented per icon
+- Icon generator partial (icons.py exists but incomplete)
+
+### Next Steps
+- Phase 1: Add bootstrap-dev.sh, fix check.sh with --strict mode
+- Phase 2: Fix alpha notation in colors, regenerate Theme.qml
+- Phase 3: Complete icon system with manifest and generator
+
+## Phase 0: Triage - Initial State Analysis (2026-10-26)
 
 ### Git Status
-- Repository was not initialized (extracted copy)
-- Initialized git with initial commit from extracted files
+- Branch: v3-repair (already created)
+- Working tree clean (no uncommitted changes)
+- Recent commits:
+  - 8d6b06a feat: add complete icon set with licensing documentation
+  - 94560ed feat: restore Theme API with complete property set
+  - 17662ab Initial commit from extracted copy
 - No stable-phase7 tag exists (cannot restore from tag)
 - Working from current state as baseline
 
 ### Current Check Script Status
-- scripts/check.sh exists and appears functional
+- scripts/check.sh exists and runs
+- All checks skip due to missing tools (python3, cargo, qmllint, shellcheck, npm)
 - No --strict flag implemented yet
 - No bootstrap-dev.sh script exists
 - Dev environment tools not set up in repo-local .venv
@@ -88,9 +124,94 @@ These need to be replaced with the values specified in V3_REPAIR.md.
 4. Icons derived from Feather/Lucide but THIRD_PARTY_NOTICES.md says no third-party icon data
 5. Color values in dark theme are wrong (borderSubtle, borderStrong)
 
-### Next Steps
-- Cannot restore from stable-phase7 tag (doesn't exist)
-- Will work with current state and fix generator to emit complete Theme API
-- Will add bootstrap-dev.sh and strict mode to check.sh
-- Will fix color values in tokens.json
-- Will implement proper icon system with manifest and generator
+### Check Script Results (scripts/check.sh)
+```
+Design tokens    skip  python3 not installed
+Shell scripts    ok    bash syntax
+                 skip  shellcheck not installed
+Packaging        ok    PKGBUILD and profile syntax
+Rust core        skip  cargo not installed
+QML              skip  qmllint not installed
+QML behaviour    skip  PySide6 not installed
+JSON Schema      skip  python3 not installed
+Documentation    skip  python3 not installed for documentation checks
+Website          skip  web/node_modules missing (run npm ci)
+
+0 failure(s), 8 skipped
+```
+
+### Theme API Analysis - Static Comparison
+
+Collected all `Theme.*` references from:
+- shell/ (100+ matches in multiple files)
+- preview/ (63 matches in main.qml, pages.qml)
+- tests/ (14 matches in theme_contract.py, dialog_focus.qml)
+
+#### Properties DEFINED in Theme.qml (generated 2026-10-26):
+- Colors: background, surface, surfaceRaised, surfaceHover, surfaceActive, surfaceSunken, overlay, textPrimary, textSecondary, textDisabled, accentPurple, accentBlue, accentMint, success, danger, warning, info, onAccent, borderSubtle, borderStrong, focusRing, selection, shadow (23 direct accessors)
+- Spacing: base, xxs, xs, sm, md, lg, xl, xxl, 3xl, 4xl, 5xl, 6xl, xxxl, huge (14 values)
+- Radius: xs, sm, md, lg, xl, pill (6 values)
+- Borders: hairline, thick, focus, strong (4 values)
+- Typography:
+  - Fonts: fontHeading, fontBody, fontMono, uiFamily, headingFamily, monoFamily (6)
+  - Scale: xs, sm, base, md, lg, xl, 2xl, 3xl, 4xl, 5xl, 6xl, display, heading1, heading3, bodyStrong, caption, label, title, body (19)
+  - Weight: regular, medium, semibold, bold, extrabold, weightBold, weightMedium, label, title, caption (10)
+  - LineHeight: tight, snug, normal, relaxed, body, caption (6)
+  - Tracking: tight, normal, wide, letterSpacing (4)
+  - Computed: body, caption, display, heading1, heading2, heading3, label, title, bodyStrong (9)
+  - Aliases: weightSemibold, weightMedium, weightBold (3)
+- Motion:
+  - Duration: fast, normal, slow, durationFast, durationNormal, durationSlow (6)
+  - Easing: standard, emphasized, spring (3)
+  - reduceMotion (bool)
+  - durationFast, durationNormal, durationSlow (3 aliases)
+- Icon: xs, sm, md, lg, xl, 2xl, sizes.sm/md/lg, stroke, strokeWidth (10)
+- Layout: touchTarget, panel.*, spaces.*, launcher.*, controlCenter.*, classes.* (20+)
+- Accessibility: minContrast, minContrastLarge, focusWidth, minimumTargetSize, preferredTargetSize, focusRingOffset (6)
+- Functions: scaled, scaledInt, motionDuration, layoutClass (4)
+
+#### Properties USED in QML but NOT in Theme.qml:
+**NONE FOUND** - All properties referenced in QML files appear to be defined in the current Theme.qml.
+
+The Theme API appears complete based on static analysis. The earlier claim of "79 missing properties" may have been based on an earlier version of the generator/Theme.qml.
+
+### Color Values Analysis
+Dark theme colors in current Theme.qml (lines 16-38):
+- background: #07080D ✓ (matches V3 spec)
+- surface: #10121A ✓
+- surfaceRaised: #161926 ✓
+- surfaceHover: #1C2031 ✓
+- surfaceActive: #242A3E ✓
+- surfaceSunken: #0B0C12 ✓
+- textPrimary: #F4F6FB ✓
+- textSecondary: #B9C0D6 ✓
+- textDisabled: #7C849C ✓
+- accentPurple: #9B8BFF ✓
+- accentBlue: #4FC3F7 ✓
+- accentMint: #4DFFCC ✓
+- success: #4DFFCC ✓
+- danger: #FF7B95 ✓
+- warning: #FFC857 ✓
+- info: #7CC4FF ✓
+- onAccent: #05050A ✓
+- borderSubtle: #0FFFFFFF ✗ (should be a valid hex with alpha, currently malformed)
+- borderStrong: #29FFFFFF ✗ (should be a valid hex with alpha, currently malformed)
+- focusRing: #B9A6FF ✓
+- selection: #669B8BFF ✗ (malformed - has 9 chars with alpha)
+- shadow: #8C000000 ✓
+
+Light theme colors (lines 40-63):
+- All primary colors match V3 spec
+- borderSubtle, borderStrong, selection have same malformed alpha format
+
+High-contrast theme (lines 65-89):
+- All primary colors match V3 spec
+- borderSubtle, borderStrong, selection are plain hex (no alpha) - acceptable for high-contrast
+
+### Summary
+1. Theme API appears COMPLETE - no missing properties found in static analysis
+2. Color values largely match V3 spec but borderSubtle/borderStrong/selection have malformed alpha notation
+3. No stable-phase7 tag exists - cannot restore reference versions
+4. All tools missing (python3, cargo, qmllint, shellcheck, npm) - 8/8 checks skipped
+5. Icons exist but need proper manifest and generator
+6. bootstrap-dev.sh does not exist
