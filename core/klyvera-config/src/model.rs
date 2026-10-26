@@ -4,8 +4,6 @@ use crate::error::ConfigError;
 
 pub const SCHEMA_VERSION: u32 = 1;
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields, default)]
 pub struct Config {
     pub version: u32,
     pub appearance: Appearance,
@@ -53,8 +51,6 @@ impl Config {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields, default)]
 pub struct Appearance {
     pub theme: Theme,
     pub accent: Accent,
@@ -73,26 +69,18 @@ impl Default for Appearance {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
-#[serde(rename_all = "kebab-case")]
 pub enum Theme {
-    #[default]
     Dark,
     Light,
     HighContrast,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Serialize, Deserialize)]
-#[serde(rename_all = "lowercase")]
 pub enum Accent {
-    #[default]
     Purple,
     Blue,
     Mint,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields, default)]
 pub struct Launcher {
     pub recent_limit: u8,
 }
@@ -103,17 +91,13 @@ impl Default for Launcher {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Default, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields, default)]
 pub struct Notifications {
     pub do_not_disturb: bool,
 }
 
-#[cfg(test)]
 mod tests {
     use super::*;
 
-    #[test]
     fn default_config_is_valid_and_roundtrips() {
         let config = Config::default();
         config.validate().unwrap();
@@ -123,13 +107,11 @@ mod tests {
         assert!(json.contains("\"reduceMotion\":false"));
     }
 
-    #[test]
     fn unknown_fields_are_rejected() {
         let error = serde_json::from_str::<Config>(r#"{"version":1,"surprise":true}"#).unwrap_err();
         assert!(error.to_string().contains("unknown field"));
     }
 
-    #[test]
     fn validation_rejects_out_of_range_scale_and_recent_limit() {
         let mut config = Config::default();
         config.appearance.scale = 0.5;
@@ -147,14 +129,12 @@ mod tests {
         assert!(config.validate().is_err());
     }
 
-    #[test]
     fn schema_example_is_a_valid_config() {
         let example = include_str!("../../../schemas/examples/config.default.json");
         let config: Config = serde_json::from_str(example).unwrap();
         config.validate().unwrap();
     }
 
-    #[test]
     fn theme_and_accent_use_stable_json_names() {
         let mut config = Config::default();
         config.appearance.theme = Theme::HighContrast;

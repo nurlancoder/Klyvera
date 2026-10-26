@@ -10,21 +10,17 @@ use crate::error::IpcError;
 
 const MAX_SOCKET_PATH_BYTES: usize = 107;
 
-/// Return the effective UID of this process.
 pub fn current_uid() -> u32 {
-    #[cfg(unix)]
     {
         // SAFETY: geteuid has no preconditions and cannot fail.
         unsafe { libc::geteuid() }
     }
-    #[cfg(not(unix))]
     {
         0
     }
 }
 
 pub fn peer_uid(stream: &UnixStream) -> Result<u32, IpcError> {
-    #[repr(C)]
     struct PeerCredentials {
         pid: libc::pid_t,
         uid: libc::uid_t,
@@ -38,7 +34,6 @@ pub fn peer_uid(stream: &UnixStream) -> Result<u32, IpcError> {
     };
     let mut length = std::mem::size_of::<PeerCredentials>() as libc::socklen_t;
     // SAFETY: the socket fd is valid, and the pointer/length describe a
-    // correctly sized PeerCredentials buffer for SO_PEERCRED.
     let result = unsafe {
         libc::getsockopt(
             stream.as_raw_fd(),
@@ -67,8 +62,6 @@ pub fn verify_peer(stream: &UnixStream) -> Result<(), IpcError> {
     }
 }
 
-/// Bind a 0600 Unix listener, replacing a stale socket left by a crashed
-/// daemon but never replacing a live listener or a regular file.
 pub fn bind_listener(path: &Path) -> Result<UnixListener, IpcError> {
     if !path.is_absolute() {
         return Err(IpcError::InvalidSocketPath(path.to_path_buf()));
@@ -112,7 +105,6 @@ pub fn remove_socket(path: &Path) {
 }
 
 fn check_path_length(path: &Path) -> Result<(), IpcError> {
-    #[cfg(unix)]
     {
         use std::os::unix::ffi::OsStrExt;
         let length = path.as_os_str().as_bytes().len();
@@ -123,12 +115,10 @@ fn check_path_length(path: &Path) -> Result<(), IpcError> {
     Ok(())
 }
 
-#[cfg(test)]
 mod tests {
     use super::*;
     use std::path::PathBuf;
 
-    #[test]
     fn binds_private_sockets_and_refuses_live_ones() {
         let temp = tempfile::tempdir().unwrap();
         let path = temp.path().join("daemon.sock");
@@ -142,7 +132,6 @@ mod tests {
         drop(listener);
     }
 
-    #[test]
     fn replaces_stale_sockets_only() {
         let temp = tempfile::tempdir().unwrap();
         let path = temp.path().join("daemon.sock");
@@ -158,14 +147,12 @@ mod tests {
         assert_eq!(fs::read(&regular).unwrap(), b"keep me");
     }
 
-    #[test]
     fn rejects_relative_and_overlong_paths() {
         assert!(bind_listener(Path::new("relative.sock")).is_err());
         let long = PathBuf::from(format!("/tmp/{}", "a".repeat(120)));
         assert!(bind_listener(&long).is_err());
     }
 
-    #[test]
     fn peer_uid_matches_for_a_local_pair() {
         let (left, right) = UnixStream::pair().unwrap();
         assert_eq!(peer_uid(&left).unwrap(), current_uid());

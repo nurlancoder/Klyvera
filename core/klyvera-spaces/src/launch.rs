@@ -5,13 +5,11 @@ use crate::desktop::DesktopIndex;
 use crate::error::SpaceError;
 use crate::model::{LayoutHints, Space, TerminalCommand};
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ProcessKind {
     App,
     Command,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct PlannedProcess {
     pub label: String,
     pub argv: Vec<String>,
@@ -19,7 +17,6 @@ pub struct PlannedProcess {
     pub kind: ProcessKind,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct OpenPlan {
     pub space_id: String,
     pub profile_hash: String,
@@ -29,13 +26,11 @@ pub struct OpenPlan {
     pub layout: Option<LayoutHints>,
 }
 
-#[derive(Debug, Clone, Default, PartialEq, Eq)]
 pub struct OpenReport {
     pub started_apps: usize,
     pub started_commands: usize,
 }
 
-#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum CommandAuthorization {
     None,
     TrustedHash(String),
@@ -47,7 +42,6 @@ impl OpenPlan {
     }
 }
 
-/// Resolve a Space into absolute argv-only processes. No process is started.
 pub fn build_plan(space: &Space, index: &DesktopIndex) -> Result<OpenPlan, SpaceError> {
     space.validate()?;
     space.validate_existing_paths()?;
@@ -125,8 +119,6 @@ fn plan_command(
     })
 }
 
-/// Start the processes in a plan. Commands require an explicit confirmation
-/// matching the plan's profile hash; the daemon never infers trust.
 pub fn execute(
     plan: &OpenPlan,
     authorization: CommandAuthorization,
@@ -177,7 +169,6 @@ fn spawn(process: &PlannedProcess) -> Result<(), SpaceError> {
         })
 }
 
-#[cfg(test)]
 mod tests {
     use super::*;
     use crate::desktop::DesktopEntry;
@@ -206,7 +197,6 @@ mod tests {
         (temp, space, index)
     }
 
-    #[test]
     fn builds_an_argv_only_plan() {
         let (_temp, space, index) = fixture();
         let plan = build_plan(&space, &index).unwrap();
@@ -216,7 +206,6 @@ mod tests {
         assert_eq!(plan.profile_hash, space.profile_hash().unwrap());
     }
 
-    #[test]
     fn commands_require_a_confirmation_matching_the_profile_hash() {
         let (_temp, space, index) = fixture();
         let plan = build_plan(&space, &index).unwrap();
@@ -242,7 +231,6 @@ mod tests {
         );
     }
 
-    #[test]
     fn trust_store_matches_plan_hash_after_editing() {
         let (temp, mut space, index) = fixture();
         let mut trust = TrustStore::open(temp.path().join("trust.json")).unwrap();
@@ -259,7 +247,6 @@ mod tests {
         .is_ok());
     }
 
-    #[test]
     fn missing_projects_outside_cwds_and_terminal_apps_are_rejected() {
         let (temp, mut space, mut index) = fixture();
         space.commands[0].cwd = Some(temp.path().to_path_buf());

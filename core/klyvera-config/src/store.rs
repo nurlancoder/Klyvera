@@ -30,8 +30,6 @@ pub fn parse(path: &Path, bytes: &[u8]) -> Result<Config, ConfigError> {
     Ok(config)
 }
 
-/// Load the configuration, or return defaults when the file does not exist.
-/// The caller decides whether to persist the defaults.
 pub fn load_or_default(path: &Path) -> Result<Config, ConfigError> {
     match load(path) {
         Ok(config) => Ok(config),
@@ -130,13 +128,11 @@ fn migrate_zero_to_one(object: &mut Map<String, Value>) -> Result<(), ConfigErro
     Ok(())
 }
 
-#[cfg(test)]
 mod tests {
     use super::*;
     use std::os::unix::fs::PermissionsExt;
     use tempfile::tempdir;
 
-    #[test]
     fn saves_and_loads_config_with_private_permissions() {
         let temp = tempdir().unwrap();
         let path = temp.path().join("config.json");
@@ -151,7 +147,6 @@ mod tests {
         );
     }
 
-    #[test]
     fn missing_file_returns_defaults() {
         let temp = tempdir().unwrap();
         let path = temp.path().join("missing.json");
@@ -159,7 +154,6 @@ mod tests {
         assert!(load(&path).unwrap_err().is_not_found());
     }
 
-    #[test]
     fn migrates_legacy_flat_appearance() {
         let temp = tempdir().unwrap();
         let path = temp.path().join("config.json");
@@ -179,14 +173,12 @@ mod tests {
         assert_eq!(config.launcher.recent_limit, 12);
     }
 
-    #[test]
     fn empty_object_becomes_versioned_defaults() {
         let temp = tempdir().unwrap();
         let config = parse(&temp.path().join("config.json"), b"{}").unwrap();
         assert_eq!(config, Config::default());
     }
 
-    #[test]
     fn rejects_future_invalid_and_oversized_documents() {
         let temp = tempdir().unwrap();
         let path = temp.path().join("config.json");
@@ -208,7 +200,6 @@ mod tests {
         assert!(matches!(error, ConfigError::TooLarge { .. }));
     }
 
-    #[test]
     fn legacy_appearance_conflict_is_rejected() {
         let temp = tempdir().unwrap();
         let path = temp.path().join("config.json");

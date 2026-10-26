@@ -4,19 +4,16 @@ use crate::error::SpaceError;
 use crate::model::{unix_now, validate_id, Space, MAX_SPACE_BYTES, SPACE_VERSION};
 use klyvera_config::{ensure_private_dir, write_json_atomic};
 
-#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct LoadFailure {
     pub file: String,
     pub message: String,
 }
 
-#[derive(Debug, Clone, Default)]
 pub struct ListReport {
     pub spaces: Vec<Space>,
     pub errors: Vec<LoadFailure>,
 }
 
-#[derive(Debug, Clone)]
 pub struct SpaceStore {
     directory: PathBuf,
 }
@@ -127,7 +124,6 @@ impl SpaceStore {
         report
     }
 
-    /// Create a locally authored Space. Project paths must already exist.
     pub fn create_new(&self, mut space: Space) -> Result<Space, SpaceError> {
         space.validate()?;
         space.validate_existing_paths()?;
@@ -135,8 +131,6 @@ impl SpaceStore {
         self.write_new(space)
     }
 
-    /// Persist an imported Space. Structural validation applies; missing project
-    /// folders are reported when the Space is opened, not at import time.
     pub fn save_imported(&self, mut space: Space) -> Result<Space, SpaceError> {
         space.validate()?;
         space.normalize_timestamps();
@@ -163,7 +157,6 @@ impl SpaceStore {
         Ok(space)
     }
 
-    /// Move a Space file to the trash directory instead of deleting it.
     pub fn delete(&self, id: &str) -> Result<PathBuf, SpaceError> {
         let path = self.path_for(id)?;
         if !path.is_file() {
@@ -238,12 +231,9 @@ fn unique_trash_path(trash: &Path, id: &str, timestamp: u64) -> PathBuf {
             return candidate;
         }
     }
-    // The timestamp and bounded suffix loop make a collision extremely
-    // unlikely; overwriting an old trash entry is safer than failing a delete.
     base
 }
 
-#[cfg(test)]
 mod tests {
     use super::*;
     use crate::model::TerminalCommand;
@@ -258,7 +248,6 @@ mod tests {
         Space::new("Demo Space", vec![project(temp)]).unwrap()
     }
 
-    #[test]
     fn creates_reads_lists_updates_and_trashes_spaces() {
         let temp = tempfile::tempdir().unwrap();
         let store = SpaceStore::open(temp.path().join("data/spaces")).unwrap();
@@ -294,7 +283,6 @@ mod tests {
         );
     }
 
-    #[test]
     fn refuses_duplicate_ids_and_missing_project_paths() {
         let temp = tempfile::tempdir().unwrap();
         let store = SpaceStore::open(temp.path().join("spaces")).unwrap();
@@ -312,7 +300,6 @@ mod tests {
         ));
     }
 
-    #[test]
     fn import_roundtrip_and_collision() {
         let temp = tempfile::tempdir().unwrap();
         let store = SpaceStore::open(temp.path().join("spaces")).unwrap();
@@ -332,7 +319,6 @@ mod tests {
         ));
     }
 
-    #[test]
     fn imported_spaces_may_have_missing_folders() {
         let temp = tempfile::tempdir().unwrap();
         let store = SpaceStore::open(temp.path().join("spaces")).unwrap();
@@ -344,7 +330,6 @@ mod tests {
         );
     }
 
-    #[test]
     fn rejects_malformed_and_oversized_documents() {
         assert!(SpaceStore::parse_import(b"not json").is_err());
         let oversized = vec![b' '; MAX_SPACE_BYTES + 1];
@@ -356,7 +341,6 @@ mod tests {
         assert!(SpaceStore::parse_import(wrong_version).is_err());
     }
 
-    #[test]
     fn list_reports_bad_files_without_hiding_good_ones() {
         let temp = tempfile::tempdir().unwrap();
         let directory = temp.path().join("spaces");
@@ -382,8 +366,6 @@ mod tests {
             .any(|error| error.file == "renamed.json"));
     }
 
-    #[cfg(unix)]
-    #[test]
     fn list_rejects_symlinked_space_files() {
         let temp = tempfile::tempdir().unwrap();
         let directory = temp.path().join("spaces");
@@ -401,9 +383,7 @@ mod tests {
         assert!(listing.errors.iter().any(|error| error.file == "link.json"));
     }
 
-    #[test]
     fn files_and_directories_are_private() {
-        #[cfg(unix)]
         {
             use std::os::unix::fs::PermissionsExt;
             let temp = tempfile::tempdir().unwrap();
@@ -420,7 +400,6 @@ mod tests {
         }
     }
 
-    #[test]
     fn relative_directories_and_unsafe_ids_are_rejected() {
         assert!(SpaceStore::open(PathBuf::from("relative")).is_err());
         let temp = tempfile::tempdir().unwrap();

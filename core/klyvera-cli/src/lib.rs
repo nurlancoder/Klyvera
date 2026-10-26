@@ -1,4 +1,3 @@
-//! Klyvera command-line interface.
 
 mod error;
 
@@ -20,126 +19,73 @@ use serde_json::{json, Value};
 
 pub use error::CliError;
 
-#[derive(Debug, Parser)]
-#[command(name = "klyvera", version, about = "Klyvera command line")]
 pub struct Cli {
-    /// Emit machine-readable JSON.
-    #[arg(long, global = true)]
     pub json: bool,
 
-    /// Show what would happen without starting or changing anything.
-    #[arg(long, global = true)]
     pub dry_run: bool,
 
-    #[command(subcommand)]
     pub command: Commands,
 }
 
-#[derive(Debug, Subcommand)]
 pub enum Commands {
-    /// Manage Klyvera Spaces.
     Spaces {
-        #[command(subcommand)]
         command: SpacesCommand,
     },
-    /// Create a verified backup of configuration and Spaces.
     Backup,
-    /// List local backups.
     Backups,
-    /// Verify a backup archive.
     Verify {
-        #[arg(value_name = "ARCHIVE")]
         archive: PathBuf,
     },
-    /// Restore a backup after creating a pre-restore backup.
     Restore {
-        #[arg(value_name = "ARCHIVE")]
         archive: PathBuf,
-        /// Confirm replacing live configuration and Spaces.
-        #[arg(long)]
         yes: bool,
     },
-    /// Show daemon and local state.
     Status,
-    /// Check local Klyvera health.
     Doctor,
 }
 
-#[derive(Debug, Subcommand)]
 pub enum SpacesCommand {
-    /// List Spaces.
     List,
-    /// Create a Space.
     New(NewArgs),
-    /// Show one Space.
     Show {
-        #[arg(value_name = "ID")]
         id: String,
     },
-    /// Open a Space.
     Open {
-        #[arg(value_name = "ID")]
         id: String,
     },
-    /// Move a Space to the trash directory.
     Delete {
-        #[arg(value_name = "ID")]
         id: String,
     },
-    /// Export a Space as JSON.
     Export {
-        #[arg(value_name = "ID")]
         id: String,
-        /// Write to this file instead of stdout.
-        #[arg(short, long, value_name = "FILE")]
         output: Option<PathBuf>,
     },
-    /// Import a Space JSON file, or '-' for stdin.
     Import {
-        #[arg(value_name = "FILE")]
         source: String,
     },
-    /// Confirm the current commands in a Space.
     Trust {
-        #[arg(value_name = "ID")]
         id: String,
     },
-    /// Revoke confirmations for a Space.
     Untrust {
-        #[arg(value_name = "ID")]
         id: String,
     },
 }
 
-#[derive(Debug, Args)]
 pub struct NewArgs {
-    #[arg(value_name = "NAME")]
     pub name: String,
 
-    /// Absolute or existing project directory. Repeat for more paths.
-    #[arg(long = "path", value_name = "DIR", required = true)]
     pub paths: Vec<PathBuf>,
 
-    /// Override the generated Space id.
-    #[arg(long, value_name = "ID")]
     pub id: Option<String>,
 
-    #[arg(long, value_name = "TEXT")]
     pub description: Option<String>,
 
-    #[arg(long, value_name = "ICON")]
     pub icon: Option<String>,
 
-    /// purple, blue, mint or neutral.
-    #[arg(long, value_name = "ACCENT")]
     pub accent: Option<String>,
 
-    /// Desktop entry id, e.g. code.desktop. Repeatable.
-    #[arg(long = "app", value_name = "DESKTOP_ID")]
     pub apps: Vec<String>,
 
-    /// Terminal command as JSON: {"label":"Tests","argv":["cargo","test"]}.
-    #[arg(long = "command", value_name = "JSON")]
     pub commands: Vec<String>,
 }
 
@@ -635,7 +581,6 @@ fn daemon_status(paths: &Paths) -> (bool, Option<Value>, Option<String>) {
     }
 }
 
-#[derive(Debug, Serialize)]
 struct Check {
     name: &'static str,
     status: &'static str,
@@ -780,7 +725,6 @@ fn run_doctor(cli: &Cli) -> Result<ExitCode, CliError> {
     })
 }
 
-#[cfg(unix)]
 fn permissions_check(paths: &Paths) -> Check {
     use std::os::unix::fs::PermissionsExt;
 
@@ -815,7 +759,6 @@ fn permissions_check(paths: &Paths) -> Check {
     }
 }
 
-#[cfg(not(unix))]
 fn permissions_check(_paths: &Paths) -> Check {
     Check::ok("permissions", "not applicable on this platform")
 }

@@ -110,7 +110,7 @@ def main() -> int:
         schema = load(schema_path)
         try:
             Draft202012Validator.check_schema(schema)
-        except Exception as error:  # jsonschema raises several schema errors
+        except Exception as error:
             print(f"FAIL {schema_path.name}: invalid schema: {error}")
             failures += 1
             continue

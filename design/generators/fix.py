@@ -1,23 +1,13 @@
 s = open('/root/Desktop/klyvera/design/generators/generate.py').read()
-# Remove everything from '        raise SystemExit' that got appended in wrong place
-# Find and cut
 idx = s.find('        raise SystemExit(0 if ok else 1)')
 if idx >= 0:
-    # cut back to start of that line's content - but it's indented badly
-    # easier to just truncate after build_outputs and append correct main
     pass
 
-# Better: replace from build_outputs onward
 start = s.find('def build_outputs')
 if start == -1:
     raise SystemExit('bad')
-# Find end of build_outputs function
-# just cut and rebuild main
 end_marker = s.find('\n        raise SystemExit(0 if ok else 1)')
 if end_marker >= 0:
-    # go back to find line start
-    # cut from before that bad indent
-    # easier to reconstruct from 'def build_outputs' to before bad stuff
     s2 = s[:start]
     s2 += '''def build_outputs(tokens):
     return {

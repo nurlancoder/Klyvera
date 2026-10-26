@@ -4,12 +4,6 @@ use std::path::{Path, PathBuf};
 
 use crate::ConfigError;
 
-/// Klyvera-owned directories, already scoped to the application.
-///
-/// `from_env` appends `klyvera` to the XDG roots. `new` takes the final
-/// application directories directly, which keeps tests independent of the
-/// process environment.
-#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Paths {
     config_dir: PathBuf,
     data_dir: PathBuf,
@@ -88,7 +82,6 @@ impl Paths {
         Ok(runtime.join("daemon.sock"))
     }
 
-    /// Create the directories Klyvera owns and tighten them to mode 0700.
     pub fn ensure_layout(&self) -> Result<(), ConfigError> {
         ensure_private_dir(&self.config_dir)?;
         ensure_private_dir(&self.data_dir)?;
@@ -136,24 +129,20 @@ pub fn ensure_private_dir(path: &Path) -> Result<(), ConfigError> {
     Ok(())
 }
 
-#[cfg(unix)]
 fn set_private_dir_permissions(path: &Path) -> Result<(), ConfigError> {
     use std::os::unix::fs::PermissionsExt;
     let permissions = fs::Permissions::from_mode(0o700);
     fs::set_permissions(path, permissions).map_err(|error| ConfigError::io(path, error))
 }
 
-#[cfg(not(unix))]
 fn set_private_dir_permissions(_path: &Path) -> Result<(), ConfigError> {
     Ok(())
 }
 
-#[cfg(test)]
 mod tests {
     use super::*;
     use std::os::unix::fs::PermissionsExt;
 
-    #[test]
     fn explicit_paths_have_expected_layout() {
         let paths = Paths::new(
             PathBuf::from("/tmp/k/config"),
@@ -170,7 +159,6 @@ mod tests {
         );
     }
 
-    #[test]
     fn runtime_is_required_for_socket() {
         let paths = Paths::new(
             PathBuf::from("/tmp/k/config"),
@@ -183,7 +171,6 @@ mod tests {
         ));
     }
 
-    #[test]
     fn layout_creates_private_directories() {
         let temp = tempfile::tempdir().unwrap();
         let paths = Paths::new(
@@ -204,7 +191,6 @@ mod tests {
         paths.ensure_runtime_dir().unwrap();
     }
 
-    #[test]
     fn empty_relative_and_missing_home_are_rejected() {
         assert!(matches!(
             absolute("XDG_CONFIG_HOME", PathBuf::from("relative")),
