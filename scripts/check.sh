@@ -63,11 +63,36 @@ if [[ -f design/generators/generate.py ]]; then
     else
       skip "theme contract test not found"
     fi
+    if [[ -f tests/test_token_colors.py ]]; then
+      if "$PYTHON" tests/test_token_colors.py; then
+        pass "token color formats"
+      else
+        fail "token color formats"
+      fi
+    else
+      skip "token color test not found"
+    fi
   else
     skip "python3 not installed"
   fi
 else
   skip "no token generator yet"
+fi
+
+section "Icon assets"
+if has "$PYTHON"; then
+  if "$PYTHON" design/generators/icons.py --check; then
+    pass "icon manifest and generated catalog"
+  else
+    fail "icon manifest and generated catalog"
+  fi
+  if "$PYTHON" tests/test_icons_exist.py; then
+    pass "icon manifest tests"
+  else
+    fail "icon manifest tests"
+  fi
+else
+  skip "python3 not installed for icon checks"
 fi
 
 section "Shell scripts"

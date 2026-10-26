@@ -44,7 +44,7 @@ def parse_color(value):
     if isinstance(value, str):
         hex_value = value.strip(); alpha = 1.0
         if hex_value.startswith('#') and len(hex_value)==9:
-            alpha = int(hex_value[1:3],16)/255.0; hex_value = '#'+hex_value[3:]
+            alpha = int(hex_value[7:9],16)/255.0; hex_value = hex_value[:7]
         elif hex_value.startswith('#') and len(hex_value)==7: alpha=1.0
         elif hex_value.startswith('#') and len(hex_value)==6: hex_value='#'+hex_value[1:]; alpha=1.0
         else: fail(f"color must be #RRGGBB: {value!r}")
@@ -79,6 +79,9 @@ def kebab(name:str):
 
 def qml_identifier(name:str):
     return f"size{name}" if name[:1].isdigit() else name
+
+def qml_font_family(value:str):
+    return value.split(",",1)[0].strip().strip("\"'")
 
 def rgb(value):
     hexv,alpha=parse_color(value)
@@ -139,12 +142,12 @@ def build_theme_qml(tokens):
         if isinstance(v,int): lines.append(f'        readonly property int {qml_identifier(k)}: {v}')
     lines.append("    }")
     lines.append("    readonly property QtObject typography: QtObject {")
-    lines.append('        readonly property string fontHeading: ' + json.dumps(tokens["typography"]["fontFamily"]["heading"]))
-    lines.append('        readonly property string fontBody: ' + json.dumps(tokens["typography"]["fontFamily"]["body"]))
-    lines.append('        readonly property string fontMono: ' + json.dumps(tokens["typography"]["fontFamily"]["mono"]))
+    lines.append('        readonly property string fontHeading: ' + json.dumps(qml_font_family(tokens["typography"]["fontFamily"]["heading"])))
+    lines.append('        readonly property string fontBody: ' + json.dumps(qml_font_family(tokens["typography"]["fontFamily"]["body"])))
+    lines.append('        readonly property string fontMono: ' + json.dumps(qml_font_family(tokens["typography"]["fontFamily"]["mono"])))
     for fk, fv in tokens["typography"]["fontFamily"].items():
         if fk not in {"heading", "body", "mono"}:
-            lines.append(f'        readonly property string {fk}: ' + json.dumps(fv))
+            lines.append(f'        readonly property string {fk}: ' + json.dumps(qml_font_family(fv)))
     lines.append("        readonly property QtObject scale: QtObject {")
     for k,v in tokens["typography"]["scale"].items():
         if isinstance(v,int): lines.append(f'            readonly property int {qml_identifier(k)}: {v}')

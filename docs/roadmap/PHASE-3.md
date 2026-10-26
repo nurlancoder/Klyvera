@@ -60,3 +60,19 @@ offscreen rendering. The component gallery has not run under Quickshell or in a
 Wayland session, and the screenshots have not been checked on the target.
 `qmllint` still prints one known singleton warning when `Theme.qml` is linted as
 a standalone file; the command exits successfully.
+
+## V3 repair pass — Icon catalog and generator
+
+This checklist tracks the separate V3 repair pass; it does not reopen the
+completed shell component-library phase above.
+
+- [x] Inventory the SVG assets, existing Canvas icon coverage, and the
+      incomplete SVG-to-QML generator.
+- [x] Add a manifest covering every shipped SVG with its name, source,
+      provenance, and provisional project-license status.
+- [x] Replace the stub generator with deterministic manifest and supported SVG
+      geometry validation, then generate the QML catalog and Shape components.
+- [x] Add regression tests for manifest completeness, SVG validity, generated
+      output and `--check` drift detection; wire them into `scripts/check.sh`.
+- [x] Update icon licensing/provenance documentation and record phase results
+      and any remaining legal or target-environment blockers.

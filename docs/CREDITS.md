@@ -22,9 +22,12 @@ The fonts are planned, not yet bundled.
 
 ## Icons
 
-The Klyvera Line icon set is original work drawn in `shell/ui/Icon.qml`. Its
-names follow common line-icon vocabulary; no third-party icon files or path data
-are used.
+The Klyvera Line icon set is original project artwork. Its SVG sources are
+listed in `design/icons/manifest.json` and loaded through the generated QML icon
+catalog; the Canvas renderer remains for dynamic and fallback glyphs. Names
+follow common line-icon vocabulary; no third-party icon files or path data are
+used. The per-asset manifest records the provisional project-license status
+without treating it as a final license decision.
 
 ## Development tools
 

@@ -16,9 +16,29 @@ python3 design/generators/generate.py --check  # verify in CI
 | `shell/styles/qmldir` | `Klyvera.Styles` module exposing the singleton |
 | `web/src/styles/tokens.css` | CSS custom properties for the website |
 | `docs/contrast-report.md` | Generated WCAG report |
+| `shell/ui/IconCatalog.qml` | Generated QML catalog for the SVG icon assets |
+| `shell/ui/icons/generated/*.qml` | Generated scalable QML Shape components |
 
 `--check` fails when a generated file is stale or when a required contrast pair
 drops below its threshold. Never edit generated files by hand.
+
+Color tokens with eight hexadecimal digits use CSS `#RRGGBBAA` ordering. The
+generator converts that trailing alpha to Qt's `#AARRGGBB` form and to CSS
+`rgba()` values; object tokens with explicit `hex` and `alpha` remain supported.
+
+The original SVG icon inventory is maintained in `design/icons/manifest.json`.
+Generate and verify its QML catalog and Shape components with:
+
+```bash
+python3 design/generators/icons.py
+python3 design/generators/icons.py --check
+```
+
+The manifest records each file's original-project provenance and keeps its
+license status pending the maintainer's confirmation of the project license.
+`Icon.qml` uses generated Shape components for static icons; the Canvas renderer
+remains for dynamic battery state and names without an SVG asset. No third-party
+SVG runtime dependency is needed.
 
 Nested token groups are emitted as typed inline QML components. This keeps
 `Theme.spacing.md`, `Theme.typography.body.size` and `Theme.layout.panel.height`

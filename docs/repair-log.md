@@ -263,3 +263,71 @@ High-contrast theme (lines 65-89):
   numeric-leading token names now receive valid `size`-prefixed identifiers.
 - The earlier browser failure count (72/126) was resolved; the corrected suite
   now passes all 198 assertions.
+
+## V3 repair Phase 2: Theme token correctness
+
+### Changes
+- Source token colors with eight hexadecimal digits use CSS `#RRGGBBAA`
+  ordering. The generator now converts this to Qt `#AARRGGBB` and CSS
+  `rgba(...)`, fixing opaque yellow borders in the rendered component preview.
+- Generated QML font-family values now use the first family from a CSS-style
+  family list; the test suite covers this conversion.
+- Added regression tests for both color conversions and retained support for
+  tokens that specify `hex` and `alpha` separately.
+- Documented the color format and the preview findings in
+  `docs/design-system.md` and `docs/design-audit.md`.
+
+### Visual review and limitation
+- Inspected six checked-in component/page screenshots and rendered component
+  and page previews. The newly generated Windows/offscreen captures displayed
+  square placeholder glyphs even when the text font was forced to Segoe UI.
+- Did not retain those unusable captures. The checked-in baseline screenshots
+  remain unchanged. Screenshot rendering must be verified in the Linux Qt
+  environment, and Quickshell/Wayland appearance remains unverified.
+
+### Verification
+- `python tests/test_token_colors.py`: 5 tests passed.
+- `python design/generators/generate.py --check` passed; the generated
+  `Theme.qml` and `tokens.css` are in sync.
+- `python tests/theme_contract.py` passed: 96 Theme references and numeric
+  token identifiers.
+- `python tests/qml/dialog_focus.py` and `python tests/qml/pages_behavior.py`
+  passed in the repository virtual environment.
+- `python tests/check_docs.py` passed for 41 Markdown files.
+- From `web/`, `npm run build` and `npm run check` passed; website checks
+  reported 3 pages and 285 assertions.
+- ShellCheck passed for `scripts/check.sh`. QML lint exited successfully with
+  static warnings for nested Theme members; no errors were reported.
+- `git diff --check` passed. The aggregate Bash runner was unavailable because
+  Bash is not on this Windows host's `PATH`; relevant checks were run directly.
+
+## V3 repair Phase 3: Icon catalog and generator
+
+### Changes
+- Added a versioned manifest covering all 50 SVG files with per-asset
+  provenance and a pending project-license status. No third-party assets were
+  introduced and the provisional Apache-2.0 decision was not finalized.
+- Replaced the incomplete generator that emitted empty `PathSvg` values and
+  wrote files as an import side effect. The generator now validates manifest
+  coverage, safe filenames, SVG viewBoxes, supported local geometry and paint
+  attributes, then emits a deterministic `IconCatalog.qml` and per-icon
+  `QtQuick.Shapes` components with real path geometry.
+- `Icon.qml` loads generated Shape components for static icons while keeping
+  the Canvas path for dynamic battery state and fallback names. This uses the
+  existing Qt Quick Shapes module and adds no runtime package dependency.
+- Updated credits, third-party notices and design-system documentation.
+- Added manifest/catalog integration tests and an offscreen QML regression
+  covering SVG lookup, loading, rendering and dynamic tint changes.
+
+### Verification
+- `python design/generators/icons.py --check` passed for all 50 assets.
+- `python tests/test_icons_exist.py`: 5 tests passed.
+- All four `tests/qml/*.py` behavior tests passed, including the new rendered
+  test covering every SVG icon, tint binding changes and the battery fallback.
+- `python tests/check_docs.py` passed for 41 Markdown files; Theme contract
+  passed for 96 references; token generator check passed.
+- Focused QML lint exited successfully with static nested-Theme and generated
+  singleton warnings. ShellCheck passed for `scripts/check.sh`.
+- `git diff --check` passed. The aggregate Bash runner and Arch package build
+  were unavailable on this Windows host; validate package installation and
+  SVG rendering on Arch before release.

@@ -46,3 +46,21 @@ user daemon and the CLI. Nothing in this phase executes shell strings.
 - Schema examples validate with `jsonschema`.
 - `klyvera doctor` gives a readable report on Kali with honest warnings.
 - Manual target behaviour is listed as unverified, not claimed.
+
+## V3 repair pass — Theme API verification
+
+This checklist tracks the separate V3 repair pass; it does not reopen the
+completed Rust core phase above.
+
+- [x] Preserve the merged GitHub palette and valid alpha-color values while
+  comparing the required V3 color keys.
+- [x] Generate the missing Theme accessors and compatibility token aliases
+  without replacing the current token schema or palette.
+- [x] Fix generated `qmldir` comment syntax and verify generated-file drift.
+- [x] Add and run a static contract test for QML Theme references and numeric
+  token identifiers.
+- [x] Render component and page previews, inspect at least six screenshots, and
+  record concrete findings in `docs/design-audit.md`. The Windows/offscreen
+  font-rendering limitation is recorded; unusable regenerated captures
+  were not retained.
+- [x] Run the phase checks, update `docs/STATUS.md`, and record any blockers.
