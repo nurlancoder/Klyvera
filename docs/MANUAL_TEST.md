@@ -182,6 +182,9 @@ Target session checks:
 - [ ] Panel, launcher, control center, notification center, system monitor, lock
       screen, session menu and welcome open on the intended monitor.
 - [ ] Keyboard navigation works for every surface; Escape closes overlays.
+- [ ] Activating a notification from history invokes its default action, marks
+      that entry read and updates the unread count; a non-resident notification
+      may close while its local history entry remains.
 - [ ] Workspace indicators follow Hyprland workspace changes.
 - [ ] Audio, network, Bluetooth, display, battery and power failures show
       degraded states rather than fake values.

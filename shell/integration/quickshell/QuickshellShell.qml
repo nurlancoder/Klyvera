@@ -304,6 +304,9 @@ ShellRoot {
                 onDismissRequested: function(notificationId) {
                     root.notificationServer.dismiss(notificationId)
                 }
+                onNotificationActivated: function(notificationId) {
+                    root.notificationServer.activate(notificationId)
+                }
                 onDoNotDisturbPicked: function(enabled) {
                     root.notificationServer.doNotDisturb = enabled
                 }

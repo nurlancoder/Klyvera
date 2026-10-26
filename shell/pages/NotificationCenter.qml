@@ -72,6 +72,7 @@ Item {
             }
 
             Button {
+                objectName: "notificationClearAllButton"
                 label: qsTr("Clear all")
                 variant: "ghost"
                 compact: true
@@ -122,8 +123,8 @@ Item {
                         Layout.fillWidth: true
                         Layout.minimumWidth: 0
                         text: root.doNotDisturb
-                            ? qsTr("Banners are paused. Notifications are still recorded here.")
-                            : qsTr("Pause banners without losing notifications")
+                            ? qsTr("Do not disturb is selected. Notifications are still recorded here.")
+                            : qsTr("Do not disturb can be selected without losing notification history.")
                         color: Theme.textSecondary
                         font.family: Theme.typography.uiFamily
                         font.pixelSize: Theme.scaledInt(Theme.typography.caption.size)
@@ -131,17 +132,22 @@ Item {
                     }
                 }
                 Toggle {
+                    objectName: "notificationDoNotDisturbToggle"
                     label: ""
                     checked: root.doNotDisturb
                     implicitWidth: Theme.scaled(Theme.accessibility.minimumTargetSize
                         + Theme.spacing.md + Theme.spacing.sm)
                     Accessible.name: qsTr("Do not disturb")
+                    description: root.doNotDisturb
+                        ? qsTr("Selected. New notifications are still recorded here.")
+                        : qsTr("Not selected. New notifications are still recorded here.")
                     onClicked: root.doNotDisturbPicked(checked)
                 }
             }
         }
 
         ErrorState {
+            objectName: "notificationErrorState"
             Layout.fillWidth: true
             visible: root.errorText.length > 0
             message: root.errorText
@@ -172,12 +178,10 @@ Item {
                         Layout.fillWidth: true
                         implicitHeight: cardBody.implicitHeight + Theme.scaled(Theme.spacing.md) * 2
                         radius: Theme.scaled(Theme.radius.md)
-                        color: itemMouse.containsMouse ? Theme.surfaceHover : Theme.surface
+                        color: notificationActivateButton.pressed ? Theme.surfaceActive
+                            : notificationActivateButton.hovered ? Theme.surfaceHover : Theme.surface
                         border.width: Theme.scaledInt(Theme.borders.hairline)
                         border.color: notificationCard.modelData.read ? Theme.borderSubtle : Theme.borderStrong
-                        Accessible.role: Accessible.ListItem
-                        Accessible.name: notificationCard.modelData.app + ". " + notificationCard.modelData.title + ". " + notificationCard.modelData.body
-                        Accessible.description: notificationCard.modelData.read ? qsTr("Read") : qsTr("Unread")
 
                         Rectangle {
                             anchors.left: parent.left
@@ -192,7 +196,8 @@ Item {
                             id: cardBody
                             anchors.fill: parent
                             anchors.leftMargin: Theme.scaled(Theme.spacing.md)
-                            anchors.rightMargin: Theme.scaled(Theme.spacing.sm)
+                            anchors.rightMargin: Theme.scaled(
+                                Theme.accessibility.preferredTargetSize + Theme.spacing.xs)
                             anchors.topMargin: Theme.scaled(Theme.spacing.md)
                             anchors.bottomMargin: Theme.scaled(Theme.spacing.md)
                             spacing: Theme.scaled(Theme.spacing.sm)
@@ -238,6 +243,7 @@ Item {
                                     wrapMode: Text.Wrap
                                 }
                                 Text {
+                                    objectName: "notificationBody-" + notificationCard.modelData.id
                                     Layout.fillWidth: true
                                     text: notificationCard.modelData.body
                                     color: Theme.textSecondary
@@ -248,25 +254,48 @@ Item {
                                 }
                             }
 
-                            IconButton {
-                                compact: true
-                                iconName: "close"
-                                accessibleName: qsTr("Dismiss notification")
-                                onClicked: root.dismissRequested(notificationCard.modelData.id)
+                        }
+
+                        Controls.AbstractButton {
+                            id: notificationActivateButton
+                            objectName: "notificationActivate-" + notificationCard.modelData.id
+                            anchors.fill: parent
+                            anchors.rightMargin: dismissNotificationButton.width
+                                + Theme.scaled(Theme.spacing.xs)
+                            hoverEnabled: true
+                            focusPolicy: Qt.StrongFocus
+                            Accessible.role: Accessible.Button
+                            Accessible.name: notificationCard.modelData.app
+                                + ". " + notificationCard.modelData.title
+                            Accessible.description: (notificationCard.modelData.read
+                                ? qsTr("Read") : qsTr("Unread")) + ". "
+                                + notificationCard.modelData.body
+                            onClicked: root.notificationActivated(notificationCard.modelData.id)
+
+                            background: Item {
+                                FocusRing {
+                                    show: notificationActivateButton.activeFocus
+                                }
                             }
                         }
 
-                        MouseArea {
-                            id: itemMouse
-                            anchors.fill: parent
-                            anchors.rightMargin: Theme.scaled(Theme.accessibility.preferredTargetSize)
-                            hoverEnabled: true
-                            onClicked: root.notificationActivated(notificationCard.modelData.id)
+                        IconButton {
+                            id: dismissNotificationButton
+                            objectName: "notificationDismiss-" + notificationCard.modelData.id
+                            anchors.right: parent.right
+                            anchors.rightMargin: Theme.scaled(Theme.spacing.xs)
+                            anchors.verticalCenter: parent.verticalCenter
+                            compact: true
+                            iconName: "close"
+                            accessibleName: qsTr("Dismiss notification from %1")
+                                .arg(notificationCard.modelData.app)
+                            onClicked: root.dismissRequested(notificationCard.modelData.id)
                         }
                     }
                 }
 
                 EmptyState {
+                    objectName: "notificationEmptyState"
                     Layout.fillWidth: true
                     visible: root.notifications.length === 0
                     iconName: "bell"

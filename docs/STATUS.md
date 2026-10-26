@@ -4,7 +4,7 @@ Klyvera is a **prototype**. This file records what has actually been run, what i
 written but cannot be exercised on the Debian-based development workstation, and
 what is blocked. It is updated after every step.
 
-Last updated: 2026-10-26 (Phase 7; V3 repair Phase 7)
+Last updated: 2026-10-26 (Phase 9)
 
 ## Done
 
@@ -118,8 +118,10 @@ Last updated: 2026-10-26 (Phase 7; V3 repair Phase 7)
   shortcuts and about; each service failure has a visible degraded state rather
   than fake data.
 - Notification center, system monitor, lock screen, session menu and first-run
-  welcome are implemented, including unread state, do-not-disturb, destructive
-  action confirmation, reduced-motion awareness and accessible names.
+  welcome are implemented, including unread state, a do-not-disturb preference
+  state, destructive action confirmation, reduced-motion awareness and
+  accessible names. Notification banner suppression is not implemented in the
+  current adapter.
 - `shell/integration/quickshell/` contains target-only adapters: per-screen
   panel and overlay windows, Hyprland workspaces, IPC targets, argv-only system
   probes, UPower battery state and a Quickshell notification server.
@@ -384,6 +386,40 @@ Last updated: 2026-10-26 (Phase 7; V3 repair Phase 7)
 - The browser suite was run locally, not against deployed Pages. Real Arch,
   Quickshell and Wayland rendering remain **UNVERIFIED-ON-TARGET**.
 
+### Phase 8 — Notification center integrity
+
+- Extracted notification history policy into a QML-compatible helper shared by
+  the Quickshell bridge and offscreen tests. Visible history is capped at 30;
+  tracked notification references preserve their existing lifecycle until it
+  can be verified on target. Notifications remain in history while
+  do-not-disturb is selected.
+- Notification cards now expose a keyboard-focusable button action with an
+  accessible name and status/body description. Dismiss, do-not-disturb and
+  clear-all controls are separately keyboard-operable and named.
+- Updated copy to describe the do-not-disturb selection without claiming that
+  it suppresses banners; no banner presentation/suppression surface exists in
+  the current adapter.
+- All seven `tests/qml/*.py` offscreen behavior tests pass, including bounded
+  history, retained references, DND retention, dismissal, clear-all, keyboard
+  interactions, unread count, long-body wrapping and empty/error states.
+  Configured pure-QML lint exits successfully with the existing static
+  nested-Theme warnings.
+- `tests/check_docs.py` passes for 42 Markdown files. Quickshell notification
+  delivery and tracked-object lifecycle remain **UNVERIFIED-ON-TARGET**.
+
+### Phase 9 — Notification activation
+
+- Connected notification-card activation to the Quickshell notification
+  bridge. The bridge invokes the matching tracked notification's default
+  action and marks only the matching local history item as read.
+- If no matching tracked notification remains, local read state still updates
+  without attempting an action. Unread count follows the updated history.
+- All seven `tests/qml/*.py` offscreen behavior tests, pure-QML lint and
+  `tests/check_docs.py` pass. Tests cover action invocation, missing backing
+  objects, single-item read state and unread count.
+- A non-resident notification may be dismissed by Quickshell when its default
+  action is invoked; its local history entry remains and becomes read.
+
 ## Unverified on target
 
 - The CI workflow has not been executed on GitHub; its YAML and expressions are
@@ -408,7 +444,11 @@ Last updated: 2026-10-26 (Phase 7; V3 repair Phase 7)
 - The Quickshell adapter in `shell/integration/quickshell/` has not been linted
   or executed. Its import names, window properties, IPC handlers, UPower calls,
   notification fields and process collectors must be validated on Arch with
-  Quickshell and Hyprland.
+  Quickshell and Hyprland. In particular, notification delivery and the
+default-action invocation, notification dismissal after invocation, and
+unbounded tracked-reference lifecycle need target validation; no speculative
+reference eviction was added. The current adapter does not present or
+suppress banners.
 - The Hyprland fragment has not been included in a live Hyprland configuration.
   Keybind conflicts, `qs` availability and session-lock wiring are unverified.
 - Dependency-resolved package installation, conflicts with real repositories,
