@@ -29,6 +29,10 @@
   --kly-motion-fast: 120ms;
   --kly-motion-base: 200ms;
   --kly-motion-slow: 320ms;
+  --kly-motion-normal: 200ms;
+  --kly-motion-duration-fast: 120ms;
+  --kly-motion-duration-normal: 200ms;
+  --kly-motion-duration-slow: 320ms;
 }
 [data-theme='light'] {
   --kly-background: #f6f7fb;
