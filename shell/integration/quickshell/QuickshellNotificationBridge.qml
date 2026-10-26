@@ -39,6 +39,12 @@ NotificationServer {
         tracked = state.tracked
     }
 
+    function activate(notificationId: string) {
+        const state = NotificationHistory.activate(notifications, tracked, notificationId)
+        notifications = state.notifications
+        tracked = state.tracked
+    }
+
     function clearAll() {
         const state = NotificationHistory.clear(tracked)
         notifications = state.notifications

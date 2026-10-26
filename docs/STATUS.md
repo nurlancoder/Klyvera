@@ -4,7 +4,7 @@ Klyvera is a **prototype**. This file records what has actually been run, what i
 written but cannot be exercised on the Debian-based development workstation, and
 what is blocked. It is updated after every step.
 
-Last updated: 2026-10-26 (Phase 8)
+Last updated: 2026-10-26 (Phase 9)
 
 ## Done
 
@@ -407,6 +407,19 @@ Last updated: 2026-10-26 (Phase 8)
 - `tests/check_docs.py` passes for 42 Markdown files. Quickshell notification
   delivery and tracked-object lifecycle remain **UNVERIFIED-ON-TARGET**.
 
+### Phase 9 — Notification activation
+
+- Connected notification-card activation to the Quickshell notification
+  bridge. The bridge invokes the matching tracked notification's default
+  action and marks only the matching local history item as read.
+- If no matching tracked notification remains, local read state still updates
+  without attempting an action. Unread count follows the updated history.
+- All seven `tests/qml/*.py` offscreen behavior tests, pure-QML lint and
+  `tests/check_docs.py` pass. Tests cover action invocation, missing backing
+  objects, single-item read state and unread count.
+- A non-resident notification may be dismissed by Quickshell when its default
+  action is invoked; its local history entry remains and becomes read.
+
 ## Unverified on target
 
 - The CI workflow has not been executed on GitHub; its YAML and expressions are
@@ -432,9 +445,10 @@ Last updated: 2026-10-26 (Phase 8)
   or executed. Its import names, window properties, IPC handlers, UPower calls,
   notification fields and process collectors must be validated on Arch with
   Quickshell and Hyprland. In particular, notification delivery and the
-  unbounded tracked-reference lifecycle need target validation; no speculative
-  reference eviction was added. The current adapter does not present or
-  suppress banners.
+default-action invocation, notification dismissal after invocation, and
+unbounded tracked-reference lifecycle need target validation; no speculative
+reference eviction was added. The current adapter does not present or
+suppress banners.
 - The Hyprland fragment has not been included in a live Hyprland configuration.
   Keybind conflicts, `qs` availability and session-lock wiring are unverified.
 - Dependency-resolved package installation, conflicts with real repositories,

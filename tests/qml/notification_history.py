@@ -45,13 +45,34 @@ def main() -> int:
               file=sys.stderr)
         return 1
 
+    if root.property("unreadCount") != 30:
+        print("initial unread count is incorrect", file=sys.stderr)
+        return 1
+    root.activate("n20")
+    QTest.qWait(20)
+    if root.property("lastInvokedId") != "n20" or not root.isRead("n20"):
+        print("activation did not invoke and mark its notification read",
+              file=sys.stderr)
+        return 1
+    if root.property("unreadCount") != 29 or root.isRead("n19"):
+        print("activation changed the wrong unread state", file=sys.stderr)
+        return 1
+
+    root.dropTracked("n21")
+    root.activate("n21")
+    QTest.qWait(20)
+    if not root.isRead("n21") or root.property("invokedCount") != 1:
+        print("activation without a tracked object did not update read state safely",
+              file=sys.stderr)
+        return 1
+
     root.dismiss("n20")
     QTest.qWait(20)
     if root.property("lastDismissedId") != "n20":
         print("dismiss did not reach the backing notification", file=sys.stderr)
         return 1
     if (root.property("notificationCount") != 29
-            or root.property("trackedCount") != 34):
+            or root.property("trackedCount") != 33):
         print("dismiss did not remove the notification and its tracked reference",
               file=sys.stderr)
         return 1
@@ -62,7 +83,7 @@ def main() -> int:
         print("clear-all did not empty both notification collections",
               file=sys.stderr)
         return 1
-    if root.property("dismissedCount") != 35:
+    if root.property("dismissedCount") != 34:
         print("clear-all did not dismiss all tracked backing notifications",
               file=sys.stderr)
         return 1

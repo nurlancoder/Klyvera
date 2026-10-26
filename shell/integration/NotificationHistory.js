@@ -10,6 +10,23 @@ function record(notifications, tracked, entry, notification) {
     }
 }
 
+function activate(notifications, tracked, notificationId) {
+    for (var i = 0; i < tracked.length; i++) {
+        if (String(tracked[i].id) === notificationId) {
+            tracked[i].invoke()
+            break
+        }
+    }
+    return {
+        "notifications": notifications.map(function(entry) {
+            if (entry.id !== notificationId || entry.read)
+                return entry
+            return Object.assign({}, entry, { "read": true })
+        }),
+        "tracked": tracked
+    }
+}
+
 function dismiss(notifications, tracked, notificationId) {
     var remaining = []
     for (var i = 0; i < tracked.length; i++) {
