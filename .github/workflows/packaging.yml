@@ -32,11 +32,29 @@ jobs:
         run: |
           pacman -Syu --noconfirm --needed base-devel git rust
 
+      - name: Prepare committed source archive
+        run: |
+          if [[ -n "$(git -C "$GITHUB_WORKSPACE" status --porcelain)" ]]; then
+            echo "Refusing to package a dirty checkout" >&2
+            exit 1
+          fi
+          version="$(sed -n 's/^version = "\(.*\)"/\1/p' "$GITHUB_WORKSPACE/core/Cargo.toml" | head -n 1)"
+          archive="$GITHUB_WORKSPACE/packaging/pkgbuild/ci-source.tar.gz"
+          epoch="$(git -C "$GITHUB_WORKSPACE" log -1 --format=%ct)"
+          git -C "$GITHUB_WORKSPACE" archive --format=tar.gz \
+            --prefix="klyvera-$version/" -o "$archive" HEAD
+          echo "KLYVERA_PACKAGE_SOURCE_ARCHIVE=$archive" >> "$GITHUB_ENV"
+          echo "KLYVERA_PACKAGE_SOURCE_DATE_EPOCH=$epoch" >> "$GITHUB_ENV"
+
       - name: Build packages as an unprivileged user
         run: |
           useradd -m builder
           chown -R builder "$GITHUB_WORKSPACE"
           su builder -c "cd '$GITHUB_WORKSPACE' && ./packaging/pkgbuild/build-packages.sh"
+
+      - name: Remove temporary source archive
+        if: always()
+        run: rm -f "$GITHUB_WORKSPACE/packaging/pkgbuild/ci-source.tar.gz"
 
       - name: Inspect package outputs
         run: |

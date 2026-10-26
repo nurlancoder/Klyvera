@@ -420,6 +420,24 @@ Last updated: 2026-10-26 (Phase 9)
 - A non-resident notification may be dismissed by Quickshell when its default
   action is invoked; its local history entry remains and becomes read.
 
+### Phase 10 — CI recovery
+
+- Removed the legacy `.hero h1` rules that overrode the responsive title
+  styles, and adjusted title sizes to pass the reported mobile and desktop
+  overflow cases. The browser suite passes 1,009 assertions across three pages
+  and 14 viewport widths; the website build and static site checks pass.
+- The CI QML lint step adds Qt 6's executable directory to `PATH` and reports
+  an explicit error if `qmllint` is still unavailable.
+- The packaging workflow creates a clean, commit-backed source archive and
+  captures its source-date epoch before switching to the unprivileged builder.
+  The package script accepts that archive without needing Git metadata.
+- The Pages workflow asks `actions/configure-pages` to enable Pages when
+  permitted. The setting and deployment must still be confirmed by a GitHub
+  Actions run.
+- The package script passes `bash -n`. Arch package building, QML lint in the
+  runner and all remote workflow outcomes are **UNVERIFIED** from this Windows
+  workstation.
+
 ## Unverified on target
 
 - The CI workflow has not been executed on GitHub; its YAML and expressions are
