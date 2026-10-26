@@ -22,6 +22,7 @@ Controls.AbstractButton {
     Accessible.name: accessibleName.length > 0 ? accessibleName : iconName
 
     contentItem: Icon {
+        objectName: "iconButtonGlyph"
         anchors.centerIn: parent
         name: root.iconName
         color: root.glyphColor.a > 0

@@ -4,7 +4,7 @@ Klyvera is a **prototype**. This file records what has actually been run, what i
 written but cannot be exercised on the Debian-based development workstation, and
 what is blocked. It is updated after every step.
 
-Last updated: 2026-10-26 (Phase 7; V3 repair Phase 4)
+Last updated: 2026-10-26 (Phase 7; V3 repair Phase 5)
 
 ## Done
 
@@ -329,6 +329,17 @@ Last updated: 2026-10-26 (Phase 7; V3 repair Phase 4)
   nested-Theme property warnings; it exits successfully.
 - This geometry check does not replace a visual review in Arch, Quickshell or
   Wayland; target rendering remains **UNVERIFIED-ON-TARGET**.
+
+### V3 repair Phase 5 — Remaining control geometry (Windows workstation)
+
+- Extended the offscreen geometry regression to IconButton, Tabs and ListItem.
+  Their content group, icon, tab label and list row are centered on the expected
+  axes at the configured target sizes; no layout changes were needed.
+- All four offscreen QML behavior tests passed. Focused lint exited successfully
+  with static nested-Theme property warnings; documentation and generated-token
+  checks passed.
+- This does not verify real compositor/font rendering; Arch, Quickshell and
+  Wayland remain **UNVERIFIED-ON-TARGET**.
 
 ## Unverified on target
 

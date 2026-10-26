@@ -355,3 +355,22 @@ High-contrast theme (lines 65-89):
 - `python tests/check_docs.py` passed for 41 Markdown files;
   `python design/generators/generate.py --check` and `git diff --check` passed.
 - Arch/Quickshell/Wayland rendering remains **UNVERIFIED-ON-TARGET**.
+
+## V3 repair Phase 5: Remaining control geometry
+
+### Changes
+- Extended the geometry fixture to cover IconButton, Tabs and ListItem in
+  addition to Button. The regression checks measure content centers relative to
+  their owning controls, including icon-and-label and list-row cases.
+- The measured content is centered at the expected axes; no additional layout
+  changes were necessary. The controls' public APIs and interaction behavior
+  remain unchanged.
+
+### Verification
+- `python tests/qml/geometry_test.py` passed for Button, IconButton, Tabs and
+  ListItem geometry.
+- All four `tests/qml/*.py` behavior tests passed.
+- Focused QML lint exited successfully with static nested-Theme property
+  warnings; documentation, generated-token and `git diff --check` passed.
+- No screenshots were regenerated. Arch/Quickshell/Wayland rendering remains
+  **UNVERIFIED-ON-TARGET**.
