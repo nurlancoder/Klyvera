@@ -124,10 +124,10 @@ QtObject {
         readonly property int lg: 16
         readonly property int xl: 20
         readonly property int xxl: 24
-        readonly property int 3xl: 32
-        readonly property int 4xl: 40
-        readonly property int 5xl: 48
-        readonly property int 6xl: 64
+        readonly property int size3xl: 32
+        readonly property int size4xl: 40
+        readonly property int size5xl: 48
+        readonly property int size6xl: 64
         readonly property int xxxl: 80
         readonly property int huge: 96
     }
@@ -159,11 +159,11 @@ QtObject {
             readonly property int md: 15
             readonly property int lg: 16
             readonly property int xl: 18
-            readonly property int 2xl: 20
-            readonly property int 3xl: 24
-            readonly property int 4xl: 28
-            readonly property int 5xl: 32
-            readonly property int 6xl: 40
+            readonly property int size2xl: 20
+            readonly property int size3xl: 24
+            readonly property int size4xl: 28
+            readonly property int size5xl: 32
+            readonly property int size6xl: 40
             readonly property int display: 48
             readonly property int heading1: 36
             readonly property int heading3: 24
@@ -267,7 +267,7 @@ QtObject {
         readonly property int md: 20
         readonly property int lg: 22
         readonly property int xl: 24
-        readonly property int 2xl: 28
+        readonly property int size2xl: 28
         readonly property QtObject sizes: QtObject {
             readonly property int sm: 18
             readonly property int md: 20

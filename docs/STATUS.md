@@ -4,7 +4,7 @@ Klyvera is a **prototype**. This file records what has actually been run, what i
 written but cannot be exercised on the Debian-based development workstation, and
 what is blocked. It is updated after every step.
 
-Last updated: 2026-10-25 (Phase 7)
+Last updated: 2026-10-26 (Phase 7; V3 repair Phase 1)
 
 ## Done
 
@@ -257,6 +257,22 @@ Last updated: 2026-10-25 (Phase 7)
   in dark, light and high-contrast themes at 375 px and at 1440 px.
 - No human visual review of the rendered website has been completed.
 
+### V3 repair Phase 1 (Windows workstation)
+
+- Added repo-local development bootstrap support for Unix and Windows virtual
+  environment layouts; strict checks consume that environment.
+- CI now bootstraps the tools and invokes the strict aggregate check.
+- Token generation, Theme contract, Bash syntax, ShellCheck, QML lint, all three
+  QML behavior tests, schema checks (9/9), docs checks (42 files), website build,
+  static checks (285 assertions) and browser tests (198 assertions) passed.
+- QML lint exits successfully but reports unresolved nested Theme member warnings
+  for its static type analysis; the generated Theme is loaded by the runtime
+  behavior tests.
+- `cargo fmt --all --check` passed. Strict aggregate result: **2 failures,
+  0 skipped**. Cargo clippy/tests could not link on this Windows host because
+  Git Bash's `link.exe` shadows the MSVC linker and Visual Studio C++ build
+  tools are absent. See `docs/repair-log.md`.
+
 ## Unverified on target
 
 - The CI workflow has not been executed on GitHub; its YAML and expressions are
@@ -294,11 +310,10 @@ Last updated: 2026-10-25 (Phase 7)
 
 ## Blocked
 
-- **System-level shellcheck and qmllint are absent.** A temporary user-level
-  environment at `/tmp/opencode/klyvera-qt-venv` (PySide6-Essentials 6.12 and
-  shellcheck-py 0.11.0) is used for local checks. It is outside the repository
-  and not reproducible from the repo; CI installs its own toolchain. A clean
-  checkout therefore skips shellcheck and QML lint locally.
+- **Rust clippy and tests are blocked on the current Windows host** because its
+  Git Bash `link.exe` is not the MSVC linker and Visual Studio C++ build tools
+  are absent. `cargo fmt` and every other strict check passed; there were no
+  skipped checks. The CI strict job has not yet run.
 - **Hyprland and Quickshell** cannot run on Kali, and `mkarchiso` has not been
   run. Package builds use an Arch container, but the live session, ISO and
   installer remain unverified by definition.

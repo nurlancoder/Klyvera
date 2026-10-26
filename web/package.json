@@ -8,7 +8,7 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
-    "check": "python3 ../tests/web/check_site.py",
+    "check": "python ../tests/web/check_site.py",
     "test:browser": "node ../tests/web/browser_test.mjs"
   },
   "devDependencies": {

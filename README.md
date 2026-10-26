@@ -69,6 +69,14 @@ Checks that can run locally:
 ./scripts/check.sh
 ```
 
+For repo-local Python, QML, ShellCheck and browser tools, then run every available
+check without silently skipping missing tools:
+
+```bash
+bash scripts/bootstrap-dev.sh
+bash scripts/check.sh --strict
+```
+
 Individual layers:
 
 ```bash

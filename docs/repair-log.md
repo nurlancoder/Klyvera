@@ -215,3 +215,50 @@ High-contrast theme (lines 65-89):
 4. All tools missing (python3, cargo, qmllint, shellcheck, npm) - 8/8 checks skipped
 5. Icons exist but need proper manifest and generator
 6. bootstrap-dev.sh does not exist
+
+## Phase 1: Development checks (completed with an environment blocker, 2026-10-26)
+
+### Changes
+- `scripts/check.sh` now prefers the repository-local `.venv` Python and puts its
+  executables on `PATH`, so strict checks use the same toolchain as bootstrap.
+- The bootstrap and check scripts support both Unix `.venv/bin` and Windows
+  `.venv/Scripts` layouts.
+- The aggregate website check now starts a local Vite preview and runs the
+  existing Playwright browser suite.
+- CI now bootstraps the same local tools and runs `scripts/check.sh --strict`.
+- The README documents bootstrap and strict-check commands. The website's
+  responsive layout, theme cycling and mobile menu were repaired after the
+  browser suite exposed real failures.
+- The token generator now emits valid QML identifiers for numeric-leading
+  spacing, typography and icon token keys. The generated Theme.qml had been
+  syntactically invalid and prevented QML behavior tests from loading.
+- QML behavior tests now report QML load errors rather than failing silently.
+
+### Verification
+- Repository-local bootstrap completed on Windows with PySide6, ShellCheck,
+  jsonschema, Playwright, Chromium and npm dependencies.
+- Bash syntax and ShellCheck passed; token generation and the Theme contract
+  passed (95 unique references); QML lint exited successfully but continues to
+  warn that nested Theme properties are missing from its inferred QObject type.
+- All three QML behavior tests passed after fixing generated QML syntax.
+- Schema validation passed: 9/9 checks; documentation checks passed for 42
+  Markdown files.
+- Website build and static checks passed (3 pages, 285 assertions); browser
+  checks passed (198 assertions across 3 pages and 6 widths).
+- `cargo fmt --all --check` passed. Strict aggregate checks ran with **2
+  failures, 0 skipped**: `cargo clippy` and `cargo test` could not link because
+  Git Bash resolves `link.exe` to its Unix utility and Visual Studio C++ build
+  tools (`cl.exe` and the MSVC linker) are not installed. CI has not yet run.
+
+### Corrections to the initial triage
+- `scripts/bootstrap-dev.sh` and `--strict` already existed in the checked-out
+  baseline; the earlier statements that they were absent were incorrect.
+- No `stable-phase7` tag is present, so restoration from that reference remains
+  unavailable.
+- The 8-digit QML color strings such as `#0FFFFFFF` encode valid ARGB colors;
+  the initial claim that these were malformed was incorrect.
+- Static Theme-property comparison missed invalid QML identifiers beginning
+  with digits. The runtime and lint failures are fixed in the generator; its
+  numeric-leading token names now receive valid `size`-prefixed identifiers.
+- The earlier browser failure count (72/126) was resolved; the corrected suite
+  now passes all 198 assertions.

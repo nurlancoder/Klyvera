@@ -24,25 +24,28 @@ else
     echo "Virtual environment already exists"
 fi
 
-# Activate virtual environment
-echo "Activating virtual environment..."
-# shellcheck source=/dev/null
-source "$VENV_DIR/bin/activate"
+if [[ -x "$VENV_DIR/bin/python" ]]; then
+    VENV_BIN="$VENV_DIR/bin"
+    VENV_PYTHON="$VENV_BIN/python"
+elif [[ -x "$VENV_DIR/Scripts/python.exe" ]]; then
+    VENV_BIN="$VENV_DIR/Scripts"
+    VENV_PYTHON="$VENV_BIN/python.exe"
+else
+    echo "Could not find the virtual environment Python executable" >&2
+    exit 1
+fi
 
 # Upgrade pip
 echo "Upgrading pip..."
-pip install --upgrade pip
+"$VENV_PYTHON" -m pip install --upgrade pip
 
 # Install Python dependencies
 echo "Installing Python dependencies..."
-pip install PySide6-Essentials
-pip install shellcheck-py
-pip install jsonschema
-pip install playwright
+"$VENV_PYTHON" -m pip install PySide6-Essentials shellcheck-py jsonschema playwright
 
 # Install Playwright Chromium
 echo "Installing Playwright Chromium..."
-playwright install chromium
+"$VENV_PYTHON" -m playwright install chromium
 
 # Install web dependencies
 if [[ -f web/package.json ]]; then
@@ -56,8 +59,13 @@ fi
 
 echo ""
 echo "Bootstrap complete!"
-echo "To activate the environment in your shell, run:"
-echo "  source $VENV_DIR/bin/activate"
+if [[ "$VENV_BIN" == "$VENV_DIR/Scripts" ]]; then
+    echo "To activate the environment in PowerShell, run:"
+    echo "  .venv\\Scripts\\Activate.ps1"
+else
+    echo "To activate the environment in your shell, run:"
+    echo "  source $VENV_DIR/bin/activate"
+fi
 echo ""
 echo "The environment includes:"
 echo "  - PySide6-Essentials (Qt bindings, includes qmllint)"

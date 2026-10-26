@@ -77,6 +77,9 @@ def kebab(name:str):
         else: out.append(c)
     return ''.join(out)
 
+def qml_identifier(name:str):
+    return f"size{name}" if name[:1].isdigit() else name
+
 def rgb(value):
     hexv,alpha=parse_color(value)
     if alpha < 1.0: fail(f"contrast checks require opaque colors, got {value!r}")
@@ -127,15 +130,15 @@ def build_theme_qml(tokens):
     lines.append("")
     lines.append("    readonly property QtObject spacing: QtObject {")
     for k,v in tokens["spacing"].items():
-        if isinstance(v,int): lines.append(f'        readonly property int {k}: {v}')
+        if isinstance(v,int): lines.append(f'        readonly property int {qml_identifier(k)}: {v}')
     lines.append("    }")
     lines.append("    readonly property QtObject radius: QtObject {")
     for k,v in tokens["radius"].items():
-        if isinstance(v,int): lines.append(f'        readonly property int {k}: {v}')
+        if isinstance(v,int): lines.append(f'        readonly property int {qml_identifier(k)}: {v}')
     lines.append("    }")
     lines.append("    readonly property QtObject borders: QtObject {")
     for k,v in tokens["borders"].items():
-        if isinstance(v,int): lines.append(f'        readonly property int {k}: {v}')
+        if isinstance(v,int): lines.append(f'        readonly property int {qml_identifier(k)}: {v}')
     lines.append("    }")
     lines.append("    readonly property QtObject typography: QtObject {")
     lines.append('        readonly property string fontHeading: ' + json.dumps(tokens["typography"]["fontFamily"]["heading"]))
@@ -147,15 +150,15 @@ def build_theme_qml(tokens):
             lines.append(f'        readonly property string {fk}: ' + json.dumps(fv))
     lines.append("        readonly property QtObject scale: QtObject {")
     for k,v in tokens["typography"]["scale"].items():
-        if isinstance(v,int): lines.append(f'            readonly property int {k}: {v}')
+        if isinstance(v,int): lines.append(f'            readonly property int {qml_identifier(k)}: {v}')
     lines.append("        }")
     lines.append("        readonly property QtObject weight: QtObject {")
     for k,v in tokens["typography"]["weight"].items():
-        if isinstance(v,int): lines.append(f'            readonly property int {k}: {v}')
+        if isinstance(v,int): lines.append(f'            readonly property int {qml_identifier(k)}: {v}')
     lines.append("        }")
     lines.append("        readonly property QtObject lineHeight: QtObject {")
     for k,v in tokens["typography"]["lineHeight"].items():
-        if isinstance(v,(int,float)): lines.append(f'            readonly property real {k}: {v}')
+        if isinstance(v,(int,float)): lines.append(f'            readonly property real {qml_identifier(k)}: {v}')
     lines.append("        }")
     lines.append("        readonly property QtObject tracking: QtObject {")
     for k,v in tokens["typography"]["tracking"].items():
@@ -225,12 +228,12 @@ def build_theme_qml(tokens):
     # Flat icon sizes
     for k,v in tokens["icon"].items():
         if k not in ["sizes", "stroke", "strokeWidth", "grid"] and isinstance(v,int):
-            lines.append(f'        readonly property int {k}: {v}')
+            lines.append(f'        readonly property int {qml_identifier(k)}: {v}')
     # Nested sizes
     if "sizes" in tokens["icon"]:
         lines.append("        readonly property QtObject sizes: QtObject {")
         for k,v in tokens["icon"]["sizes"].items():
-            if isinstance(v,int): lines.append(f'            readonly property int {k}: {v}')
+            if isinstance(v,int): lines.append(f'            readonly property int {qml_identifier(k)}: {v}')
         lines.append("        }")
     lines.append(f'        readonly property real stroke: {tokens["icon"].get("stroke",1.75)}')
     if "strokeWidth" in tokens["icon"]:
@@ -244,15 +247,15 @@ def build_theme_qml(tokens):
             lines.append(f'        readonly property QtObject {lk}: QtObject {{')
             for ck, cv in tokens["layout"][lk].items():
                 if isinstance(cv,int):
-                    lines.append(f'            readonly property int {ck}: {cv}')
+                    lines.append(f'            readonly property int {qml_identifier(ck)}: {cv}')
                 elif isinstance(cv,(int,float)):
-                    lines.append(f'            readonly property real {ck}: {cv}')
+                    lines.append(f'            readonly property real {qml_identifier(ck)}: {cv}')
             lines.append("        }")
     lines.append("        readonly property QtObject classes: QtObject {")
     for cname,cvals in tokens["layout"]["classes"].items():
         lines.append(f'            readonly property QtObject {cname}: QtObject {{')
         for ck,cv in cvals.items():
-            if isinstance(cv,int): lines.append(f'                readonly property int {ck}: {cv}')
+            if isinstance(cv,int): lines.append(f'                readonly property int {qml_identifier(ck)}: {cv}')
         lines.append("            }")
     lines.append("        }")
     lines.append("    }")

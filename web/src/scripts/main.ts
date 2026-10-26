@@ -1,58 +1,63 @@
 const root = document.documentElement;
 const storageKey = "klyvera-theme";
+const themes = ["dark", "light", "high-contrast"] as const;
+type Theme = (typeof themes)[number];
 
-function applyTheme(theme: string | null) {
-  if (theme === "light" || theme === "dark" || theme === "high-contrast") {
-    root.setAttribute("data-theme", theme);
-  } else {
-    root.removeAttribute("data-theme");
-  }
+function isTheme(theme: string | null): theme is Theme {
+  return themes.some((candidate) => candidate === theme);
 }
 
-const saved = localStorage.getItem(storageKey);
-applyTheme(saved);
+function applyTheme(theme: Theme) {
+  root.setAttribute("data-theme", theme);
+}
+
+let savedTheme: string | null = null;
+try {
+  savedTheme = localStorage.getItem(storageKey);
+} catch {
+  savedTheme = null;
+}
+applyTheme(isTheme(savedTheme) ? savedTheme : "dark");
 
 const toggles = document.querySelectorAll("[data-theme-toggle]");
 toggles.forEach((btn) => {
   btn.addEventListener("click", () => {
-    const currentAttr = root.getAttribute("data-theme");
-    let current: "dark" | "light" | "high-contrast" | null = null;
-    if (currentAttr === "light" || currentAttr === "dark" || currentAttr === "high-contrast") {
-      current = currentAttr;
-    }
-    const order: Array<"dark" | "light" | "high-contrast" | null> = ["dark", "light", "high-contrast", null];
-    const idx = order.indexOf(current);
-    const nextIdx = (idx + 1) % order.length;
-    const next = order[nextIdx] as "dark" | "light" | "high-contrast" | null;
-    if (next === null) {
-      applyTheme(null);
-      try { localStorage.removeItem(storageKey); } catch {}
-    } else {
-      applyTheme(next);
-      try { localStorage.setItem(storageKey, next); } catch {}
+    const current = root.getAttribute("data-theme");
+    const next: Theme = current === "dark" ? "light" : current === "light" ? "high-contrast" : "dark";
+    applyTheme(next);
+    try {
+      localStorage.setItem(storageKey, next);
+    } catch {
+      return;
     }
   });
 });
 
 const menuBtnEl = document.querySelector("[data-menu-toggle]");
-const menuEl = document.querySelector("[data-mobile-menu]");
+const menuEl = document.querySelector("[data-mobile-nav]");
 if (menuBtnEl && menuEl) {
   const menuBtn = menuBtnEl as HTMLButtonElement;
   const menu = menuEl as HTMLElement;
+  const closeMenu = (returnFocus: boolean) => {
+    menu.hidden = true;
+    menuBtn.setAttribute("aria-expanded", "false");
+    if (returnFocus) menuBtn.focus();
+  };
+
   menuBtn.addEventListener("click", () => {
-    const open = menu.classList.toggle("open");
+    const open = menu.hidden;
+    menu.hidden = !open;
     menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    if (open) menu.querySelector("a")?.focus();
   });
   menu.querySelectorAll("a").forEach((a) => {
     a.addEventListener("click", () => {
-      menu.classList.remove("open");
-      menuBtn.setAttribute("aria-expanded", "false");
+      closeMenu(false);
     });
   });
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      menu.classList.remove("open");
-      menuBtn.setAttribute("aria-expanded", "false");
+    if (e.key === "Escape" && !menu.hidden) {
+      closeMenu(true);
     }
   });
 }
