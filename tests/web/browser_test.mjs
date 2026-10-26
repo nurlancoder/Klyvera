@@ -69,6 +69,7 @@ try {
         const spans = h1 ? [...h1.querySelectorAll("span")] : [];
         return {
           overflow: document.documentElement.scrollWidth - window.innerWidth,
+          headerTop: document.querySelector(".site-header")?.getBoundingClientRect().top ?? Infinity,
           h1Count: document.querySelectorAll("h1").length,
           spanOverflow: spans.map((span) => span.scrollWidth - span.parentElement.clientWidth),
           navVisible: visible(".site-nav"),
@@ -81,6 +82,7 @@ try {
       });
 
       check(metrics.overflow <= 1, `${path} ${width}: horizontal overflow ${metrics.overflow}px`);
+      check(Math.abs(metrics.headerTop) <= 1, `${path} ${width}: header starts at ${metrics.headerTop}px`);
       check(metrics.h1Count === 1, `${path} ${width}: expected one h1`);
       check(metrics.brokenImages === 0, `${path} ${width}: ${metrics.brokenImages} broken images`);
       check(metrics.skipLink && metrics.main, `${path} ${width}: missing skip link or main`);

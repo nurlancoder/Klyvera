@@ -374,3 +374,26 @@ High-contrast theme (lines 65-89):
   warnings; documentation, generated-token and `git diff --check` passed.
 - No screenshots were regenerated. Arch/Quickshell/Wayland rendering remains
   **UNVERIFIED-ON-TARGET**.
+
+## V3 repair Phase 6: Website visual review
+
+### Changes
+- Local browser review of all three site routes found that the unstyled inline
+  SVG symbol sprite occupied its default 300×150 px viewport before the sticky
+  header, creating an unintended blank band above the page content.
+- Positioned the sprite absolutely with zero width and height. SVG `<use>`
+  references continue to work, and the header now begins at the top of the
+  page.
+- Added a browser regression assertion for header placement at each tested
+  viewport and route. Updated the repair roadmap and status record.
+
+### Verification
+- `npm run build` passed from `web/`.
+- `npm run check` passed: 3 pages and 285 assertions.
+- `npm run test:browser` passed: 216 assertions across `/`, `/az/` and `/docs/`
+  at 320, 375, 768, 1024, 1280 and 1440 px widths.
+- Manually reviewed the English and Azerbaijani landing pages and docs hub at
+  desktop and mobile widths; verified the mobile menu opens, updates its
+  accessible state and closes on Escape.
+- The local preview was reviewed only. GitHub Pages workflow and live
+  deployment remain **UNVERIFIED**.

@@ -66,6 +66,18 @@ Started: 2026-10-25. Scope: existing QML previews, website, tokens, icons.
 - The geometry checks are not a substitute for an Arch/Quickshell/Wayland
   review. Existing screenshots were not regenerated.
 
+### V3 repair Phase 6 — Website visual review
+
+- Reviewing the built site revealed a large blank band above the sticky header.
+  The inline SVG symbol sprite had no dimensions or positioning and occupied
+  the browser's default 300×150 px viewport plus inline baseline space.
+- The sprite now has zero dimensions and absolute positioning; all in-page
+  `<use>` icons remain present. The header begins at y=0 on the English and
+  Azerbaijani landing pages and documentation hub.
+- Browser review covered desktop and mobile layouts. The responsive/menu
+  interaction and accessible navigation remain intact; deployment itself is
+  still unverified.
+
 ## Phase B - Tokens v2
 - Updated tokens to premium palette with better contrast
 - Regenerated Theme.qml, tokens.css, contrast-report.md

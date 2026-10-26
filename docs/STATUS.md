@@ -4,7 +4,7 @@ Klyvera is a **prototype**. This file records what has actually been run, what i
 written but cannot be exercised on the Debian-based development workstation, and
 what is blocked. It is updated after every step.
 
-Last updated: 2026-10-26 (Phase 7; V3 repair Phase 5)
+Last updated: 2026-10-26 (Phase 7; V3 repair Phase 6)
 
 ## Done
 
@@ -340,6 +340,21 @@ Last updated: 2026-10-26 (Phase 7; V3 repair Phase 5)
   checks passed.
 - This does not verify real compositor/font rendering; Arch, Quickshell and
   Wayland remain **UNVERIFIED-ON-TARGET**.
+
+### V3 repair Phase 6 — Website visual review (Windows workstation)
+
+- Browser review found the inline SVG symbol sprite was using its default
+  300×150 px viewport before the sticky header, leaving a large blank gap at the
+  top of every site route. The sprite is now zero-sized and absolutely
+  positioned, so symbol references remain available without affecting layout.
+- Added a browser assertion that the header starts at the top of the page at all
+  tested widths. English and Azerbaijani landing pages and the documentation
+  hub were reviewed at desktop and mobile widths; the mobile menu opened and
+  closed with Escape as expected.
+- `npm run build`, `npm run check` (285 assertions) and `npm run test:browser`
+  (216 assertions across 3 pages and 6 widths) passed.
+- The local site is visually reviewed, but the GitHub Pages workflow and live
+  deployment remain **UNVERIFIED**.
 
 ## Unverified on target
 
