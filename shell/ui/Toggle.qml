@@ -81,7 +81,7 @@ Controls.AbstractButton {
 
                 Behavior on x {
                     NumberAnimation {
-                        duration: Theme.motionDuration(Theme.motion.durationFast)
+                        duration: Theme.motion.durationFast
                         easing.type: Easing.OutCubic
                     }
                 }

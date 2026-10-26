@@ -26,7 +26,7 @@ Rectangle {
         NumberAnimation on x {
             from: -shimmer.width
             to: root.width
-            duration: Theme.motionDuration(Theme.motion.durationSlow * 4)
+            duration: Theme.motion.durationSlow * 4
             loops: Animation.Infinite
             running: root.visible && root.animated && !Theme.reduceMotion
             easing.type: Easing.InOutSine

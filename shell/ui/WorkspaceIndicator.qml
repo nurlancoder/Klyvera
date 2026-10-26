@@ -66,7 +66,7 @@ Row {
 
                     Behavior on width {
                         NumberAnimation {
-                            duration: Theme.motionDuration(Theme.motion.durationFast)
+                            duration: Theme.motion.durationFast
                             easing.type: Easing.OutCubic
                         }
                     }

@@ -18,17 +18,20 @@
   --kly-warning: #ffc857;
   --kly-info: #7cc4ff;
   --kly-on-accent: #05050a;
-  --kly-border-subtle: #ffff14;
-  --kly-border-strong: #ffff29;
+  --kly-border-subtle: rgba(255, 255, 255, 0.06);
+  --kly-border-strong: rgba(255, 255, 255, 0.16);
   --kly-focus-ring: #b9a6ff;
-  --kly-selection: rgba(139, 255, 102, 0.607843);
-  --kly-shadow: rgba(0, 0, 140, 0);
+  --kly-selection: rgba(155, 139, 255, 0.4);
+  --kly-shadow: rgba(0, 0, 0, 0.55);
   --kly-font-heading: "Manrope","Inter",system-ui,sans-serif;
   --kly-font-body: "Inter",system-ui,sans-serif;
   --kly-font-mono: "JetBrains Mono",ui-monospace,monospace;
   --kly-motion-fast: 120ms;
-  --kly-motion-base: 200ms;
+  --kly-motion-normal: 200ms;
   --kly-motion-slow: 320ms;
+  --kly-motion-duration-fast: 120ms;
+  --kly-motion-duration-normal: 200ms;
+  --kly-motion-duration-slow: 320ms;
 }
 [data-theme='light'] {
   --kly-background: #f6f7fb;
@@ -49,11 +52,11 @@
   --kly-warning: #92400e;
   --kly-info: #1d4ed8;
   --kly-on-accent: #ffffff;
-  --kly-border-subtle: rgba(18, 32, 15, 0.0588235);
-  --kly-border-strong: rgba(18, 32, 41, 0.0588235);
+  --kly-border-subtle: rgba(15, 18, 32, 0.06);
+  --kly-border-strong: rgba(15, 18, 32, 0.16);
   --kly-focus-ring: #5b3fe0;
-  --kly-selection: rgba(63, 224, 64, 0.356863);
-  --kly-shadow: rgba(18, 32, 46, 0.0588235);
+  --kly-selection: rgba(91, 63, 224, 0.25);
+  --kly-shadow: rgba(15, 18, 32, 0.18);
 }
 [data-theme='high-contrast'] {
   --kly-background: #000000;
@@ -77,8 +80,8 @@
   --kly-border-subtle: #ffffff;
   --kly-border-strong: #ffffff;
   --kly-focus-ring: #ffffff;
-  --kly-selection: rgba(204, 255, 102, 0.843137);
-  --kly-shadow: #ffff1f;
+  --kly-selection: rgba(215, 204, 255, 0.4);
+  --kly-shadow: rgba(255, 255, 255, 0.12);
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
@@ -100,11 +103,11 @@
     --kly-warning: #92400e;
     --kly-info: #1d4ed8;
     --kly-on-accent: #ffffff;
-    --kly-border-subtle: rgba(18, 32, 15, 0.0588235);
-    --kly-border-strong: rgba(18, 32, 41, 0.0588235);
+    --kly-border-subtle: rgba(15, 18, 32, 0.06);
+    --kly-border-strong: rgba(15, 18, 32, 0.16);
     --kly-focus-ring: #5b3fe0;
-    --kly-selection: rgba(63, 224, 64, 0.356863);
-    --kly-shadow: rgba(18, 32, 46, 0.0588235);
+    --kly-selection: rgba(91, 63, 224, 0.25);
+    --kly-shadow: rgba(15, 18, 32, 0.18);
   }
 }
 @media (prefers-reduced-motion: reduce) {

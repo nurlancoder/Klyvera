@@ -106,7 +106,7 @@ Rectangle {
                             color: index <= root.step ? Theme.accentPurple : Theme.surfaceActive
                             Behavior on width {
                                 NumberAnimation {
-                                    duration: Theme.motionDuration(Theme.motion.durationNormal)
+                                    duration: Theme.motion.durationNormal
                                     easing.type: Easing.OutCubic
                                 }
                             }

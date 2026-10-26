@@ -325,7 +325,7 @@ Item {
             color: meter.fillColor
             Behavior on width {
                 NumberAnimation {
-                    duration: Theme.motionDuration(Theme.motion.durationNormal)
+                    duration: Theme.motion.durationNormal
                     easing.type: Easing.OutCubic
                 }
             }

@@ -120,6 +120,11 @@ def build_theme_qml(tokens):
     lines.append("    })")
     lines.append('    readonly property var palette: palettes[themeName] ? palettes[themeName] : palettes["dark"]')
     lines.append("")
+    # Direct color accessors for convenience
+    lines.append("    // Direct color accessors (shorthand for palette.colorName)")
+    for cn in tokens["themes"]["dark"]["colors"].keys():
+        lines.append(f'    readonly property color {cn}: palette["{cn}"]')
+    lines.append("")
     lines.append("    readonly property QtObject spacing: QtObject {")
     for k,v in tokens["spacing"].items():
         if isinstance(v,int): lines.append(f'        readonly property int {k}: {v}')
@@ -136,6 +141,10 @@ def build_theme_qml(tokens):
     lines.append('        readonly property string fontHeading: ' + json.dumps(tokens["typography"]["fontFamily"]["heading"]))
     lines.append('        readonly property string fontBody: ' + json.dumps(tokens["typography"]["fontFamily"]["body"]))
     lines.append('        readonly property string fontMono: ' + json.dumps(tokens["typography"]["fontFamily"]["mono"]))
+    # Add family aliases
+    for fk, fv in tokens["typography"]["fontFamily"].items():
+        if fk not in ["heading", "body", "mono"]:
+            lines.append(f'        readonly property string {fk}: ' + json.dumps(fv))
     lines.append("        readonly property QtObject scale: QtObject {")
     for k,v in tokens["typography"]["scale"].items():
         if isinstance(v,int): lines.append(f'            readonly property int {k}: {v}')
@@ -152,6 +161,50 @@ def build_theme_qml(tokens):
     for k,v in tokens["typography"]["tracking"].items():
         lines.append(f'            readonly property string {k}: "{v}"')
     lines.append("        }")
+    # Add nested typography objects for convenience
+    lines.append("        readonly property QtObject body: QtObject {")
+    lines.append(f'            readonly property int size: {tokens["typography"]["scale"].get("body", 14)}')
+    lines.append(f'            readonly property real lineHeight: {tokens["typography"]["lineHeight"].get("body", 1.5)}')
+    lines.append("        }")
+    lines.append("        readonly property QtObject caption: QtObject {")
+    lines.append(f'            readonly property int size: {tokens["typography"]["scale"].get("caption", 12)}')
+    lines.append(f'            readonly property int weight: {tokens["typography"]["weight"].get("caption", 400)}')
+    lines.append(f'            readonly property real lineHeight: {tokens["typography"]["lineHeight"].get("caption", 1.4)}')
+    lines.append("        }")
+    lines.append("        readonly property QtObject display: QtObject {")
+    lines.append(f'            readonly property int size: {tokens["typography"]["scale"].get("display", 48)}')
+    lines.append(f'            readonly property int weight: {tokens["typography"]["weight"].get("bold", 700)}')
+    lines.append(f'            readonly property string letterSpacing: "{tokens["typography"]["tracking"].get("tight", "-0.02em")}"')
+    lines.append("        }")
+    lines.append("        readonly property QtObject heading1: QtObject {")
+    lines.append(f'            readonly property int size: {tokens["typography"]["scale"].get("heading1", 36)}')
+    lines.append(f'            readonly property int weight: {tokens["typography"]["weight"].get("bold", 700)}')
+    lines.append(f'            readonly property string letterSpacing: "{tokens["typography"]["tracking"].get("tight", "-0.02em")}"')
+    lines.append("        }")
+    lines.append("        readonly property QtObject heading2: QtObject {")
+    lines.append(f'            readonly property int size: {tokens["typography"]["scale"].get("2xl", 20)}')
+    lines.append(f'            readonly property int weight: {tokens["typography"]["weight"].get("semibold", 600)}')
+    lines.append("        }")
+    lines.append("        readonly property QtObject heading3: QtObject {")
+    lines.append(f'            readonly property int size: {tokens["typography"]["scale"].get("heading3", 24)}')
+    lines.append(f'            readonly property int weight: {tokens["typography"]["weight"].get("semibold", 600)}')
+    lines.append("        }")
+    lines.append("        readonly property QtObject label: QtObject {")
+    lines.append(f'            readonly property int size: {tokens["typography"]["scale"].get("label", 14)}')
+    lines.append(f'            readonly property int weight: {tokens["typography"]["weight"].get("label", 500)}')
+    lines.append("        }")
+    lines.append("        readonly property QtObject title: QtObject {")
+    lines.append(f'            readonly property int size: {tokens["typography"]["scale"].get("title", 18)}')
+    lines.append(f'            readonly property int weight: {tokens["typography"]["weight"].get("title", 600)}')
+    lines.append("        }")
+    lines.append("        readonly property QtObject bodyStrong: QtObject {")
+    lines.append(f'            readonly property int size: {tokens["typography"]["scale"].get("bodyStrong", 15)}')
+    lines.append(f'            readonly property int weight: {tokens["typography"]["weight"].get("medium", 500)}')
+    lines.append("        }")
+    # Add weight aliases
+    lines.append(f'        readonly property int weightSemibold: {tokens["typography"]["weight"].get("semibold", 600)}')
+    lines.append(f'        readonly property int weightMedium: {tokens["typography"]["weight"].get("medium", 500)}')
+    lines.append(f'        readonly property int weightBold: {tokens["typography"]["weight"].get("bold", 700)}')
     lines.append("    }")
     lines.append("    readonly property QtObject motion: QtObject {")
     lines.append("        readonly property QtObject duration: QtObject {")
@@ -163,14 +216,38 @@ def build_theme_qml(tokens):
         lines.append(f'            readonly property string {k}: "{v}"')
     lines.append("        }")
     lines.append(f'        readonly property bool reduceMotion: {str(bool(tokens["motion"].get("reduceMotion",True))).lower()}')
+    # Add duration aliases
+    lines.append(f'        readonly property int durationFast: {tokens["motion"]["duration"].get("fast", 120)}')
+    lines.append(f'        readonly property int durationNormal: {tokens["motion"]["duration"].get("normal", 200)}')
+    lines.append(f'        readonly property int durationSlow: {tokens["motion"]["duration"].get("slow", 320)}')
     lines.append("    }")
     lines.append("    readonly property QtObject icon: QtObject {")
-    for k,v in tokens["icon"]["size"].items():
-        if isinstance(v,int): lines.append(f'        readonly property int {k}: {v}')
+    # Flat icon sizes
+    for k,v in tokens["icon"].items():
+        if k not in ["sizes", "stroke", "strokeWidth", "grid"] and isinstance(v,int):
+            lines.append(f'        readonly property int {k}: {v}')
+    # Nested sizes
+    if "sizes" in tokens["icon"]:
+        lines.append("        readonly property QtObject sizes: QtObject {")
+        for k,v in tokens["icon"]["sizes"].items():
+            if isinstance(v,int): lines.append(f'            readonly property int {k}: {v}')
+        lines.append("        }")
     lines.append(f'        readonly property real stroke: {tokens["icon"].get("stroke",1.75)}')
+    if "strokeWidth" in tokens["icon"]:
+        lines.append(f'        readonly property real strokeWidth: {tokens["icon"]["strokeWidth"]}')
     lines.append("    }")
     lines.append("    readonly property QtObject layout: QtObject {")
     lines.append(f'        readonly property int touchTarget: {tokens["layout"].get("touchTarget",40)}')
+    # Add layout sub-objects (panel, spaces, launcher, controlCenter)
+    for lk in ["panel", "spaces", "launcher", "controlCenter"]:
+        if lk in tokens["layout"]:
+            lines.append(f'        readonly property QtObject {lk}: QtObject {{')
+            for ck, cv in tokens["layout"][lk].items():
+                if isinstance(cv,int):
+                    lines.append(f'            readonly property int {ck}: {cv}')
+                elif isinstance(cv,(int,float)):
+                    lines.append(f'            readonly property real {ck}: {cv}')
+            lines.append("        }")
     lines.append("        readonly property QtObject classes: QtObject {")
     for cname,cvals in tokens["layout"]["classes"].items():
         lines.append(f'            readonly property QtObject {cname}: QtObject {{')
@@ -186,12 +263,13 @@ def build_theme_qml(tokens):
     lines.append("")
     lines.append("    function scaled(value) { return Math.round(value * scale) }")
     lines.append("    function scaledInt(value) { return Math.round(value * scale) }")
+    lines.append("    function motionDuration(ms) { return reduceMotion ? 0 : ms; }")
     lines.append("    function layoutClass(width) { if (width < 1280) return 'compact'; if (width < 1920) return 'regular'; if (width < 2560) return 'wide'; return 'ultrawide'; }")
     lines.append("}")
     return "\n".join(lines)+"\n"
 
 def build_qmldir():
-    return "// "+GENERATED_NOTE+"\nmodule Klyvera.Styles\nsingleton Theme 1.0 Theme.qml\n"
+    return "# "+GENERATED_NOTE+"\nmodule Klyvera.Styles\nsingleton Theme 1.0 Theme.qml\n"
 
 def build_tokens_css(tokens):
     lines=[]

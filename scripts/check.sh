@@ -5,8 +5,12 @@ ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
 FAST=0
+STRICT=0
 if [[ "${1:-}" == "--fast" ]]; then
   FAST=1
+fi
+if [[ "${1:-}" == "--strict" ]]; then
+  STRICT=1
 fi
 
 FAILURES=0
@@ -14,8 +18,13 @@ SKIPPED=0
 
 pass() { printf '  ok    %s\n' "$*"; }
 skip() {
-  printf '  skip  %s\n' "$*"
-  SKIPPED=$((SKIPPED + 1))
+  if ((STRICT == 1)); then
+    printf '  FAIL  %s (strict mode: no skips allowed)\n' "$*"
+    FAILURES=$((FAILURES + 1))
+  else
+    printf '  skip  %s\n' "$*"
+    SKIPPED=$((SKIPPED + 1))
+  fi
 }
 fail() {
   printf '  FAIL  %s\n' "$*"
@@ -31,6 +40,15 @@ if [[ -f design/generators/generate.py ]]; then
       pass "generated tokens in sync"
     else
       fail "generated tokens out of sync"
+    fi
+    if [[ -f tests/theme_contract.py ]]; then
+      if python3 tests/theme_contract.py; then
+        pass "theme contract"
+      else
+        fail "theme contract"
+      fi
+    else
+      skip "theme contract test not found"
     fi
   else
     skip "python3 not installed"
@@ -112,7 +130,9 @@ if [[ -d shell ]]; then
 fi
 if ((${#qml_files[@]} > 0)); then
   qml_linter=""
-  if has qmllint; then
+  if [[ -f .venv/bin/pyside6-qmllint ]]; then
+    qml_linter=".venv/bin/pyside6-qmllint"
+  elif has qmllint; then
     qml_linter="qmllint"
   elif has pyside6-qmllint; then
     qml_linter="pyside6-qmllint"
