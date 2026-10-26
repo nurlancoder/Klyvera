@@ -20,6 +20,10 @@ python3 design/generators/generate.py --check  # verify in CI
 `--check` fails when a generated file is stale or when a required contrast pair
 drops below its threshold. Never edit generated files by hand.
 
+Color tokens with eight hexadecimal digits use CSS `#RRGGBBAA` ordering. The
+generator converts that trailing alpha to Qt's `#AARRGGBB` form and to CSS
+`rgba()` values; object tokens with explicit `hex` and `alpha` remain supported.
+
 Nested token groups are emitted as typed inline QML components. This keeps
 `Theme.spacing.md`, `Theme.typography.body.size` and `Theme.layout.panel.height`
 statically resolvable by `qmllint` instead of falling back to `QObject`.

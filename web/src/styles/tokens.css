@@ -18,11 +18,11 @@
   --kly-warning: #ffc857;
   --kly-info: #7cc4ff;
   --kly-on-accent: #05050a;
-  --kly-border-subtle: #ffff14;
-  --kly-border-strong: #ffff29;
+  --kly-border-subtle: rgba(255, 255, 255, 0.0784314);
+  --kly-border-strong: rgba(255, 255, 255, 0.160784);
   --kly-focus-ring: #b9a6ff;
-  --kly-selection: rgba(139, 255, 102, 0.607843);
-  --kly-shadow: rgba(0, 0, 140, 0);
+  --kly-selection: rgba(155, 139, 255, 0.4);
+  --kly-shadow: rgba(0, 0, 0, 0.54902);
   --kly-font-heading: "Manrope","Inter",system-ui,sans-serif;
   --kly-font-body: "Inter",system-ui,sans-serif;
   --kly-font-mono: "JetBrains Mono",ui-monospace,monospace;
@@ -53,11 +53,11 @@
   --kly-warning: #92400e;
   --kly-info: #1d4ed8;
   --kly-on-accent: #ffffff;
-  --kly-border-subtle: rgba(18, 32, 15, 0.0588235);
-  --kly-border-strong: rgba(18, 32, 41, 0.0588235);
+  --kly-border-subtle: rgba(15, 18, 32, 0.0588235);
+  --kly-border-strong: rgba(15, 18, 32, 0.160784);
   --kly-focus-ring: #5b3fe0;
-  --kly-selection: rgba(63, 224, 64, 0.356863);
-  --kly-shadow: rgba(18, 32, 46, 0.0588235);
+  --kly-selection: rgba(91, 63, 224, 0.25098);
+  --kly-shadow: rgba(15, 18, 32, 0.180392);
 }
 [data-theme='high-contrast'] {
   --kly-background: #000000;
@@ -81,8 +81,8 @@
   --kly-border-subtle: #ffffff;
   --kly-border-strong: #ffffff;
   --kly-focus-ring: #ffffff;
-  --kly-selection: rgba(204, 255, 102, 0.843137);
-  --kly-shadow: #ffff1f;
+  --kly-selection: rgba(215, 204, 255, 0.4);
+  --kly-shadow: rgba(255, 255, 255, 0.121569);
 }
 @media (prefers-color-scheme: light) {
   :root:not([data-theme]) {
@@ -104,11 +104,11 @@
     --kly-warning: #92400e;
     --kly-info: #1d4ed8;
     --kly-on-accent: #ffffff;
-    --kly-border-subtle: rgba(18, 32, 15, 0.0588235);
-    --kly-border-strong: rgba(18, 32, 41, 0.0588235);
+    --kly-border-subtle: rgba(15, 18, 32, 0.0588235);
+    --kly-border-strong: rgba(15, 18, 32, 0.160784);
     --kly-focus-ring: #5b3fe0;
-    --kly-selection: rgba(63, 224, 64, 0.356863);
-    --kly-shadow: rgba(18, 32, 46, 0.0588235);
+    --kly-selection: rgba(91, 63, 224, 0.25098);
+    --kly-shadow: rgba(15, 18, 32, 0.180392);
   }
 }
 @media (prefers-reduced-motion: reduce) {

@@ -63,6 +63,15 @@ if [[ -f design/generators/generate.py ]]; then
     else
       skip "theme contract test not found"
     fi
+    if [[ -f tests/test_token_colors.py ]]; then
+      if "$PYTHON" tests/test_token_colors.py; then
+        pass "token color formats"
+      else
+        fail "token color formats"
+      fi
+    else
+      skip "token color test not found"
+    fi
   else
     skip "python3 not installed"
   fi

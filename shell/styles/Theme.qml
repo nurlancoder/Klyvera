@@ -31,11 +31,11 @@ QtObject {
             "warning": "#FFC857",
             "info": "#7CC4FF",
             "onAccent": "#05050A",
-            "borderSubtle": "#FFFF14",
-            "borderStrong": "#FFFF29",
+            "borderSubtle": "#14FFFFFF",
+            "borderStrong": "#29FFFFFF",
             "focusRing": "#B9A6FF",
-            "selection": "#9B8BFF66",
-            "shadow": "#0000008C"
+            "selection": "#669B8BFF",
+            "shadow": "#8C000000"
         },
         "light": {
             "background": "#F6F7FB",
@@ -56,11 +56,11 @@ QtObject {
             "warning": "#92400E",
             "info": "#1D4ED8",
             "onAccent": "#FFFFFF",
-            "borderSubtle": "#0F12200F",
-            "borderStrong": "#0F122029",
+            "borderSubtle": "#0F0F1220",
+            "borderStrong": "#290F1220",
             "focusRing": "#5B3FE0",
-            "selection": "#5B3FE040",
-            "shadow": "#0F12202E"
+            "selection": "#405B3FE0",
+            "shadow": "#2E0F1220"
         },
         "high-contrast": {
             "background": "#000000",
@@ -84,8 +84,8 @@ QtObject {
             "borderSubtle": "#FFFFFF",
             "borderStrong": "#FFFFFF",
             "focusRing": "#FFFFFF",
-            "selection": "#D7CCFF66",
-            "shadow": "#FFFF1F"
+            "selection": "#66D7CCFF",
+            "shadow": "#1FFFFFFF"
         }
     })
     readonly property var palette: palettes[themeName] ? palettes[themeName] : palettes["dark"]
@@ -146,12 +146,12 @@ QtObject {
         readonly property int strong: 2
     }
     readonly property QtObject typography: QtObject {
-        readonly property string fontHeading: "\"Manrope\",\"Inter\",system-ui,sans-serif"
-        readonly property string fontBody: "\"Inter\",system-ui,sans-serif"
-        readonly property string fontMono: "\"JetBrains Mono\",ui-monospace,monospace"
-        readonly property string uiFamily: "\"Inter\",system-ui,sans-serif"
-        readonly property string headingFamily: "\"Manrope\",\"Inter\",system-ui,sans-serif"
-        readonly property string monoFamily: "\"JetBrains Mono\",ui-monospace,monospace"
+        readonly property string fontHeading: "Manrope"
+        readonly property string fontBody: "Inter"
+        readonly property string fontMono: "JetBrains Mono"
+        readonly property string uiFamily: "Inter"
+        readonly property string headingFamily: "Manrope"
+        readonly property string monoFamily: "JetBrains Mono"
         readonly property QtObject scale: QtObject {
             readonly property int xs: 11
             readonly property int sm: 12
