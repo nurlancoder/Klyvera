@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">Klyvera control center illustration</title>
+  <desc id="desc">An original desktop scene with a calm abstract wallpaper and a detailed control center for appearance, audio, connectivity and power.</desc>
+  <defs>
+    <linearGradient id="wall" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#151b32"/>
+      <stop offset=".48" stop-color="#242249"/>
+      <stop offset="1" stop-color="#10131f"/>
+    </linearGradient>
+    <linearGradient id="ribbon" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#aa9aff" stop-opacity=".8"/>
+      <stop offset=".55" stop-color="#65d9d0" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#4f78d6" stop-opacity=".08"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#b2a5ff"/>
+      <stop offset="1" stop-color="#7c68f5"/>
+    </linearGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="46"/></filter>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="24" stdDeviation="28" flood-color="#03040b" flood-opacity=".45"/>
+    </filter>
+    <style>
+      text{font-family:Inter,ui-sans-serif,system-ui,sans-serif;fill:#f4f6fb}
+      .muted{fill:#aeb6ca}.quiet{fill:#7f899f}.small{font-size:16px}.body{font-size:19px}
+      .label{font-size:14px;font-weight:700;letter-spacing:1px}.icon{fill:none;stroke:#c4cada;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+  <rect width="1440" height="900" rx="28" fill="url(#wall)"/>
+  <circle cx="350" cy="380" r="310" fill="#7772e8" fill-opacity=".25" filter="url(#blur)"/>
+  <circle cx="730" cy="700" r="310" fill="#42c5b0" fill-opacity=".16" filter="url(#blur)"/>
+  <path d="M-60 720C165 568 274 267 590 279c179 7 243 192 420 159 169-32 256-184 492-153v615H-60Z" fill="url(#ribbon)" fill-opacity=".38"/>
+  <path d="M-60 779C188 617 286 407 505 403c190-3 250 189 442 164 184-24 309-167 555-148" fill="none" stroke="#c3bdff" stroke-opacity=".16" stroke-width="2"/>
+  <rect x="1" y="1" width="1438" height="898" rx="27" fill="none" stroke="#ffffff" stroke-opacity=".12"/>
+  <rect x="0" y="0" width="1440" height="54" rx="28" fill="#080a11" fill-opacity=".56"/>
+  <path d="M0 54h1440" stroke="#ffffff" stroke-opacity=".1"/>
+  <rect x="30" y="15" width="24" height="24" rx="7" fill="url(#accent)"/>
+  <path d="m36 27 5 5 8-10" fill="none" stroke="#11121b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="68" y="34" font-size="17" font-weight="700">Klyvera</text>
+  <text x="193" y="34" class="small muted">Mon, Oct 26</text>
+  <text x="1246" y="34" class="small">09:41</text>
+  <circle cx="1317" cy="27" r="6" fill="none" stroke="#c4cada" stroke-width="2"/>
+  <path d="M1328 20v14m6-12v10m6-7v4" class="icon"/>
+  <rect x="1360" y="19" width="31" height="17" rx="5" fill="none" stroke="#c4cada" stroke-width="2"/>
+  <rect x="1364" y="23" width="19" height="9" rx="3" fill="#65d9b4"/>
+  <text x="78" y="344" class="label" fill="#c5bcff">A QUIETER WAY TO WORK</text>
+  <text x="78" y="410" font-size="48" font-weight="750">Everything in its</text>
+  <text x="78" y="466" font-size="48" font-weight="750">right place.</text>
+  <text x="78" y="520" font-size="21" class="muted">A workspace that follows your focus,</text>
+  <text x="78" y="550" font-size="21" class="muted">not the other way around.</text>
+  <rect x="78" y="594" width="176" height="50" rx="14" fill="#ffffff" fill-opacity=".1" stroke="#ffffff" stroke-opacity=".2"/>
+  <circle cx="102" cy="619" r="6" fill="#9d91ff"/>
+  <text x="120" y="625" class="small">API platform</text>
+  <rect x="267" y="594" width="168" height="50" rx="14" fill="#ffffff" fill-opacity=".07" stroke="#ffffff" stroke-opacity=".12"/>
+  <circle cx="291" cy="619" r="6" fill="#5dd6bc"/>
+  <text x="309" y="625" class="small">Design system</text>
+  <rect x="907" y="82" width="493" height="760" rx="26" fill="#11141e" fill-opacity=".96" stroke="#ffffff" stroke-opacity=".16" filter="url(#shadow)"/>
+  <text x="942" y="128" font-size="25" font-weight="700">Control center</text>
+  <text x="942" y="155" class="small muted">Local settings · services and devices</text>
+  <rect x="942" y="179" width="423" height="46" rx="12" fill="#24233b"/>
+  <rect x="942" y="179" width="3" height="46" rx="2" fill="#a99aff"/>
+  <path d="m962 200 7-7 7 7-7 7z" fill="none" stroke="#c8c0ff" stroke-width="2"/>
+  <text x="990" y="207" class="small" font-weight="650">Appearance</text>
+  <text x="1306" y="207" class="small quiet">Active</text>
+  <rect x="942" y="242" width="423" height="128" rx="17" fill="#191d29" stroke="#303443"/>
+  <text x="966" y="278" font-size="19" font-weight="650">Theme</text>
+  <text x="966" y="302" class="small muted">Choose the contrast that feels right.</text>
+  <rect x="966" y="321" width="119" height="35" rx="10" fill="url(#accent)"/>
+  <text x="1000" y="344" font-size="14" font-weight="700" fill="#11121b">Dark</text>
+  <rect x="1094" y="321" width="119" height="35" rx="10" fill="#222633" stroke="#3b4050"/>
+  <text x="1127" y="344" font-size="14" class="muted">Light</text>
+  <rect x="1222" y="321" width="119" height="35" rx="10" fill="#222633" stroke="#3b4050"/>
+  <text x="1239" y="344" font-size="13" class="muted">High contrast</text>
+  <rect x="942" y="388" width="204" height="159" rx="17" fill="#191d29" stroke="#303443"/>
+  <text x="966" y="423" font-size="19" font-weight="650">Audio</text>
+  <circle cx="982" cy="462" r="14" fill="#292545"/>
+  <path d="M976 458h4l6-5v18l-6-5h-4z" class="icon"/>
+  <path d="M992 456q8 6 0 12m5-17q14 11 0 22" class="icon"/>
+  <text x="966" y="510" class="small muted">Output · Built-in audio</text>
+  <rect x="1162" y="388" width="203" height="159" rx="17" fill="#191d29" stroke="#303443"/>
+  <text x="1186" y="423" font-size="19" font-weight="650">Network</text>
+  <circle cx="1202" cy="462" r="14" fill="#17372f"/>
+  <path d="M1193 460q9-9 18 0m-14 4q5-5 10 0m-7 4q2-2 4 0" class="icon"/>
+  <text x="1186" y="510" class="small muted">Connected · Wi-Fi</text>
+  <rect x="942" y="565" width="423" height="117" rx="17" fill="#191d29" stroke="#303443"/>
+  <text x="966" y="601" font-size="19" font-weight="650">Display scale</text>
+  <text x="1316" y="601" class="small">100%</text>
+  <rect x="966" y="626" width="375" height="6" rx="3" fill="#343849"/>
+  <rect x="966" y="626" width="166" height="6" rx="3" fill="url(#accent)"/>
+  <circle cx="1132" cy="629" r="12" fill="#b5a9ff" stroke="#11141e" stroke-width="3"/>
+  <rect x="942" y="700" width="423" height="112" rx="17" fill="#191d29" stroke="#303443"/>
+  <text x="966" y="739" font-size="19" font-weight="650">Reduce motion</text>
+  <text x="966" y="768" class="small muted">Keep transitions calm and comfortable.</text>
+  <rect x="1284" y="730" width="56" height="30" rx="15" fill="#5547a0"/>
+  <circle cx="1324" cy="745" r="11" fill="#f4f6fb"/>
+  <text x="943" y="872" class="small muted">Illustrative preview · service values are mocked</text>
+</svg>

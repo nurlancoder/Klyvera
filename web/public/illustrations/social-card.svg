@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Klyvera social preview</title>
+  <desc id="desc">A polished Klyvera title card with the workspace tagline and an original abstract interface illustration.</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#111326"/>
+      <stop offset=".58" stop-color="#090b12"/>
+      <stop offset="1" stop-color="#17152d"/>
+    </linearGradient>
+    <linearGradient id="violet" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#c0b5ff"/>
+      <stop offset="1" stop-color="#806cff"/>
+    </linearGradient>
+    <linearGradient id="aqua" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#74e5cd"/>
+      <stop offset="1" stop-color="#5c9ce8"/>
+    </linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="48"/></filter>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#000000" flood-opacity=".38"/>
+    </filter>
+    <style>
+      text{font-family:Inter,ui-sans-serif,system-ui,sans-serif;fill:#f4f6fb}
+      .muted{fill:#aeb6ca}.small{font-size:18px}
+    </style>
+  </defs>
+  <rect width="1200" height="630" fill="url(#background)"/>
+  <circle cx="946" cy="156" r="230" fill="#8a77ff" fill-opacity=".22" filter="url(#glow)"/>
+  <circle cx="1104" cy="540" r="180" fill="#45d1bd" fill-opacity=".1" filter="url(#glow)"/>
+  <path d="M0 523c164-72 253-22 389-112 120-80 170-154 306-140 99 10 138 73 230 67 82-5 178-86 275-80v372H0Z" fill="#8875ff" fill-opacity=".045"/>
+  <rect x="64" y="58" width="44" height="44" rx="13" fill="url(#violet)"/>
+  <path d="m76 79 8 8 13-16" fill="none" stroke="#11121b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="124" y="88" font-size="27" font-weight="750">Klyvera</text>
+  <text x="66" y="218" font-size="17" font-weight="700" letter-spacing="2.5" fill="#c1b7ff">LOCAL-FIRST LINUX DESKTOP</text>
+  <text x="64" y="305" font-size="66" font-weight="800" letter-spacing="-3">Your workspace.</text>
+  <text x="64" y="384" font-size="66" font-weight="800" letter-spacing="-3" fill="url(#violet)">Your flow.</text>
+  <text x="68" y="444" class="small muted">Project-based Spaces. A calm, keyboard-first shell.</text>
+  <rect x="67" y="495" width="220" height="46" rx="23" fill="#ffffff" fill-opacity=".07" stroke="#ffffff" stroke-opacity=".14"/>
+  <circle cx="91" cy="518" r="6" fill="#70dfbc"/>
+  <text x="109" y="524" font-size="15" font-weight="650" class="muted">OFFLINE · PRIVATE · YOURS</text>
+  <g filter="url(#shadow)">
+    <rect x="710" y="96" width="424" height="438" rx="24" fill="#131722" stroke="#45495b"/>
+    <path d="M711 153h422" stroke="#34394a"/>
+    <circle cx="738" cy="125" r="5" fill="#ff7687"/>
+    <circle cx="756" cy="125" r="5" fill="#f4bd5d"/>
+    <circle cx="774" cy="125" r="5" fill="#58d8ad"/>
+    <text x="804" y="131" font-size="16" font-weight="700">Spaces</text>
+    <rect x="728" y="173" width="128" height="340" rx="14" fill="#191d29"/>
+    <text x="745" y="205" font-size="13" font-weight="700" letter-spacing="1.1" fill="#858ea4">YOUR PROJECTS</text>
+    <rect x="739" y="222" width="106" height="56" rx="10" fill="#332f58"/>
+    <rect x="739" y="233" width="3" height="34" rx="2" fill="#b4a6ff"/>
+    <text x="752" y="245" font-size="13" font-weight="650">API platform</text>
+    <text x="752" y="263" font-size="11" class="muted">Rust services</text>
+    <text x="752" y="308" font-size="13" font-weight="600">Design system</text>
+    <text x="752" y="352" font-size="13" font-weight="600">Release prep</text>
+    <rect x="875" y="173" width="242" height="143" rx="14" fill="#191d29"/>
+    <rect x="893" y="193" width="38" height="38" rx="11" fill="#292545"/>
+    <path d="m904 203-6 8 6 8m14-16 6 8-6 8m-5-20-4 24" fill="none" stroke="#c2b7ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="944" y="207" font-size="17" font-weight="700">API platform</text>
+    <text x="944" y="228" font-size="12" class="muted">A workspace, ready to resume.</text>
+    <rect x="893" y="251" width="128" height="39" rx="10" fill="url(#violet)"/>
+    <text x="916" y="276" font-size="13" font-weight="700" fill="#11121b">Open Space</text>
+    <rect x="875" y="332" width="242" height="181" rx="14" fill="#191d29"/>
+    <text x="895" y="363" font-size="15" font-weight="650">Project context</text>
+    <rect x="894" y="382" width="204" height="43" rx="10" fill="#222735"/>
+    <circle cx="914" cy="403" r="7" fill="#6c70db"/>
+    <text x="931" y="408" font-size="13">Project folders</text>
+    <rect x="894" y="437" width="204" height="43" rx="10" fill="#222735"/>
+    <circle cx="914" cy="458" r="7" fill="url(#aqua)"/>
+    <text x="931" y="463" font-size="13">Launch applications</text>
+  </g>
+</svg>

@@ -25,9 +25,9 @@
     />
     <meta property="og:url" content="https://nurlancoder.github.io/Klyvera/az/" />
     <meta property="og:image" content="https://nurlancoder.github.io/Klyvera/og.png" />
-    <meta property="og:image:width" content="1440" />
-    <meta property="og:image:height" content="900" />
-    <meta property="og:image:alt" content="Layihə yan paneli və iş məkanı kartları ilə Klyvera Spaces önizləməsi" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Klyvera: İş məkanınız. Axınınız. Lokal-first Linux masaüstü." />
     <meta property="og:locale" content="az_AZ" />
     <meta property="og:locale:alternate" content="en_US" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -178,23 +178,28 @@
                 <div class="frame-image">
                   <picture>
                     <source
+                      type="image/svg+xml"
+                      srcset="/illustrations/spaces-dashboard.svg"
+                      sizes="(max-width: 1000px) calc(100vw - 36px), 46vw"
+                    />
+                    <source
                       type="image/webp"
                       srcset="/screenshots/spaces-720.webp 720w, /screenshots/spaces-1440.webp 1440w"
-                      sizes="(max-width: 900px) calc(100vw - 40px), 46vw"
+                      sizes="(max-width: 1000px) calc(100vw - 36px), 46vw"
                     />
                     <img
                       src="/screenshots/spaces.png"
                       width="1440"
                       height="900"
-                      alt="Space siyahısı, layihə detalları və iş məkanı əməliyyatları ilə Klyvera Spaces önizləməsi."
+                      alt="Layihə siyahısı, iş məkanı detalları, qovluqlar və tətbiq əməliyyatları olan Klyvera Spaces illüstrasiyası."
                       fetchpriority="high"
                       decoding="async"
                     />
                   </picture>
                 </div>
                 <figcaption class="frame-caption">
-                  <span>Mock məlumatdan offscreen render.</span>
-                  <span>1440 × 900</span>
+                  <span>Orijinal interfeys illüstrasiyası · nümunə layihə məlumatları</span>
+                  <span>Hər ölçüdə aydın miqyaslanır</span>
                 </figcaption>
               </figure>
               <div class="hero-badge">
@@ -284,21 +289,26 @@
                 <div class="media-label">Space editor</div>
                 <picture>
                   <source
+                    type="image/svg+xml"
+                    srcset="/illustrations/space-editor.svg"
+                    sizes="(max-width: 1000px) calc(100vw - 36px), 50vw"
+                  />
+                  <source
                     type="image/webp"
                     srcset="/screenshots/space-editor-720.webp 720w, /screenshots/space-editor-1440.webp 1440w"
-                    sizes="(max-width: 900px) calc(100vw - 40px), 50vw"
+                    sizes="(max-width: 1000px) calc(100vw - 36px), 50vw"
                   />
                   <img
                     src="/screenshots/space-editor.png"
                     width="1440"
                     height="900"
-                    alt="Layihə yolu, tətbiq seçimləri və əmr təsdiqi ilə Klyvera Space editor önizləməsi."
+                    alt="Yoxlanmış layihə qovluqları, seçilmiş tətbiqlər və açıq əmr etibar sərhədi olan Space redaktoru illüstrasiyası."
                     loading="lazy"
                     decoding="async"
                   />
                 </picture>
               </figure>
-              <figcaption class="media-caption">Önizləmə. İdxal olunan əmr sətirləri açıq təsdiq tələb edir.</figcaption>
+              <figcaption class="media-caption">Orijinal interfeys illüstrasiyası · idxal edilmiş əmrlər açıq təsdiq tələb edir.</figcaption>
             </div>
 
             <div class="split-copy">
@@ -356,6 +366,11 @@
                 <div class="media-label">İdarə mərkəzi</div>
                 <picture>
                   <source
+                    type="image/svg+xml"
+                    srcset="/illustrations/control-center.svg"
+                    sizes="(max-width: 900px) calc(100vw - 40px), 50vw"
+                  />
+                  <source
                     type="image/webp"
                     srcset="/screenshots/control-center-720.webp 720w, /screenshots/control-center-1440.webp 1440w"
                     sizes="(max-width: 900px) calc(100vw - 40px), 50vw"
@@ -364,13 +379,13 @@
                     src="/screenshots/control-center.png"
                     width="1440"
                     height="900"
-                    alt="Görünüş, ekran, səs, şəbəkə və enerji nəzarəti ilə Klyvera idarə mərkəzi önizləməsi."
+                    alt="Görünüş, səs, şəbəkə və ekran idarəetmələri olan Klyvera idarə mərkəzinin illüstrasiyası."
                     loading="lazy"
                     decoding="async"
                   />
                 </picture>
               </figure>
-              <figcaption class="media-caption">Mock xidmət vəziyyətləri ilə önizləmə. Quickshell runtime yoxlanılmayıb.</figcaption>
+              <figcaption class="media-caption">Orijinal interfeys illüstrasiyası · sistem dəyərləri nümunədir; hədəf runtime yoxlanmayıb.</figcaption>
             </div>
 
             <div class="split-copy">
@@ -518,7 +533,7 @@
               <h3>Launch iddiası yoxdur</h3>
               <ul>
                 <li><span>Reliz, imzalanmış paketlər və dəstəklənən installer yoxdur.</span></li>
-                <li><span>Ekran görüntüləri canlı sessiya deyil, offscreen render-dir.</span></li>
+                <li><span>Məhsul vizualları nümunə məlumatları olan illüstrasiyalardır, canlı sessiya deyil.</span></li>
                 <li><span>Lisenziya maintainer təsdiqini gözləyir.</span></li>
                 <li><span>Dizaynca heç bir telemetriya yoxdur.</span></li>
               </ul>
@@ -655,7 +670,7 @@ cd Klyvera
           </div>
         </div>
         <div class="footer-bottom">
-          <p>© 2026 Klyvera töhfəçiləri. Apache-2.0 nəzərdə tutulur, təsdiq gözləyir. Ekran görüntüləri offscreen render-dir.</p>
+          <p>© 2026 Klyvera töhfəçiləri. Apache-2.0 nəzərdə tutulur, təsdiq gözləyir. Məhsul vizualları illüstrativdir.</p>
           <p>Müstəqil layihə. Hesab yoxdur. Telemetriya yoxdur.</p>
         </div>
       </div>

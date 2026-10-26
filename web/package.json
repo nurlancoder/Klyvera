@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
+    "render:social-card": "node scripts/render_social_card.mjs",
     "preview": "vite preview",
     "check": "python ../tests/web/check_site.py",
     "test:browser": "node ../tests/web/browser_test.mjs"

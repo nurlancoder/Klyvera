@@ -3,6 +3,7 @@
 import json
 import sys
 import unittest
+from xml.etree import ElementTree
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -36,6 +37,27 @@ class IconCatalogTests(unittest.TestCase):
         manifest["icons"][0]["file"] = "../outside.svg"
         with self.assertRaises(icons.IconManifestError):
             icons.validate_manifest(manifest)
+
+    def test_source_icons_share_the_accessible_stroke_system(self):
+        icon_files = sorted((ROOT / "shell" / "assets" / "icons").glob("*.svg"))
+        self.assertEqual(len(icon_files), 50)
+        for path in icon_files:
+            with self.subTest(icon=path.name):
+                root = ElementTree.parse(path).getroot()
+                self.assertEqual(root.get("viewBox"), "0 0 24 24")
+                self.assertEqual(root.get("fill"), "none")
+                shapes = [
+                    element
+                    for element in root.iter()
+                    if element.tag.rsplit("}", 1)[-1]
+                    in {"circle", "ellipse", "line", "path", "polyline", "polygon", "rect"}
+                ]
+                self.assertTrue(shapes)
+                for shape in shapes:
+                    self.assertEqual(shape.get("stroke"), "currentColor")
+                    self.assertEqual(shape.get("stroke-width"), "1.75")
+                    self.assertEqual(shape.get("stroke-linecap"), "round")
+                    self.assertEqual(shape.get("stroke-linejoin"), "round")
 
     def test_qml_icon_uses_catalog_and_keeps_dynamic_battery(self):
         source = (ROOT / "shell" / "ui" / "Icon.qml").read_text(encoding="utf-8")

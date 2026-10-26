@@ -186,9 +186,12 @@ Item {
 
             ColumnLayout {
                 Layout.fillWidth: true
+                Layout.minimumWidth: 0
                 spacing: 0
 
                 Text {
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: 0
                     text: qsTr("Spaces")
                     color: Theme.textPrimary
                     font.family: Theme.typography.headingFamily
@@ -197,6 +200,8 @@ Item {
                     font.letterSpacing: Theme.typography.heading1.letterSpacing
                 }
                 Text {
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: 0
                     text: qsTr("Project-based workspaces for the way you actually work.")
                     color: Theme.textSecondary
                     font.family: Theme.typography.uiFamily

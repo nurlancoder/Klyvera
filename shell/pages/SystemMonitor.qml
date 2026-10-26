@@ -42,9 +42,12 @@ Item {
 
             ColumnLayout {
                 Layout.fillWidth: true
+                Layout.minimumWidth: 0
                 spacing: 0
 
                 Text {
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: 0
                     text: qsTr("System monitor")
                     color: Theme.textPrimary
                     font.family: Theme.typography.headingFamily
@@ -53,6 +56,8 @@ Item {
                     font.letterSpacing: Theme.typography.heading1.letterSpacing
                 }
                 Text {
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: 0
                     text: qsTr("Read locally from /proc and /sys. Nothing is uploaded.")
                     color: Theme.textSecondary
                     font.family: Theme.typography.uiFamily

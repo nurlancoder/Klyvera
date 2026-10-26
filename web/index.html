@@ -25,9 +25,9 @@
     />
     <meta property="og:url" content="https://nurlancoder.github.io/Klyvera/" />
     <meta property="og:image" content="https://nurlancoder.github.io/Klyvera/og.png" />
-    <meta property="og:image:width" content="1440" />
-    <meta property="og:image:height" content="900" />
-    <meta property="og:image:alt" content="Klyvera Spaces preview with a project sidebar and workspace cards" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Klyvera: Your workspace. Your flow. A local-first Linux desktop." />
     <meta property="og:locale" content="en_US" />
     <meta property="og:locale:alternate" content="az_AZ" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -173,28 +173,33 @@
               <figure class="product-frame">
                 <div class="frame-chrome">
                   <span>Klyvera Spaces</span>
-                  <span class="frame-status">preview render</span>
+                  <span class="frame-status">illustrative interface</span>
                 </div>
                 <div class="frame-image">
                   <picture>
                     <source
+                      type="image/svg+xml"
+                      srcset="/illustrations/spaces-dashboard.svg"
+                      sizes="(max-width: 1000px) calc(100vw - 36px), 46vw"
+                    />
+                    <source
                       type="image/webp"
                       srcset="/screenshots/spaces-720.webp 720w, /screenshots/spaces-1440.webp 1440w"
-                      sizes="(max-width: 900px) calc(100vw - 40px), 46vw"
+                      sizes="(max-width: 1000px) calc(100vw - 36px), 46vw"
                     />
                     <img
                       src="/screenshots/spaces.png"
                       width="1440"
                       height="900"
-                      alt="Klyvera Spaces preview with a Space list, project details and workspace actions."
+                      alt="Illustration of Klyvera Spaces with a project list, workspace details, folders and launch actions."
                       fetchpriority="high"
                       decoding="async"
                     />
                   </picture>
                 </div>
                 <figcaption class="frame-caption">
-                  <span>Offscreen render from mock data.</span>
-                  <span>1440 × 900</span>
+                  <span>Original interface illustration · sample project data</span>
+                  <span>Scales cleanly at every size</span>
                 </figcaption>
               </figure>
               <div class="hero-badge">
@@ -284,21 +289,26 @@
                 <div class="media-label">Space editor</div>
                 <picture>
                   <source
+                    type="image/svg+xml"
+                    srcset="/illustrations/space-editor.svg"
+                    sizes="(max-width: 1000px) calc(100vw - 36px), 50vw"
+                  />
+                  <source
                     type="image/webp"
                     srcset="/screenshots/space-editor-720.webp 720w, /screenshots/space-editor-1440.webp 1440w"
-                    sizes="(max-width: 900px) calc(100vw - 40px), 50vw"
+                    sizes="(max-width: 1000px) calc(100vw - 36px), 50vw"
                   />
                   <img
                     src="/screenshots/space-editor.png"
                     width="1440"
                     height="900"
-                    alt="Klyvera Space editor preview with project path, application choices and command confirmation."
+                    alt="Illustration of the Space editor with validated project folders, selected applications and an explicit command trust boundary."
                     loading="lazy"
                     decoding="async"
                   />
                 </picture>
               </figure>
-              <figcaption class="media-caption">Preview render. Imported command rows require explicit trust.</figcaption>
+              <figcaption class="media-caption">Original interface illustration · imported commands require explicit trust.</figcaption>
             </div>
 
             <div class="split-copy">
@@ -355,6 +365,11 @@
                 <div class="media-label">Control center</div>
                 <picture>
                   <source
+                    type="image/svg+xml"
+                    srcset="/illustrations/control-center.svg"
+                    sizes="(max-width: 900px) calc(100vw - 40px), 50vw"
+                  />
+                  <source
                     type="image/webp"
                     srcset="/screenshots/control-center-720.webp 720w, /screenshots/control-center-1440.webp 1440w"
                     sizes="(max-width: 900px) calc(100vw - 40px), 50vw"
@@ -363,13 +378,13 @@
                     src="/screenshots/control-center.png"
                     width="1440"
                     height="900"
-                    alt="Klyvera control center preview with appearance, display, audio, network and power controls."
+                    alt="Illustration of the Klyvera control center with appearance, audio, network and display controls."
                     loading="lazy"
                     decoding="async"
                   />
                 </picture>
               </figure>
-              <figcaption class="media-caption">Preview render with mocked service states. Quickshell runtime is unverified.</figcaption>
+              <figcaption class="media-caption">Original interface illustration · system values are examples; target runtime is unverified.</figcaption>
             </div>
 
             <div class="split-copy">
@@ -519,7 +534,7 @@
               <h3>No launch claims</h3>
               <ul>
                 <li><span>No release, signed packages or supported installer.</span></li>
-                <li><span>Screenshots are offscreen renders, not a live session.</span></li>
+                <li><span>Product visuals are illustrations with sample data, not a live session.</span></li>
                 <li><span>The license awaits maintainer confirmation.</span></li>
                 <li><span>No telemetry is implemented, by design.</span></li>
               </ul>
@@ -656,7 +671,7 @@ cd Klyvera
           </div>
         </div>
         <div class="footer-bottom">
-          <p>© 2026 Klyvera contributors. Apache-2.0 intended, pending confirmation. Screenshots are offscreen renders.</p>
+          <p>© 2026 Klyvera contributors. Apache-2.0 intended, pending confirmation. Product visuals are illustrative.</p>
           <p>Independent project. No accounts. No telemetry.</p>
         </div>
       </div>

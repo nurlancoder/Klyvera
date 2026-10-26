@@ -5,7 +5,9 @@ from __future__ import annotations
 
 import argparse
 import re
+import struct
 import sys
+from xml.etree import ElementTree
 from dataclasses import dataclass, field
 from html import unescape
 from html.parser import HTMLParser
@@ -319,12 +321,59 @@ class Checker:
             "screenshots/spaces-1440.webp",
             "screenshots/space-editor.png",
             "screenshots/control-center.png",
+            "illustrations/spaces-dashboard.svg",
+            "illustrations/space-editor.svg",
+            "illustrations/control-center.svg",
+            "illustrations/social-card.svg",
         )
         for name in required:
             if not (self.dist / name).is_file():
                 self.fail(None, f"missing site file: {name}")
             else:
                 self.ok()
+
+        for name in (
+            "illustrations/spaces-dashboard.svg",
+            "illustrations/space-editor.svg",
+            "illustrations/control-center.svg",
+            "illustrations/social-card.svg",
+        ):
+            path = self.dist / name
+            if not path.is_file():
+                continue
+            try:
+                root = ElementTree.parse(path).getroot()
+            except ElementTree.ParseError as error:
+                self.fail(None, f"invalid SVG illustration {name}: {error}")
+                continue
+            title = root.find("{http://www.w3.org/2000/svg}title")
+            description = root.find("{http://www.w3.org/2000/svg}desc")
+            view_box = root.get("viewBox", "").split()
+            if (
+                root.tag != "{http://www.w3.org/2000/svg}svg"
+                or len(view_box) != 4
+                or title is None
+                or not (title.text or "").strip()
+                or description is None
+                or not (description.text or "").strip()
+            ):
+                self.fail(None, f"SVG illustration needs a viewBox, title and description: {name}")
+            else:
+                self.ok()
+
+        social_card = self.dist / "og.png"
+        if social_card.is_file():
+            try:
+                with social_card.open("rb") as image:
+                    header = image.read(24)
+                if header[:8] != b"\x89PNG\r\n\x1a\n":
+                    self.fail(None, "og.png is not a PNG image")
+                elif struct.unpack(">II", header[16:24]) != (1200, 630):
+                    self.fail(None, "og.png must be 1200x630 pixels")
+                else:
+                    self.ok()
+            except OSError as error:
+                self.fail(None, f"could not read og.png: {error}")
 
         for path in self.dist.rglob("*"):
             if path.is_file() and path.suffix in {".html", ".css", ".js", ".xml", ".txt", ".webmanifest"}:
