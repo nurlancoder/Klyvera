@@ -1,6 +1,3 @@
-// Target-only system bridge. Every external command is an argv array; no shell
-// strings are evaluated. Quickshell and UPower are absent on the development
-// host, so this adapter is UNVERIFIED-ON-TARGET until exercised on Arch.
 import QtQuick
 import Quickshell
 import Quickshell.Io

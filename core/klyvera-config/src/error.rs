@@ -2,35 +2,25 @@ use std::path::PathBuf;
 
 use crate::SCHEMA_VERSION;
 
-#[derive(Debug, thiserror::Error)]
 pub enum ConfigError {
-    #[error("I/O error at {path}: {source}")]
     Io {
         path: PathBuf,
-        #[source]
         source: std::io::Error,
     },
 
-    #[error("invalid JSON at {path}: {source}")]
     Json {
         path: PathBuf,
-        #[source]
         source: serde_json::Error,
     },
 
-    #[error("configuration version {0} is newer than supported version {SCHEMA_VERSION}")]
     UnsupportedVersion(u64),
 
-    #[error("configuration is invalid: {0}")]
     Validation(String),
 
-    #[error("cannot determine {0}; set the corresponding XDG environment variable")]
     MissingEnv(&'static str),
 
-    #[error("{name} must be an absolute path: {path}")]
     RelativePath { name: &'static str, path: PathBuf },
 
-    #[error("configuration file is too large ({size} bytes, limit {limit})")]
     TooLarge { size: u64, limit: usize },
 }
 

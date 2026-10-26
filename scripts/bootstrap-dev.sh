@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Bootstrap development environment for Klyvera
-# This script creates a repo-local .venv and installs all required tools
-# All installs are user-level only; no system packages
 
 ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
@@ -16,7 +13,6 @@ echo "Root directory: $ROOT_DIR"
 echo "Virtual environment: $VENV_DIR"
 echo ""
 
-# Create virtual environment if it doesn't exist
 if [[ ! -d "$VENV_DIR" ]]; then
     echo "Creating virtual environment..."
     "$PYTHON3" -m venv "$VENV_DIR"
@@ -35,19 +31,15 @@ else
     exit 1
 fi
 
-# Upgrade pip
 echo "Upgrading pip..."
 "$VENV_PYTHON" -m pip install --upgrade pip
 
-# Install Python dependencies
 echo "Installing Python dependencies..."
 "$VENV_PYTHON" -m pip install PySide6-Essentials shellcheck-py jsonschema playwright
 
-# Install Playwright Chromium
 echo "Installing Playwright Chromium..."
 "$VENV_PYTHON" -m playwright install chromium
 
-# Install web dependencies
 if [[ -f web/package.json ]]; then
     echo "Installing web dependencies (npm ci)..."
     cd web

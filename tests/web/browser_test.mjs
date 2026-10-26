@@ -36,7 +36,6 @@ try {
         const ready = await page.evaluate(() => document.readyState === "complete" && Boolean(document.querySelector("h1")));
         if (ready) return true;
       } catch {
-        // Navigation can replace the execution context while polling.
       }
       await page.waitForTimeout(250);
     }

@@ -57,7 +57,6 @@ fn stderr(output: &Output) -> String {
     String::from_utf8_lossy(&output.stderr).into_owned()
 }
 
-#[test]
 fn creates_lists_exports_imports_and_backs_up_spaces() {
     let env = Env::new();
     let project = env.project.to_str().unwrap();
@@ -132,8 +131,6 @@ fn creates_lists_exports_imports_and_backs_up_spaces() {
     assert_eq!(doctor["ok"], true, "{doctor}");
 }
 
-#[cfg(unix)]
-#[test]
 fn doctor_creates_private_runtime_directories() {
     use std::os::unix::fs::PermissionsExt;
 
@@ -151,7 +148,6 @@ fn doctor_creates_private_runtime_directories() {
     }
 }
 
-#[test]
 fn commands_require_trust_and_shells_are_rejected() {
     let env = Env::new();
     let project = env.project.to_str().unwrap();

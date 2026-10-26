@@ -1,4 +1,3 @@
-// Target-only notification bridge backed by Quickshell's notification server.
 import QtQuick
 import Quickshell.Services.Notifications
 import "../NotificationHistory.js" as NotificationHistory

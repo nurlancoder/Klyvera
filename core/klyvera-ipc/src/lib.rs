@@ -1,8 +1,3 @@
-//! Versioned newline-delimited JSON over a private Unix socket.
-//!
-//! The protocol is intentionally small: ping, status, list/show/open Spaces
-//! and stop. Requests and responses carry the protocol version and an ID, are
-//! size-bounded, and the daemon verifies the peer UID.
 
 mod client;
 mod error;

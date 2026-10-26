@@ -1,7 +1,3 @@
-//! Klyvera Spaces: profiles, validation, storage, trust and launch planning.
-//!
-//! A Space is user-owned JSON. Commands are argv arrays, never shell strings,
-//! and confirmation is tied to the profile SHA-256 so edits invalidate trust.
 
 mod desktop;
 mod error;

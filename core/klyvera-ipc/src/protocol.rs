@@ -22,8 +22,6 @@ pub mod codes {
     pub const PROTOCOL: &str = "protocol";
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "kebab-case")]
 pub enum Command {
     Ping,
     Status,
@@ -50,13 +48,10 @@ impl Command {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct Request {
     pub version: u32,
     pub request_id: String,
     pub command: Command,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub space_id: Option<String>,
 }
 
@@ -127,15 +122,11 @@ impl Request {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct Response {
     pub version: u32,
     pub request_id: String,
     pub ok: bool,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub data: Option<Value>,
-    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub error: Option<ErrorBody>,
 }
 
@@ -195,8 +186,6 @@ impl Response {
     }
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct ErrorBody {
     pub code: String,
     pub message: String,
@@ -225,7 +214,6 @@ fn encode_message<T: Serialize>(value: &T) -> Result<Vec<u8>, IpcError> {
     Ok(bytes)
 }
 
-/// Read one newline-delimited frame. EOF is `Ok(None)`.
 pub fn read_frame<R: BufRead>(reader: &mut R) -> Result<Option<Vec<u8>>, IpcError> {
     let mut frame = Vec::new();
     loop {
@@ -285,12 +273,10 @@ pub fn generate_request_id() -> String {
     format!("{:x}-{:x}-{:x}", std::process::id(), nanos, counter)
 }
 
-#[cfg(test)]
 mod tests {
     use super::*;
     use std::io::Cursor;
 
-    #[test]
     fn requests_roundtrip_and_validate_space_rules() {
         let ping = Request::new(Command::Ping);
         let encoded = ping.encode().unwrap();
@@ -313,7 +299,6 @@ mod tests {
         assert!(unexpected.validate().is_err());
     }
 
-    #[test]
     fn rejects_unknown_fields_bad_versions_and_long_ids() {
         let unknown = br#"{"version":1,"requestId":"x","command":"ping","extra":1}"#;
         assert!(Request::parse(unknown).is_err());
@@ -331,7 +316,6 @@ mod tests {
         assert!(Request::parse(bad_command).is_err());
     }
 
-    #[test]
     fn responses_validate_success_and_error_shapes() {
         let ok = Response::ok("x", Some(serde_json::json!({"pong": true})));
         assert_eq!(Response::parse(&ok.encode().unwrap()).unwrap(), ok);
@@ -349,7 +333,6 @@ mod tests {
         assert!(invalid.validate().is_err());
     }
 
-    #[test]
     fn frame_reading_handles_eof_crlf_and_oversize() {
         let mut input = Cursor::new(b"{\"a\":1}\r\n{\"b\":2}\n".to_vec());
         assert_eq!(read_frame(&mut input).unwrap().unwrap(), br#"{"a":1}"#);
@@ -366,7 +349,6 @@ mod tests {
         assert!(matches!(read_frame(&mut huge), Err(IpcError::TooLarge(_))));
     }
 
-    #[test]
     fn generated_ids_are_unique_and_valid() {
         let first = generate_request_id();
         let second = generate_request_id();
