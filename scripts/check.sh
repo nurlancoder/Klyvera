@@ -4,9 +4,26 @@ set -euo pipefail
 ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
+PYTHON="${PYTHON3:-python3}"
+if [[ -x "$ROOT_DIR/.venv/bin/python" ]]; then
+  VENV_BIN="$ROOT_DIR/.venv/bin"
+  PYTHON="$VENV_BIN/python"
+elif [[ -x "$ROOT_DIR/.venv/Scripts/python.exe" ]]; then
+  VENV_BIN="$ROOT_DIR/.venv/Scripts"
+  PYTHON="$VENV_BIN/python.exe"
+fi
+if [[ -n "${VENV_BIN:-}" ]]; then
+  PATH="$VENV_BIN:$PATH"
+  export PATH
+fi
+
 FAST=0
+STRICT=0
 if [[ "${1:-}" == "--fast" ]]; then
   FAST=1
+fi
+if [[ "${1:-}" == "--strict" ]]; then
+  STRICT=1
 fi
 
 FAILURES=0
@@ -14,8 +31,13 @@ SKIPPED=0
 
 pass() { printf '  ok    %s\n' "$*"; }
 skip() {
-  printf '  skip  %s\n' "$*"
-  SKIPPED=$((SKIPPED + 1))
+  if ((STRICT == 1)); then
+    printf '  FAIL  %s (strict mode: no skips allowed)\n' "$*"
+    FAILURES=$((FAILURES + 1))
+  else
+    printf '  skip  %s\n' "$*"
+    SKIPPED=$((SKIPPED + 1))
+  fi
 }
 fail() {
   printf '  FAIL  %s\n' "$*"
@@ -26,11 +48,20 @@ has() { command -v "$1" >/dev/null 2>&1; }
 
 section "Design tokens"
 if [[ -f design/generators/generate.py ]]; then
-  if has python3; then
-    if python3 design/generators/generate.py --check; then
+  if has "$PYTHON"; then
+    if "$PYTHON" design/generators/generate.py --check; then
       pass "generated tokens in sync"
     else
       fail "generated tokens out of sync"
+    fi
+    if [[ -f tests/theme_contract.py ]]; then
+      if "$PYTHON" tests/theme_contract.py; then
+        pass "theme contract"
+      else
+        fail "theme contract"
+      fi
+    else
+      skip "theme contract test not found"
     fi
   else
     skip "python3 not installed"
@@ -112,7 +143,13 @@ if [[ -d shell ]]; then
 fi
 if ((${#qml_files[@]} > 0)); then
   qml_linter=""
-  if has qmllint; then
+  if [[ -f .venv/bin/pyside6-qmllint ]]; then
+    qml_linter=".venv/bin/pyside6-qmllint"
+  elif [[ -f .venv/Scripts/pyside6-qmllint.exe ]]; then
+    qml_linter=".venv/Scripts/pyside6-qmllint.exe"
+  elif [[ -f .venv/Scripts/pyside6-qmllint ]]; then
+    qml_linter=".venv/Scripts/pyside6-qmllint"
+  elif has qmllint; then
     qml_linter="qmllint"
   elif has pyside6-qmllint; then
     qml_linter="pyside6-qmllint"
@@ -133,10 +170,10 @@ fi
 section "QML behaviour"
 behaviour_tests=(tests/qml/*.py)
 if ((${#behaviour_tests[@]} > 0)); then
-  if has python3 && python3 -c 'import PySide6.QtCore' >/dev/null 2>&1; then
+  if has "$PYTHON" && "$PYTHON" -c 'import PySide6.QtCore' >/dev/null 2>&1; then
     for test in "${behaviour_tests[@]}"; do
       name="$(basename "$test" .py)"
-      if python3 "$test"; then
+      if "$PYTHON" "$test"; then
         pass "$name"
       else
         fail "$name"
@@ -152,9 +189,9 @@ fi
 section "JSON Schema"
 if ((FAST == 0)); then
   if [[ -f tests/validate_schemas.py ]]; then
-    if has python3; then
-      if python3 -c 'import jsonschema' >/dev/null 2>&1; then
-        if python3 tests/validate_schemas.py; then
+    if has "$PYTHON"; then
+      if "$PYTHON" -c 'import jsonschema' >/dev/null 2>&1; then
+        if "$PYTHON" tests/validate_schemas.py; then
           pass "schema examples valid"
         else
           fail "schema examples invalid"
@@ -174,8 +211,8 @@ fi
 
 section "Documentation"
 if [[ -f tests/check_docs.py ]]; then
-  if has python3; then
-    if python3 tests/check_docs.py; then
+  if has "$PYTHON"; then
+    if "$PYTHON" tests/check_docs.py; then
       pass "Markdown structure and links"
     else
       fail "Markdown structure and links"
@@ -194,7 +231,7 @@ if ((FAST == 0)); then
       if [[ -d web/node_modules ]]; then
         if (cd web && npm run build --silent); then
           pass "web build"
-          if has python3; then
+          if has "$PYTHON"; then
             if (cd web && npm run check --silent); then
               pass "web static checks"
             else
@@ -202,6 +239,56 @@ if ((FAST == 0)); then
             fi
           else
             skip "python3 not installed for web checks"
+          fi
+          if has node && has curl && [[ -x web/node_modules/.bin/vite ]]; then
+            preview_pid=""
+            stop_preview() {
+              if [[ -n "$preview_pid" ]] && kill -0 "$preview_pid"; then
+                if ! kill "$preview_pid"; then
+                  fail "could not stop the web preview"
+                  return 1
+                fi
+                if wait "$preview_pid"; then
+                  return 0
+                else
+                  preview_status=$?
+                  if ((preview_status != 143)); then
+                    fail "web preview stopped with status $preview_status"
+                    return "$preview_status"
+                  fi
+                fi
+              fi
+            }
+            (
+              cd web
+              exec ./node_modules/.bin/vite preview --host 127.0.0.1 --port 4173 --strictPort
+            ) &
+            preview_pid=$!
+            trap stop_preview EXIT
+            preview_ready=0
+            for _ in {1..30}; do
+              if ! kill -0 "$preview_pid"; then
+                break
+              fi
+              if curl --fail --silent --show-error http://127.0.0.1:4173/ >/dev/null; then
+                preview_ready=1
+                break
+              fi
+              sleep 1
+            done
+            if ((preview_ready == 1)); then
+              if (cd web && BASE_URL=http://127.0.0.1:4173 npm run test:browser --silent); then
+                pass "web browser tests"
+              else
+                fail "web browser tests"
+              fi
+            else
+              fail "web preview did not become ready"
+            fi
+            stop_preview
+            trap - EXIT
+          else
+            skip "node, curl or Vite missing for web browser tests"
           fi
         else
           fail "web build"

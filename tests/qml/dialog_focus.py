@@ -26,6 +26,8 @@ def main() -> int:
     view.resize(800, 600)
     view.setSource(QUrl.fromLocalFile(str(QML)))
     if view.status() == QQuickView.Error:
+        for error in view.errors():
+            print(error.toString(), file=sys.stderr)
         return 1
 
     view.show()

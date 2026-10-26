@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: ["main", "master"]
+    branches: ["main", "master", "v3-repair"]
   pull_request:
 
 permissions:
@@ -13,6 +13,30 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  strict:
+    name: Strict repository checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - name: Bootstrap local tools
+        run: bash scripts/bootstrap-dev.sh
+      - name: Install Chromium system dependencies
+        run: .venv/bin/playwright install --with-deps chromium
+      - name: Run strict aggregate checks
+        run: bash scripts/check.sh --strict
+
   hygiene:
     name: Repository hygiene
     runs-on: ubuntu-latest

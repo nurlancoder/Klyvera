@@ -77,6 +77,9 @@ def kebab(name:str):
         else: out.append(c)
     return ''.join(out)
 
+def qml_identifier(name:str):
+    return f"size{name}" if name[:1].isdigit() else name
+
 def rgb(value):
     hexv,alpha=parse_color(value)
     if alpha < 1.0: fail(f"contrast checks require opaque colors, got {value!r}")
@@ -120,78 +123,160 @@ def build_theme_qml(tokens):
     lines.append("    })")
     lines.append('    readonly property var palette: palettes[themeName] ? palettes[themeName] : palettes["dark"]')
     lines.append("")
+    for cn in tokens["themes"]["dark"]["colors"]:
+        lines.append(f'    readonly property color {cn}: palette["{cn}"]')
+    lines.append("")
     lines.append("    readonly property QtObject spacing: QtObject {")
     for k,v in tokens["spacing"].items():
-        if isinstance(v,int): lines.append(f'        readonly property int {k}: {v}')
+        if isinstance(v,int): lines.append(f'        readonly property int {qml_identifier(k)}: {v}')
     lines.append("    }")
     lines.append("    readonly property QtObject radius: QtObject {")
     for k,v in tokens["radius"].items():
-        if isinstance(v,int): lines.append(f'        readonly property int {k}: {v}')
+        if isinstance(v,int): lines.append(f'        readonly property int {qml_identifier(k)}: {v}')
     lines.append("    }")
     lines.append("    readonly property QtObject borders: QtObject {")
     for k,v in tokens["borders"].items():
-        if isinstance(v,int): lines.append(f'        readonly property int {k}: {v}')
+        if isinstance(v,int): lines.append(f'        readonly property int {qml_identifier(k)}: {v}')
     lines.append("    }")
     lines.append("    readonly property QtObject typography: QtObject {")
     lines.append('        readonly property string fontHeading: ' + json.dumps(tokens["typography"]["fontFamily"]["heading"]))
     lines.append('        readonly property string fontBody: ' + json.dumps(tokens["typography"]["fontFamily"]["body"]))
     lines.append('        readonly property string fontMono: ' + json.dumps(tokens["typography"]["fontFamily"]["mono"]))
+    for fk, fv in tokens["typography"]["fontFamily"].items():
+        if fk not in {"heading", "body", "mono"}:
+            lines.append(f'        readonly property string {fk}: ' + json.dumps(fv))
     lines.append("        readonly property QtObject scale: QtObject {")
     for k,v in tokens["typography"]["scale"].items():
-        if isinstance(v,int): lines.append(f'            readonly property int {k}: {v}')
+        if isinstance(v,int): lines.append(f'            readonly property int {qml_identifier(k)}: {v}')
     lines.append("        }")
     lines.append("        readonly property QtObject weight: QtObject {")
     for k,v in tokens["typography"]["weight"].items():
-        if isinstance(v,int): lines.append(f'            readonly property int {k}: {v}')
+        if isinstance(v,int): lines.append(f'            readonly property int {qml_identifier(k)}: {v}')
     lines.append("        }")
     lines.append("        readonly property QtObject lineHeight: QtObject {")
     for k,v in tokens["typography"]["lineHeight"].items():
-        if isinstance(v,(int,float)): lines.append(f'            readonly property real {k}: {v}')
+        if isinstance(v,(int,float)): lines.append(f'            readonly property real {qml_identifier(k)}: {v}')
     lines.append("        }")
     lines.append("        readonly property QtObject tracking: QtObject {")
     for k,v in tokens["typography"]["tracking"].items():
-        lines.append(f'            readonly property string {k}: "{v}"')
+        lines.append(f'            readonly property string {qml_identifier(k)}: "{v}"')
     lines.append("        }")
+    typography = tokens["typography"]
+    nested_styles = {
+        "body": {
+            "size": typography["scale"].get("body", 14),
+            "lineHeight": typography["lineHeight"].get("body", 1.5),
+        },
+        "caption": {
+            "size": typography["scale"].get("caption", 12),
+            "weight": typography["weight"].get("caption", 400),
+            "lineHeight": typography["lineHeight"].get("caption", 1.4),
+        },
+        "display": {
+            "size": typography["scale"].get("display", 48),
+            "weight": typography["weight"].get("bold", 700),
+            "letterSpacing": typography["tracking"].get("tight", "-0.02em"),
+        },
+        "heading1": {
+            "size": typography["scale"].get("heading1", 36),
+            "weight": typography["weight"].get("bold", 700),
+            "letterSpacing": typography["tracking"].get("tight", "-0.02em"),
+        },
+        "heading2": {
+            "size": typography["scale"].get("2xl", 20),
+            "weight": typography["weight"].get("semibold", 600),
+        },
+        "heading3": {
+            "size": typography["scale"].get("heading3", 24),
+            "weight": typography["weight"].get("semibold", 600),
+        },
+        "label": {
+            "size": typography["scale"].get("label", 14),
+            "weight": typography["weight"].get("label", 500),
+        },
+        "title": {
+            "size": typography["scale"].get("title", 18),
+            "weight": typography["weight"].get("title", 600),
+        },
+        "bodyStrong": {
+            "size": typography["scale"].get("bodyStrong", 15),
+            "weight": typography["weight"].get("medium", 500),
+        },
+    }
+    for name, style in nested_styles.items():
+        lines.append(f'        readonly property QtObject {name}: QtObject {{')
+        for prop, value in style.items():
+            qml_type = "real" if isinstance(value, float) else "int" if isinstance(value, int) else "string"
+            qml_value = json.dumps(value) if isinstance(value, str) else value
+            lines.append(f'            readonly property {qml_type} {prop}: {qml_value}')
+        lines.append("        }")
+    for alias, weight_name in [
+        ("weightSemibold", "semibold"),
+        ("weightMedium", "medium"),
+        ("weightBold", "bold"),
+    ]:
+        if weight_name in tokens["typography"]["weight"]:
+            lines.append(f'        readonly property int {alias}: {tokens["typography"]["weight"][weight_name]}')
     lines.append("    }")
     lines.append("    readonly property QtObject motion: QtObject {")
     lines.append("        readonly property QtObject duration: QtObject {")
     for k,v in tokens["motion"]["duration"].items():
-        if isinstance(v,int): lines.append(f'            readonly property int {k}: {v}')
+        if isinstance(v,int): lines.append(f'            readonly property int {qml_identifier(k)}: {v}')
     lines.append("        }")
     lines.append("        readonly property QtObject easing: QtObject {")
     for k,v in tokens["motion"]["easing"].items():
-        lines.append(f'            readonly property string {k}: "{v}"')
+        lines.append(f'            readonly property string {qml_identifier(k)}: "{v}"')
     lines.append("        }")
     lines.append(f'        readonly property bool reduceMotion: {str(bool(tokens["motion"].get("reduceMotion",True))).lower()}')
+    for alias in ["durationFast", "durationNormal", "durationSlow"]:
+        if alias in tokens["motion"]["duration"]:
+            lines.append(f'        readonly property int {alias}: {tokens["motion"]["duration"][alias]}')
     lines.append("    }")
     lines.append("    readonly property QtObject icon: QtObject {")
     for k,v in tokens["icon"]["size"].items():
-        if isinstance(v,int): lines.append(f'        readonly property int {k}: {v}')
+        if isinstance(v,int): lines.append(f'        readonly property int {qml_identifier(k)}: {v}')
+    if "sizes" in tokens["icon"]:
+        lines.append("        readonly property QtObject sizes: QtObject {")
+        for k,v in tokens["icon"]["sizes"].items():
+            if isinstance(v,int):
+                lines.append(f'            readonly property int {qml_identifier(k)}: {v}')
+        lines.append("        }")
     lines.append(f'        readonly property real stroke: {tokens["icon"].get("stroke",1.75)}')
+    if "strokeWidth" in tokens["icon"]:
+        lines.append(f'        readonly property real strokeWidth: {tokens["icon"]["strokeWidth"]}')
     lines.append("    }")
     lines.append("    readonly property QtObject layout: QtObject {")
     lines.append(f'        readonly property int touchTarget: {tokens["layout"].get("touchTarget",40)}')
+    for name in ["panel", "spaces", "launcher", "controlCenter"]:
+        if name in tokens["layout"]:
+            lines.append(f'        readonly property QtObject {name}: QtObject {{')
+            for prop, value in tokens["layout"][name].items():
+                qml_type = "real" if isinstance(value, float) else "int" if isinstance(value, int) else "string"
+                qml_value = json.dumps(value) if isinstance(value, str) else value
+                lines.append(f'            readonly property {qml_type} {qml_identifier(prop)}: {qml_value}')
+            lines.append("        }")
     lines.append("        readonly property QtObject classes: QtObject {")
     for cname,cvals in tokens["layout"]["classes"].items():
         lines.append(f'            readonly property QtObject {cname}: QtObject {{')
         for ck,cv in cvals.items():
-            if isinstance(cv,int): lines.append(f'                readonly property int {ck}: {cv}')
+            if isinstance(cv,int): lines.append(f'                readonly property int {qml_identifier(ck)}: {cv}')
         lines.append("            }")
     lines.append("        }")
     lines.append("    }")
     lines.append("    readonly property QtObject accessibility: QtObject {")
     for k,v in tokens["accessibility"].items():
-        if isinstance(v,(int,float)) and not isinstance(v,bool): lines.append(f'        readonly property real {k}: {v}')
+        if isinstance(v,(int,float)) and not isinstance(v,bool): lines.append(f'        readonly property real {qml_identifier(k)}: {v}')
     lines.append("    }")
     lines.append("")
     lines.append("    function scaled(value) { return Math.round(value * scale) }")
     lines.append("    function scaledInt(value) { return Math.round(value * scale) }")
+    lines.append("    function motionDuration(ms) { return reduceMotion ? 0 : ms; }")
     lines.append("    function layoutClass(width) { if (width < 1280) return 'compact'; if (width < 1920) return 'regular'; if (width < 2560) return 'wide'; return 'ultrawide'; }")
     lines.append("}")
     return "\n".join(lines)+"\n"
 
 def build_qmldir():
-    return "// "+GENERATED_NOTE+"\nmodule Klyvera.Styles\nsingleton Theme 1.0 Theme.qml\n"
+    return "# "+GENERATED_NOTE+"\nmodule Klyvera.Styles\nsingleton Theme 1.0 Theme.qml\n"
 
 def build_tokens_css(tokens):
     lines=[]
