@@ -26,6 +26,7 @@ Controls.AbstractButton {
 
     contentItem: RowLayout {
         id: contentRow
+        objectName: "listItemContent"
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter

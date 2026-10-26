@@ -43,3 +43,15 @@ dependency.
 - Automated checks cover links, assets, headings, alt text and responsive
   overflow.
 - Deployment is labelled **UNVERIFIED** until the GitHub Pages workflow runs.
+
+## V3 repair pass — Website visual review
+
+This checklist tracks the pending human-facing site review and does not reopen
+the completed website implementation phase above.
+
+- [x] Review the built English and Azerbaijani landing pages and documentation
+      hub at desktop and mobile widths.
+- [x] Fix any concrete visual or navigation defects found without adding
+      external runtime services or changing the static-site stack.
+- [x] Re-run the website build and checks; record that Pages deployment remains
+      unverified until its GitHub workflow runs.

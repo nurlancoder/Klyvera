@@ -25,11 +25,36 @@ def find_item(parent: QQuickItem, object_name: str) -> QQuickItem | None:
     return None
 
 
+def assert_centered(
+    item: QQuickItem,
+    target: QQuickItem,
+    horizontal: bool = True,
+    vertical: bool = True,
+) -> None:
+    origin = item.mapToItem(target, 0, 0)
+    if horizontal:
+        item_center = origin.x() + item.width() / 2
+        target_center = target.width() / 2
+        if abs(item_center - target_center) > 1:
+            raise AssertionError(
+                f"{item.objectName()} horizontal center {item_center:.2f} "
+                f"does not match {target.objectName()} center {target_center:.2f}"
+            )
+    if vertical:
+        item_center = origin.y() + item.height() / 2
+        target_center = target.height() / 2
+        if abs(item_center - target_center) > 1:
+            raise AssertionError(
+                f"{item.objectName()} vertical center {item_center:.2f} "
+                f"does not match {target.objectName()} center {target_center:.2f}"
+            )
+
+
 def main() -> int:
     app = QGuiApplication(sys.argv)
     view = QQuickView()
     view.setResizeMode(QQuickView.SizeRootObjectToView)
-    view.resize(320, 100)
+    view.resize(480, 180)
     view.setSource(QUrl.fromLocalFile(str(QML)))
     if view.status() == QQuickView.Error:
         for error in view.errors():
@@ -38,34 +63,26 @@ def main() -> int:
 
     view.show()
     QTest.qWait(200)
-    button = find_item(view.rootObject(), "geometryButton")
-    content = find_item(view.rootObject(), "buttonContentRow")
-    if button is None or content is None:
-        print("button or its content was not created", file=sys.stderr)
-        return 1
+    root = view.rootObject()
+    checks = (
+        ("buttonContentRow", "geometryButton", True, True),
+        ("iconButtonGlyph", "geometryIconButton", True, True),
+        ("geometryTabLabel-0", "geometryTab-0", True, True),
+        ("listItemContent", "geometryListItem", False, True),
+    )
+    for item_name, target_name, horizontal, vertical in checks:
+        item = find_item(root, item_name)
+        target = find_item(root, target_name)
+        if item is None or target is None:
+            print(f"geometry target not found: {item_name}, {target_name}", file=sys.stderr)
+            return 1
+        try:
+            assert_centered(item, target, horizontal, vertical)
+        except AssertionError as error:
+            print(error, file=sys.stderr)
+            return 1
 
-    content_origin = content.mapToItem(button, 0, 0)
-    content_center_x = content_origin.x() + content.width() / 2
-    content_center_y = content_origin.y() + content.height() / 2
-    button_center_x = button.width() / 2
-    button_center_y = button.height() / 2
-    if abs(content_center_x - button_center_x) > 1:
-        print(
-            f"button content is not horizontally centered: "
-            f"content center={content_center_x:.2f}, button center={button_center_x:.2f}",
-            file=sys.stderr,
-        )
-        return 1
-
-    if abs(content_center_y - button_center_y) > 1:
-        print(
-            f"button content is not vertically centered: "
-            f"content center={content_center_y:.2f}, button center={button_center_y:.2f}",
-            file=sys.stderr,
-        )
-        return 1
-
-    print("button icon-and-label content is centered in both axes")
+    print("Button, IconButton, Tabs and ListItem content geometry: centered")
     return 0
 
 

@@ -355,3 +355,45 @@ High-contrast theme (lines 65-89):
 - `python tests/check_docs.py` passed for 41 Markdown files;
   `python design/generators/generate.py --check` and `git diff --check` passed.
 - Arch/Quickshell/Wayland rendering remains **UNVERIFIED-ON-TARGET**.
+
+## V3 repair Phase 5: Remaining control geometry
+
+### Changes
+- Extended the geometry fixture to cover IconButton, Tabs and ListItem in
+  addition to Button. The regression checks measure content centers relative to
+  their owning controls, including icon-and-label and list-row cases.
+- The measured content is centered at the expected axes; no additional layout
+  changes were necessary. The controls' public APIs and interaction behavior
+  remain unchanged.
+
+### Verification
+- `python tests/qml/geometry_test.py` passed for Button, IconButton, Tabs and
+  ListItem geometry.
+- All four `tests/qml/*.py` behavior tests passed.
+- Focused QML lint exited successfully with static nested-Theme property
+  warnings; documentation, generated-token and `git diff --check` passed.
+- No screenshots were regenerated. Arch/Quickshell/Wayland rendering remains
+  **UNVERIFIED-ON-TARGET**.
+
+## V3 repair Phase 6: Website visual review
+
+### Changes
+- Local browser review of all three site routes found that the unstyled inline
+  SVG symbol sprite occupied its default 300×150 px viewport before the sticky
+  header, creating an unintended blank band above the page content.
+- Positioned the sprite absolutely with zero width and height. SVG `<use>`
+  references continue to work, and the header now begins at the top of the
+  page.
+- Added a browser regression assertion for header placement at each tested
+  viewport and route. Updated the repair roadmap and status record.
+
+### Verification
+- `npm run build` passed from `web/`.
+- `npm run check` passed: 3 pages and 285 assertions.
+- `npm run test:browser` passed: 216 assertions across `/`, `/az/` and `/docs/`
+  at 320, 375, 768, 1024, 1280 and 1440 px widths.
+- Manually reviewed the English and Azerbaijani landing pages and docs hub at
+  desktop and mobile widths; verified the mobile menu opens, updates its
+  accessible state and closes on Escape.
+- The local preview was reviewed only. GitHub Pages workflow and live
+  deployment remain **UNVERIFIED**.

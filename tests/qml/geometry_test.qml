@@ -2,8 +2,8 @@ import QtQuick
 import "../../shell/ui"
 
 Item {
-    width: 320
-    height: 100
+    width: 480
+    height: 180
 
     Button {
         objectName: "geometryButton"
@@ -14,5 +14,33 @@ Item {
         label: "Centered action"
         iconName: "plus"
         variant: "primary"
+    }
+
+    IconButton {
+        objectName: "geometryIconButton"
+        x: 20
+        y: 84
+        width: 48
+        height: 48
+        iconName: "plus"
+        accessibleName: "Add"
+    }
+
+    Tabs {
+        objectName: "geometryTabs"
+        x: 90
+        y: 84
+        tabs: ["Overview", "Windows"]
+    }
+
+    ListItem {
+        objectName: "geometryListItem"
+        x: 20
+        y: 136
+        width: 420
+        height: 40
+        title: "Project"
+        description: "Workspace description"
+        iconName: "folder"
     }
 }

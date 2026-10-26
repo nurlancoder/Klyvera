@@ -52,3 +52,14 @@ a fully offline target installation is not implemented in this phase.
   deferred and recorded in `docs/STATUS.md`. The image carries the Klyvera
   packages; `archinstall` still resolves non-Klyvera dependencies from
   repositories unless they are cached.
+
+## V3 repair pass — Remaining control geometry
+
+This checklist tracks the remaining component geometry audit and does not
+reopen the completed packaging phase above.
+
+- [x] Add offscreen geometry checks for IconButton, Tabs and ListItem content.
+- [x] Check for alignment defects and preserve the existing layouts where
+  measurements match the target geometry.
+- [x] Run the QML behavior tests, focused lint, documentation checks and
+  generated-token check; record what remains unverified on target.

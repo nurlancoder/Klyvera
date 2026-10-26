@@ -48,6 +48,7 @@ FocusScope {
                 text: String(modelData)
                 checkable: true
                 checked: root.currentIndex === index
+                objectName: "geometryTab-" + index
                 hoverEnabled: true
                 focusPolicy: Qt.StrongFocus
                 padding: 0
@@ -62,6 +63,7 @@ FocusScope {
 
                 contentItem: Text {
                     id: label
+                    objectName: "geometryTabLabel-" + tab.index
                     anchors.centerIn: parent
                     text: tab.text
                     color: tab.checked ? Theme.textPrimary
