@@ -156,19 +156,6 @@ body {
   color: var(--kly-text-secondary);
   font-size: 13px;
 }
-.hero h1 {
-  font-family: var(--kly-font-heading);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-  font-size: clamp(40px, 8vw, 88px);
-  line-height: 0.98;
-  margin: 18px 0 16px;
-}
-.hero h1 .gradient {
-  background: linear-gradient(135deg, #9B8BFF 0%, #4FC3F7 100%);
-  -webkit-background-clip: text;
-  color: transparent;
-}
 .lead {
   font-size: clamp(16px, 2vw, 20px);
   color: var(--kly-text-secondary);
@@ -415,7 +402,7 @@ a:hover { color: var(--kly-accent-purple); }
 .hero-title, .page-title, .section-title {
   margin: 16px 0;
   font-family: var(--kly-font-heading);
-  font-size: clamp(38px, 6.5vw, 76px);
+  font-size: clamp(38px, 6.5vw, 70px);
   font-weight: 800;
   letter-spacing: -0.055em;
   line-height: 1.04;
@@ -699,7 +686,7 @@ a:hover { color: var(--kly-accent-purple); }
   .header-github { display: none; }
   .icon-button { width: 44px; height: 44px; }
   .hero { padding-top: clamp(40px, 12vw, 64px); }
-  .hero .hero-title { font-size: clamp(32px, 9.5vw, 42px); }
+  .hero .hero-title { font-size: clamp(26px, 8.2vw, 38px); }
   .hero-actions > .button { flex: 1 1 160px; }
   .section { padding-block: 48px; }
   .docs-article table { min-width: 520px; }

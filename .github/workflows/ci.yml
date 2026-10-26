@@ -152,6 +152,11 @@ jobs:
       - name: QMLLint
         if: steps.detect.outputs.present == 'true'
         run: |
+          export PATH="/usr/lib/qt6/bin:$PATH"
+          if ! command -v qmllint >/dev/null 2>&1; then
+            echo "qmllint was not found after installing Qt declarative tools" >&2
+            exit 1
+          fi
           mapfile -t files < <(find shell preview tests/qml -name '*.qml' ! -path 'shell/integration/quickshell/*' -print)
           qmllint -I shell/ui -I shell/styles "${files[@]}"
 
