@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">Klyvera Space editor illustration</title>
+  <desc id="desc">An original workspace editor interface with project details, validated folders, selected apps and an explicit command trust boundary.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#171a2b"/>
+      <stop offset="1" stop-color="#0b0d14"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#b2a5ff"/>
+      <stop offset="1" stop-color="#7c68f5"/>
+    </linearGradient>
+    <style>
+      text{font-family:Inter,ui-sans-serif,system-ui,sans-serif;fill:#f4f6fb}
+      .muted{fill:#aeb6ca}.quiet{fill:#7f899f}.small{font-size:17px}.body{font-size:20px}
+      .label{font-size:15px;font-weight:700;letter-spacing:1.2px}.line{stroke:#2a2e3c;stroke-width:1}
+      .icon{fill:none;stroke:#aeb6ca;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+  <rect width="1440" height="900" rx="28" fill="url(#bg)"/>
+  <rect x="1" y="1" width="1438" height="898" rx="27" fill="none" stroke="#343848"/>
+  <path d="M28 68h1384" class="line"/>
+  <circle cx="35" cy="35" r="7" fill="#ff7687"/>
+  <circle cx="60" cy="35" r="7" fill="#f4bd5d"/>
+  <circle cx="85" cy="35" r="7" fill="#58d8ad"/>
+  <rect x="123" y="23" width="31" height="25" rx="7" fill="url(#accent)"/>
+  <path d="m131 35 6 6 10-12" fill="none" stroke="#11121b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="170" y="43" font-size="19" font-weight="700">Klyvera</text>
+  <text x="257" y="42" class="small muted">Spaces / Edit</text>
+  <text x="1269" y="42" class="small muted">STEP 1 OF 3</text>
+  <text x="70" y="133" class="small muted">‹  Back to Spaces</text>
+  <text x="70" y="193" font-size="38" font-weight="750">Shape your workspace.</text>
+  <text x="70" y="230" class="body muted">Keep the project context you need, and nothing you don't.</text>
+  <rect x="70" y="264" width="1300" height="7" rx="4" fill="#272b39"/>
+  <rect x="70" y="264" width="420" height="7" rx="4" fill="url(#accent)"/>
+  <circle cx="76" cy="267" r="15" fill="#a89aff"/>
+  <circle cx="490" cy="267" r="15" fill="#242638" stroke="#6c61ba" stroke-width="2"/>
+  <circle cx="906" cy="267" r="15" fill="#242638" stroke="#393d4d" stroke-width="2"/>
+  <text x="70" y="313" class="small">Details</text>
+  <text x="450" y="313" class="small muted">Applications</text>
+  <text x="866" y="313" class="small muted">Review</text>
+  <rect x="70" y="348" width="844" height="480" rx="20" fill="#151925" stroke="#303443"/>
+  <text x="102" y="394" class="label quiet">SPACE DETAILS</text>
+  <text x="102" y="434" font-size="21" font-weight="650">Name</text>
+  <rect x="102" y="451" width="780" height="54" rx="12" fill="#10131d" stroke="#4b446f"/>
+  <text x="122" y="485" class="body">API platform</text>
+  <text x="102" y="546" font-size="21" font-weight="650">Description</text>
+  <rect x="102" y="563" width="780" height="54" rx="12" fill="#10131d" stroke="#303443"/>
+  <text x="122" y="597" class="body muted">Rust services, terminal and release checks</text>
+  <text x="102" y="658" font-size="21" font-weight="650">Project folders</text>
+  <text x="102" y="685" class="small muted">Only existing absolute paths are accepted.</text>
+  <rect x="102" y="704" width="580" height="48" rx="11" fill="#10131d" stroke="#303443"/>
+  <path d="M121 722h9l4 4h13v15h-26z" class="icon"/>
+  <text x="161" y="735" class="small">~/src/api</text>
+  <circle cx="845" cy="728" r="21" fill="#202433"/>
+  <path d="M837 723h16m-13 0 1 13h8l1-13m-8-4h6" class="icon"/>
+  <rect x="102" y="766" width="150" height="42" rx="11" fill="#1a1e2a" stroke="#3a3e4e"/>
+  <path d="M121 786h17m-8-8v16" class="icon"/>
+  <text x="151" y="792" class="small">Add folder</text>
+  <rect x="940" y="348" width="430" height="282" rx="20" fill="#151925" stroke="#303443"/>
+  <text x="972" y="394" class="label quiet">SELECTED APPLICATIONS</text>
+  <text x="972" y="433" font-size="21" font-weight="650">Open with this Space</text>
+  <rect x="972" y="456" width="366" height="60" rx="13" fill="#202433"/>
+  <rect x="987" y="468" width="36" height="36" rx="9" fill="#292545"/>
+  <path d="M997 478h17v17h-17zm4 4 5 5-5 5m8 0h3" class="icon"/>
+  <text x="1038" y="482" class="small">Terminal</text>
+  <text x="1038" y="503" font-size="14" class="quiet">org.klyvera.Terminal.desktop</text>
+  <rect x="972" y="528" width="366" height="60" rx="13" fill="#202433"/>
+  <rect x="987" y="540" width="36" height="36" rx="9" fill="#292545"/>
+  <path d="m1004 548-7 7 7 7m8-14 7 7-7 7m-3-17-4 20" class="icon"/>
+  <text x="1038" y="554" class="small">Code editor</text>
+  <text x="1038" y="575" font-size="14" class="quiet">org.klyvera.Code.desktop</text>
+  <rect x="940" y="650" width="430" height="178" rx="20" fill="#151925" stroke="#303443"/>
+  <rect x="968" y="675" width="38" height="38" rx="11" fill="#3b2a25"/>
+  <path d="m987 684-10 10 10 10m-5-10h17" fill="none" stroke="#ffc27a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="1020" y="692" font-size="19" font-weight="650">Commands are gated</text>
+  <text x="968" y="739" class="small muted">Imported commands stay untrusted until you</text>
+  <text x="968" y="765" class="small muted">confirm this exact profile on your device.</text>
+  <rect x="70" y="846" width="1300" height="1" fill="#2a2e3c"/>
+  <text x="70" y="878" class="small quiet">Changes stay local until you export this Space.</text>
+  <rect x="1177" y="851" width="193" height="42" rx="12" fill="url(#accent)"/>
+  <text x="1223" y="878" font-size="17" font-weight="700" fill="#11121b">Continue</text>
+</svg>

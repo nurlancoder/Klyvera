@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">Klyvera Spaces dashboard illustration</title>
+  <desc id="desc">An original dark desktop interface illustration showing a project list, workspace details, folders and launch actions.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#171a2b"/>
+      <stop offset="1" stop-color="#0b0d14"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#b2a5ff"/>
+      <stop offset="1" stop-color="#7c68f5"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#8875ff" stop-opacity=".18"/>
+      <stop offset="1" stop-color="#8875ff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="#02030a" flood-opacity=".36"/>
+    </filter>
+    <style>
+      text{font-family:Inter,ui-sans-serif,system-ui,sans-serif;fill:#f4f6fb}
+      .muted{fill:#aeb6ca}.quiet{fill:#7f899f}.small{font-size:17px}.body{font-size:20px}
+      .label{font-size:15px;font-weight:700;letter-spacing:1.2px}.title{font-size:30px;font-weight:700}
+      .line{stroke:#2a2e3c;stroke-width:1}.icon{fill:none;stroke:#aeb6ca;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+  <rect width="1440" height="900" rx="28" fill="url(#bg)"/>
+  <circle cx="1210" cy="80" r="380" fill="url(#glow)"/>
+  <rect x="1" y="1" width="1438" height="898" rx="27" fill="none" stroke="#343848"/>
+  <path d="M28 68h1384" class="line"/>
+  <circle cx="35" cy="35" r="7" fill="#ff7687"/>
+  <circle cx="60" cy="35" r="7" fill="#f4bd5d"/>
+  <circle cx="85" cy="35" r="7" fill="#58d8ad"/>
+  <rect x="123" y="23" width="31" height="25" rx="7" fill="url(#accent)"/>
+  <path d="m131 35 6 6 10-12" fill="none" stroke="#11121b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="170" y="43" font-size="19" font-weight="700">Klyvera</text>
+  <text x="257" y="42" class="small muted">Spaces</text>
+  <text x="1305" y="42" class="small muted">LOCAL · PRIVATE</text>
+  <rect x="0" y="69" width="322" height="831" fill="#10131d" fill-opacity=".92"/>
+  <path d="M322 69v831" class="line"/>
+  <text x="40" y="119" class="label quiet">WORKSPACE</text>
+  <text x="40" y="163" font-size="27" font-weight="700">Your Spaces</text>
+  <rect x="40" y="184" width="242" height="48" rx="12" fill="#171b27" stroke="#343849"/>
+  <circle cx="61" cy="207" r="7" class="icon"/>
+  <path d="m66 212 6 6" class="icon"/>
+  <text x="84" y="214" class="small quiet">Filter Spaces</text>
+  <rect x="28" y="252" width="266" height="82" rx="14" fill="#342f5d"/>
+  <rect x="28" y="267" width="3" height="52" rx="2" fill="#a89aff"/>
+  <rect x="48" y="270" width="42" height="42" rx="11" fill="#4b4382"/>
+  <path d="m61 285-7 6 7 6m15-12 7 6-7 6m-5-15-4 18" fill="none" stroke="#c1b7ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="104" y="285" font-size="19" font-weight="650">API platform</text>
+  <text x="104" y="311" class="small muted">Rust services · 12m ago</text>
+  <text x="48" y="375" class="body" font-weight="600">Design system</text>
+  <text x="48" y="400" class="small quiet">Tokens and QML components</text>
+  <text x="48" y="453" class="body" font-weight="600">Release prep</text>
+  <text x="48" y="478" class="small quiet">Packages and manual checks</text>
+  <rect x="40" y="815" width="242" height="48" rx="12" fill="#171b27" stroke="#343849"/>
+  <path d="M61 840v-12m-6 6 6-6 6 6" class="icon"/>
+  <text x="84" y="845" class="small">Import a Space</text>
+  <text x="372" y="120" class="small muted">MONDAY, OCTOBER 26</text>
+  <text x="372" y="178" font-size="42" font-weight="750">Good morning.</text>
+  <text x="372" y="214" class="body muted">Pick up where each project belongs.</text>
+  <rect x="1193" y="137" width="190" height="52" rx="13" fill="url(#accent)"/>
+  <path d="M1220 163h20m-10-10v20" stroke="#11121b" stroke-width="2.5" stroke-linecap="round"/>
+  <text x="1251" y="171" font-size="18" font-weight="700" fill="#11121b">New Space</text>
+  <rect x="372" y="258" width="1011" height="244" rx="20" fill="#151925" stroke="#303443" filter="url(#shadow)"/>
+  <rect x="397" y="283" width="58" height="58" rx="16" fill="#292545"/>
+  <path d="m416 300-9 11 9 11m20-22 9 11-9 11m-7-27-6 32" fill="none" stroke="#b6a9ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="476" y="310" font-size="25" font-weight="700">API platform</text>
+  <text x="476" y="339" class="small muted">Rust services, terminal and release checks</text>
+  <rect x="1172" y="286" width="185" height="42" rx="21" fill="#12392f"/>
+  <circle cx="1194" cy="307" r="5" fill="#5fe0b3"/>
+  <text x="1210" y="313" class="small" fill="#8af0ce">Trusted commands</text>
+  <rect x="397" y="366" width="162" height="48" rx="12" fill="url(#accent)"/>
+  <path d="M418 390h20m-8-8 8 8-8 8" fill="none" stroke="#11121b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="448" y="397" font-size="17" font-weight="700" fill="#11121b">Open Space</text>
+  <rect x="573" y="366" width="104" height="48" rx="12" fill="#1a1e2a" stroke="#3a3e4e"/>
+  <path d="m594 395 13-13m-10 0h10v10" class="icon"/>
+  <text x="617" y="397" class="small">Edit</text>
+  <path d="M397 440h960" class="line"/>
+  <text x="397" y="474" class="small muted">Last opened 12 minutes ago</text>
+  <text x="372" y="552" class="label quiet">PROJECT CONTEXT</text>
+  <rect x="372" y="575" width="488" height="198" rx="18" fill="#151925" stroke="#303443"/>
+  <text x="400" y="617" font-size="21" font-weight="650">Project folders</text>
+  <rect x="400" y="642" width="42" height="42" rx="11" fill="#202433"/>
+  <path d="M411 654h9l4 4h9v13h-22z" class="icon"/>
+  <text x="459" y="660" class="small">~/src/api</text>
+  <text x="459" y="682" class="small quiet">Primary project · verified path</text>
+  <rect x="400" y="704" width="42" height="42" rx="11" fill="#202433"/>
+  <path d="M411 716h9l4 4h9v13h-22z" class="icon"/>
+  <text x="459" y="732" class="small">~/src/shared</text>
+  <rect x="879" y="575" width="504" height="198" rx="18" fill="#151925" stroke="#303443"/>
+  <text x="907" y="617" font-size="21" font-weight="650">Ready to launch</text>
+  <rect x="907" y="644" width="42" height="42" rx="11" fill="#202433"/>
+  <path d="M919 655h18v19h-18zM924 659l5 5-5 5m8 1h4" class="icon"/>
+  <text x="965" y="660" class="small">Terminal</text>
+  <text x="965" y="682" class="small quiet">org.klyvera.Terminal.desktop</text>
+  <rect x="907" y="704" width="42" height="42" rx="11" fill="#202433"/>
+  <path d="m921 716-6 6 6 6m13-12 6 6-6 6m-4-15-4 18" class="icon"/>
+  <text x="965" y="732" class="small">Code editor</text>
+  <rect x="372" y="800" width="1011" height="54" rx="15" fill="#11151d" stroke="#29303a"/>
+  <circle cx="401" cy="827" r="6" fill="#5fe0b3"/>
+  <text x="421" y="834" class="small muted">Your data stays on this device. No account. No cloud dependency.</text>
+  <text x="1325" y="834" class="small quiet">KLYVERA 0.1</text>
+</svg>

@@ -22,8 +22,15 @@ mobile menu, copy controls and reveal animations.
   `web/src/styles/tokens.css` and does not keep a separate colour palette.
 - Only local system font stacks, images and icons are used. There are no remote
   fonts, analytics, trackers, APIs or third-party embeds.
-- Product screenshots are offscreen renders from mock data. They are labelled as
-  previews, not as proof of a live Hyprland session.
+- Marketing visuals are original SVG illustrations with sample data. They are
+  labelled as illustrations, not as proof of a live Hyprland session.
+- `web/public/og.png` is rendered from `web/public/illustrations/social-card.svg`
+  in the project's Playwright Chromium environment:
+
+  ```bash
+  cd web
+  npm run render:social-card
+  ```
 - The page says **prototype** and marks target-only work as unverified. Do not
   turn a local check into a production claim.
 - The tagline is **"Your workspace. Your flow."**; the Azerbaijani page uses
@@ -83,10 +90,10 @@ before deploying.
 - manifest, favicon and required site files.
 
 `tests/web/browser_test.mjs` uses Playwright and axe-core against the built site.
-It checks three pages at 320, 375, 768, 1024, 1280 and 1440 pixels, including
-horizontal overflow, hero-span overflow, responsive navigation, the mobile menu,
-theme persistence and WCAG A/AA axe rules in dark, light and high-contrast
-themes.
+It checks three pages at 14 widths from 320 to 2560 pixels, including horizontal
+overflow, responsive grid transitions, 44-pixel navigation targets, scalable
+illustration resolution and aspect ratio, the mobile menu, theme persistence
+and WCAG A/AA axe rules in dark, light and high-contrast themes.
 
 Install the test browser and run the checks:
 
@@ -122,10 +129,12 @@ workflow has not yet run on GitHub; deployment is **UNVERIFIED** until it does.
 
 ## Current verification
 
-- `npm run build` and `npm run build -- --base=/Klyvera/` succeed.
-- Static checks pass for `/` and `/Klyvera/`: 3 pages, 285 assertions.
-- Browser checks pass locally for `/` and `/Klyvera/`: 198 assertions across
-  three pages and six viewport widths, including axe runs in all three themes
-  and at desktop width.
-- Human visual review of the rendered pages is still pending.
+- Production builds and static checks pass for `/` and the GitHub Pages
+  `/Klyvera/` base: 3 pages and 300 assertions per build.
+- Browser checks pass locally at both base paths: 1009 assertions per run across
+  three pages and 14 viewport widths from 320 to 2560 px, including responsive
+  layout transitions, touch targets, image rendering and axe runs in all themes.
+- `web/public/og.png` is generated from the original SVG social card and checked
+  to be 1200×630 pixels.
+- The website has not been visually validated on the deployed GitHub Pages site.
 - The Pages workflow, GitHub-hosted build and live deployment are unverified.

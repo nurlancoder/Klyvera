@@ -11,6 +11,7 @@ Item {
     property string surface: "launcher"
     property string themeName: "dark"
     property bool reduceMotion: true
+    readonly property var activeSurface: pageLoader.item
 
     onThemeNameChanged: Theme.themeName = themeName
     onReduceMotionChanged: Theme.reduceMotion = reduceMotion
@@ -32,6 +33,7 @@ Item {
     }
 
     Loader {
+        id: pageLoader
         anchors.fill: parent
         sourceComponent: root.surface === "launcher" ? launcherPage
             : root.surface === "spaces" ? spacesPage

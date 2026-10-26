@@ -11,7 +11,7 @@ const browser = await chromium.launch({
 });
 
 const pages = ["/", "/az/", "/docs/"];
-const widths = [320, 375, 768, 1024, 1280, 1440];
+const widths = [320, 360, 375, 390, 430, 600, 768, 900, 1000, 1024, 1280, 1440, 1920, 2560];
 let assertions = 0;
 const failures = [];
 const pass = () => {
@@ -52,6 +52,12 @@ try {
     check(await waitReady(), `${path}: page did not become ready`);
     check(errors.length === 0, `${path}: ${errors.join("; ")}`);
 
+    const productImages = page.locator(".product-frame img, .media-frame img");
+    for (const image of await productImages.all()) {
+      await image.scrollIntoViewIfNeeded();
+      await image.evaluate((element) => element.decode());
+    }
+
     for (const width of widths) {
       console.log(`checking ${path} at ${width}px`);
       await page.setViewportSize({ width, height: 900 });
@@ -67,17 +73,44 @@ try {
         };
         const h1 = document.querySelector("h1");
         const spans = h1 ? [...h1.querySelectorAll("span")] : [];
+        const columnCount = (selector) => {
+          const element = document.querySelector(selector);
+          return element ? getComputedStyle(element).gridTemplateColumns.split(" ").filter(Boolean).length : 0;
+        };
         return {
           overflow: document.documentElement.scrollWidth - window.innerWidth,
           headerTop: document.querySelector(".site-header")?.getBoundingClientRect().top ?? Infinity,
           h1Count: document.querySelectorAll("h1").length,
           spanOverflow: spans.map((span) => span.scrollWidth - span.parentElement.clientWidth),
+          heroSpanLines: spans.map((span) => {
+            const style = getComputedStyle(span);
+            return { height: span.getBoundingClientRect().height, lineHeight: parseFloat(style.lineHeight) };
+          }),
           navVisible: visible(".site-nav"),
           menuVisible: visible("[data-menu-toggle]"),
           brokenImages: [...document.images].filter((image) => image.complete && image.naturalWidth === 0).length,
           skipLink: Boolean(document.querySelector("a.skip-link[href='#main']")),
           main: Boolean(document.querySelector("main#main")),
           theme: document.documentElement.dataset.theme,
+          heroColumns: columnCount(".hero-grid"),
+          splitColumns: columnCount(".split"),
+          docsColumns: columnCount(".docs-layout"),
+          headerTargets: [...document.querySelectorAll(".header-actions a, .header-actions button")]
+            .filter((element) => getComputedStyle(element).display !== "none")
+            .map((element) => {
+              const rect = element.getBoundingClientRect();
+              return { width: rect.width, height: rect.height, label: element.getAttribute("aria-label") || element.textContent.trim() };
+            }),
+          productImages: [...document.querySelectorAll(".product-frame img, .media-frame img")].map((image) => {
+            const rect = image.getBoundingClientRect();
+            return {
+              src: image.currentSrc,
+              naturalWidth: image.naturalWidth,
+              naturalHeight: image.naturalHeight,
+              width: rect.width,
+              height: rect.height,
+            };
+          }),
         };
       });
 
@@ -87,9 +120,32 @@ try {
       check(metrics.brokenImages === 0, `${path} ${width}: ${metrics.brokenImages} broken images`);
       check(metrics.skipLink && metrics.main, `${path} ${width}: missing skip link or main`);
       check(metrics.spanOverflow.every((value) => value <= 1), `${path} ${width}: hero span overflow ${metrics.spanOverflow.join(",")}`);
+      if (path !== "/docs/" && width <= 600) {
+        check(
+          metrics.heroSpanLines.every((span) => span.height <= span.lineHeight + 1),
+          `${path} ${width}: a hero title line wrapped unexpectedly`,
+        );
+      }
       check(metrics.theme === "dark", `${path} ${width}: expected dark theme, got ${metrics.theme}`);
+      if (path !== "/docs/") {
+        const expectedLandingColumns = width <= 1100 ? 1 : 2;
+        check(metrics.heroColumns === expectedLandingColumns, `${path} ${width}: expected ${expectedLandingColumns} hero columns, got ${metrics.heroColumns}`);
+        check(metrics.splitColumns === expectedLandingColumns, `${path} ${width}: expected ${expectedLandingColumns} feature columns, got ${metrics.splitColumns}`);
+      } else {
+        const expectedDocsColumns = width <= 1000 ? 1 : 2;
+        check(metrics.docsColumns === expectedDocsColumns, `${path} ${width}: expected ${expectedDocsColumns} docs columns, got ${metrics.docsColumns}`);
+      }
+      for (const target of metrics.headerTargets) {
+        check(target.width >= 44 && target.height >= 44, `${path} ${width}: header target "${target.label}" is ${target.width}x${target.height}px`);
+      }
+      for (const image of metrics.productImages) {
+        check(image.src.includes("/illustrations/"), `${path} ${width}: product art is not using the scalable illustration (${image.src})`);
+        check(image.naturalWidth >= 1200 && image.naturalHeight >= 700, `${path} ${width}: low-resolution product art (${image.naturalWidth}x${image.naturalHeight})`);
+        check(image.width <= width + 1, `${path} ${width}: product illustration exceeds viewport (${image.width}px)`);
+        check(Math.abs(image.width / image.height - 1.6) < 0.04, `${path} ${width}: product illustration aspect ratio is ${image.width / image.height}`);
+      }
 
-      if (width <= 900) {
+      if (width <= 1000) {
         check(!metrics.navVisible, `${path} ${width}: desktop nav should be hidden`);
         check(metrics.menuVisible, `${path} ${width}: menu button should be visible`);
       } else {
@@ -124,6 +180,15 @@ try {
     await toggle.click();
     check((await toggle.getAttribute("aria-expanded")) === "true", `${path} mobile: menu did not expand`);
     check(await page.locator("[data-mobile-nav]").isVisible(), `${path} mobile: nav panel not visible`);
+    const mobileTargets = await page.locator("[data-mobile-nav] a").evaluateAll((links) =>
+      links.map((link) => {
+        const rect = link.getBoundingClientRect();
+        return { width: rect.width, height: rect.height, label: link.textContent.trim() };
+      }),
+    );
+    for (const target of mobileTargets) {
+      check(target.width >= 44 && target.height >= 44, `${path} mobile: menu target "${target.label}" is ${target.width}x${target.height}px`);
+    }
     check(
       (await page.evaluate(() => document.activeElement?.closest("[data-mobile-nav]") !== null)) === true,
       `${path} mobile: focus did not enter menu`,

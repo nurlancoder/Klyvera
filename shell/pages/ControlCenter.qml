@@ -69,9 +69,12 @@ Item {
 
             ColumnLayout {
                 Layout.fillWidth: true
+                Layout.minimumWidth: 0
                 spacing: 0
 
                 Text {
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: 0
                     text: qsTr("Control center")
                     color: Theme.textPrimary
                     font.family: Theme.typography.headingFamily
@@ -80,6 +83,8 @@ Item {
                     font.letterSpacing: Theme.typography.heading1.letterSpacing
                 }
                 Text {
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: 0
                     text: qsTr("Local settings, system services and device controls.")
                     color: Theme.textSecondary
                     font.family: Theme.typography.uiFamily
@@ -98,6 +103,7 @@ Item {
 
         GridLayout {
             Layout.fillWidth: true
+            Layout.minimumWidth: 0
             columns: root.compact ? 2 : 4
             columnSpacing: Theme.scaled(Theme.spacing.xs)
             rowSpacing: Theme.scaled(Theme.spacing.xs)
@@ -109,6 +115,7 @@ Item {
                     id: tile
                     required property var modelData
                     Layout.fillWidth: true
+                    Layout.minimumWidth: 0
                     Layout.preferredHeight: Theme.scaled(Theme.accessibility.preferredTargetSize)
                     hoverEnabled: true
                     focusPolicy: Qt.StrongFocus

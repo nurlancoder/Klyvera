@@ -16,6 +16,8 @@ Rectangle {
     property date now: new Date()
     readonly property string layoutClass: Theme.layoutClass(width)
     readonly property bool compact: layoutClass === "compact"
+    readonly property bool stacked: compact || height < 720
+    readonly property bool shortScreen: height < 600
 
     signal unlockRequested(string password)
     signal sessionRequested(string action)
@@ -69,8 +71,8 @@ Rectangle {
 
     ColumnLayout {
         anchors.fill: parent
-        anchors.margins: Theme.scaled(Theme.spacing.xxl)
-        spacing: Theme.scaled(Theme.spacing.xl)
+        anchors.margins: Theme.scaled(root.stacked ? Theme.spacing.md : Theme.spacing.xxl)
+        spacing: Theme.scaled(root.stacked ? Theme.spacing.sm : Theme.spacing.xl)
 
         RowLayout {
             Layout.fillWidth: true
@@ -107,17 +109,22 @@ Rectangle {
             }
         }
 
-        RowLayout {
+        GridLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            spacing: Theme.scaled(Theme.spacing.xxl)
+            columns: root.stacked ? 1 : 2
+            columnSpacing: Theme.scaled(Theme.spacing.xxl)
+            rowSpacing: Theme.scaled(Theme.spacing.sm)
 
             ColumnLayout {
                 Layout.fillWidth: true
+                Layout.minimumWidth: 0
                 Layout.alignment: Qt.AlignVCenter
+                visible: !root.shortScreen
                 spacing: Theme.scaled(Theme.spacing.xs)
 
                 Text {
+                    Layout.minimumWidth: 0
                     text: Qt.formatTime(root.now, "HH:mm")
                     color: Theme.textPrimary
                     font.family: Theme.typography.headingFamily
@@ -126,6 +133,8 @@ Rectangle {
                     font.letterSpacing: -2
                 }
                 Text {
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: 0
                     text: Qt.formatDate(root.now, "dddd, d MMMM")
                     color: Theme.textSecondary
                     font.family: Theme.typography.uiFamily
@@ -136,16 +145,22 @@ Rectangle {
             }
 
             Rectangle {
+                id: profileCard
+                Layout.fillWidth: true
+                Layout.minimumWidth: 0
                 Layout.preferredWidth: Theme.scaled(420)
                 Layout.maximumWidth: Theme.scaled(420)
-                Layout.fillHeight: true
-                Layout.alignment: Qt.AlignVCenter
+                Layout.preferredHeight: profileContent.implicitHeight
+                    + Theme.scaled(Theme.spacing.xxl) * 2
+                Layout.fillHeight: !root.stacked
+                Layout.alignment: root.stacked ? Qt.AlignHCenter : Qt.AlignVCenter
                 radius: Theme.scaled(Theme.radius.xl)
                 color: Theme.surface
                 border.width: Theme.scaledInt(Theme.borders.hairline)
                 border.color: Theme.borderSubtle
 
                 ColumnLayout {
+                    id: profileContent
                     anchors.centerIn: parent
                     width: parent.width - Theme.scaled(Theme.spacing.xxl) * 2
                     spacing: Theme.scaled(Theme.spacing.md)
@@ -219,6 +234,7 @@ Rectangle {
 
                     RowLayout {
                         Layout.fillWidth: true
+                        visible: root.height >= 720
                         spacing: Theme.scaled(Theme.spacing.xs)
 
                         Button {

@@ -45,9 +45,12 @@ Item {
 
             ColumnLayout {
                 Layout.fillWidth: true
+                Layout.minimumWidth: 0
                 spacing: 0
 
                 Text {
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: 0
                     text: qsTr("Notifications")
                     color: Theme.textPrimary
                     font.family: Theme.typography.headingFamily
@@ -56,12 +59,15 @@ Item {
                     font.letterSpacing: Theme.typography.heading1.letterSpacing
                 }
                 Text {
+                    Layout.fillWidth: true
+                    Layout.minimumWidth: 0
                     text: root.unreadCount > 0
                         ? qsTr("%1 unread · kept on this device").arg(root.unreadCount)
                         : qsTr("All caught up · nothing leaves this device")
                     color: Theme.textSecondary
                     font.family: Theme.typography.uiFamily
                     font.pixelSize: Theme.scaledInt(Theme.typography.body.size)
+                    wrapMode: Text.Wrap
                 }
             }
 
@@ -101,8 +107,11 @@ Item {
                 }
                 ColumnLayout {
                     Layout.fillWidth: true
+                    Layout.minimumWidth: 0
                     spacing: 0
                     Text {
+                        Layout.fillWidth: true
+                        Layout.minimumWidth: 0
                         text: qsTr("Do not disturb")
                         color: Theme.textPrimary
                         font.family: Theme.typography.uiFamily
@@ -110,6 +119,8 @@ Item {
                         font.weight: Theme.typography.bodyStrong.weight
                     }
                     Text {
+                        Layout.fillWidth: true
+                        Layout.minimumWidth: 0
                         text: root.doNotDisturb
                             ? qsTr("Banners are paused. Notifications are still recorded here.")
                             : qsTr("Pause banners without losing notifications")

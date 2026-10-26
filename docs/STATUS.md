@@ -4,7 +4,7 @@ Klyvera is a **prototype**. This file records what has actually been run, what i
 written but cannot be exercised on the Debian-based development workstation, and
 what is blocked. It is updated after every step.
 
-Last updated: 2026-10-26 (Phase 7; V3 repair Phase 6)
+Last updated: 2026-10-26 (Phase 7; V3 repair Phase 7)
 
 ## Done
 
@@ -355,6 +355,34 @@ Last updated: 2026-10-26 (Phase 7; V3 repair Phase 6)
   (216 assertions across 3 pages and 6 widths) passed.
 - The local site is visually reviewed, but the GitHub Pages workflow and live
   deployment remain **UNVERIFIED**.
+
+### V3 repair Phase 7 — Responsive product polish (Windows workstation)
+
+- The English and Azerbaijani landing pages now use original, scalable SVG
+  interface illustrations, clearly identified as illustrative sample data.
+  The original social-card SVG generates a checked 1200×630 PNG preview.
+- Responsive website coverage now spans 14 widths (320–2560 px), checks grid
+  transitions, horizontal overflow, 44 px header/menu targets and illustration
+  dimensions/aspect ratios. The 1024 px landing layout now stacks before its
+  heading can overflow.
+- The nine pure-QML shell surfaces are checked at 11 viewport sizes. Regression
+  coverage verifies each page's actual layout class and bounds and checks that
+  visible text and buttons stay within the viewport unless intentionally inside
+  a clipped scrolling surface. Compact layouts were fixed in Spaces, Control
+  Center, notifications, System Monitor and the lock screen.
+- Added a consistency check for all 50 original shell SVG icons; Qt Quick
+  rendering continues to verify 49 static icons and their tint binding, with
+  the battery icon retaining its dynamic fallback.
+- `npm run build`, `npm run check` (**300 assertions**) and
+  `npm run test:browser` (**1009 assertions across 3 pages and 14 widths**) pass
+  for both root and `/Klyvera/` builds. The browser assertions include axe
+  checks in dark, light and high-contrast themes.
+- `tests/qml/responsive_pages.py` passes **1,254 assertions** across 9 surfaces
+  and 11 sizes. QML behavior, icon, geometry and documentation checks pass;
+  static QML lint exits successfully with the already documented nested-Theme
+  analysis warnings.
+- The browser suite was run locally, not against deployed Pages. Real Arch,
+  Quickshell and Wayland rendering remain **UNVERIFIED-ON-TARGET**.
 
 ## Unverified on target
 

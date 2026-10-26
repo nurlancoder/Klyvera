@@ -33,3 +33,22 @@ on the Arch target.
   public artifact is published.
 - The complete local check suite passes; skipped checks are listed by reason.
 - **UNVERIFIED-ON-TARGET** items remain visible in `docs/STATUS.md`.
+
+## V3 repair pass — Responsive product polish
+
+This checklist tracks a focused visual and responsive quality pass across the
+static website and pure-QML preview surfaces. It does not claim target-session
+verification.
+
+- [x] Measure website layouts, navigation targets, image rendering and overflow
+      at 14 viewport widths from 320 to 2560 px.
+- [x] Measure all nine pure-QML shell preview surfaces at 11 constrained and
+      wide desktop sizes; fix visible text/control overflow in narrow layouts.
+- [x] Replace low-detail raster product captures in the marketing pages with
+      original, scalable, clearly labelled product illustrations.
+- [x] Verify the 50-icon in-house SVG set retains a consistent stroke system and
+      its QML components render with tint binding; no third-party art added.
+- [x] Add regression coverage for responsive geometry, 44 px web navigation
+      targets, image aspect ratios, and icon assets.
+- [x] Run web build/static/browser checks, QML behavior checks, lint and docs
+      checks; record local and target verification separately.
