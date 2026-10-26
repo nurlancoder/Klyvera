@@ -1,6 +1,7 @@
 // Target-only notification bridge backed by Quickshell's notification server.
 import QtQuick
 import Quickshell.Services.Notifications
+import "../NotificationHistory.js" as NotificationHistory
 
 NotificationServer {
     id: root
@@ -15,8 +16,6 @@ NotificationServer {
     imageSupported: true
 
     onNotification: function(notification) {
-        notification.tracked = true
-        tracked = tracked.concat([notification])
         const urgency = notification.urgency === NotificationUrgency.Critical
             ? "critical" : notification.urgency === NotificationUrgency.Low
             ? "low" : "normal"
@@ -29,28 +28,20 @@ NotificationServer {
             "time": new Date().toLocaleTimeString(Qt.locale(), "HH:mm"),
             "read": false
         }
-        if (!doNotDisturb)
-            notifications = [entry].concat(notifications).slice(0, 30)
+        const state = NotificationHistory.record(notifications, tracked, entry, notification)
+        notifications = state.notifications
+        tracked = state.tracked
     }
 
     function dismiss(notificationId: string) {
-        const remaining = []
-        for (let i = 0; i < tracked.length; i++) {
-            if (String(tracked[i].id) === notificationId)
-                tracked[i].dismiss()
-            else
-                remaining.push(tracked[i])
-        }
-        tracked = remaining
-        notifications = notifications.filter(function(entry) {
-            return entry.id !== notificationId
-        })
+        const state = NotificationHistory.dismiss(notifications, tracked, notificationId)
+        notifications = state.notifications
+        tracked = state.tracked
     }
 
     function clearAll() {
-        for (let i = 0; i < tracked.length; i++)
-            tracked[i].dismiss()
-        tracked = []
-        notifications = []
+        const state = NotificationHistory.clear(tracked)
+        notifications = state.notifications
+        tracked = state.tracked
     }
 }
